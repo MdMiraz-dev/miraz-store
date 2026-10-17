@@ -1,0 +1,35 @@
+[
+  {
+    "id": "#MRZ-8888",
+    "date": "১৭ অক্টো, ২০২৬, ১:০৭ PM",
+    "timestamp": 1792220857477,
+    "name": "সুমন আহমেদ",
+    "phone": "01712345678",
+    "address": "ধানমন্ডি ২৭, ঢাকা",
+    "area": "ঢাকার ভেতরে",
+    "product": "MIRAZ Royal Collection - Extrait",
+    "qty": 2,
+    "price": 4200,
+    "subtotal": 8400,
+    "delivery": 60,
+    "total": 8460,
+    "paymentMethod": "ক্যাশ অন ডেলিভারি",
+    "status": "পেন্ডিং"
+  },
+  {
+    "id": "#MRZ-7890",
+    "date": "১৭ অক্টো, ২০২৬, ১২:০৮ PM",
+    "timestamp": 1792217285259,
+    "name": "কামাল হোসেন",
+    "phone": "01812345678",
+    "address": "মিরপুর ১০, ঢাকা",
+    "area": "ঢাকার ভেতরে",
+    "product": "MIRAZ The Edge of Night",
+    "qty": 1,
+    "price": 3900,
+    "subtotal": 0,
+    "delivery": 60,
+    "total": 3960,
+    "status": "কনফার্ম"
+  }
+]

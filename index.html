@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MIRAZ – Luxury Lifestyle Store | miraz.com</title>
+  <meta name="description" content="MIRAZ - বাংলাদেশের সেরা লাক্সারি লাইফস্টাইল ব্র্যান্ড। পারফিউম, আতর, ফ্যাশন, কসমেটিক ও শোপিস।"/>
+  <link rel="stylesheet" href="css/style.css?v=6.5"/>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Poppins:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* 🎬 Video Reels Direct Scoped Styles */
+    .video-reels-section {
+      background: radial-gradient(circle at 50% 20%, #151528 0%, #090912 100%) !important;
+      position: relative !important;
+      overflow: hidden !important;
+      padding: 70px 0 !important;
+      border-top: 1px solid rgba(212,168,71,0.3) !important;
+      border-bottom: 1px solid rgba(212,168,71,0.3) !important;
+    }
+    .video-reels-section .sec-title {
+      color: #ffffff !important;
+    }
+    .video-reels-section .sec-title em {
+      color: #d4a847 !important;
+      font-style: italic;
+    }
+    .video-reels-section .sec-desc {
+      color: #a0a0b8 !important;
+    }
+    .video-reels-grid {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) !important;
+      gap: 1.75rem !important;
+      margin-top: 2.5rem !important;
+    }
+    .reel-card {
+      background: linear-gradient(180deg, #16162a 0%, #0d0d18 100%) !important;
+      border: 1.5px solid rgba(212,168,71,0.3) !important;
+      border-radius: 18px !important;
+      overflow: hidden !important;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.6) !important;
+      display: flex;
+      flex-direction: column;
+      opacity: 1;
+      visibility: visible;
+      transform: none !important;
+      transition: all 0.35s ease !important;
+    }
+    .reel-card.deleted-video,
+    .reel-card[style*="display: none"] {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      height: 0 !important;
+      width: 0 !important;
+      overflow: hidden !important;
+      pointer-events: none !important;
+      position: absolute !important;
+    }
+    .reel-card:hover {
+      transform: translateY(-8px) !important;
+      border-color: #d4a847 !important;
+      box-shadow: 0 16px 45px rgba(212,168,71,0.35) !important;
+    }
+    .reel-video-wrap {
+      position: relative !important;
+      width: 100% !important;
+      aspect-ratio: 9/16 !important;
+      max-height: 440px !important;
+      background: #000000 !important;
+      overflow: hidden !important;
+    }
+    .reel-video {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+    .reel-overlay {
+      position: absolute !important;
+      top: 12px !important;
+      left: 12px !important;
+      pointer-events: none !important;
+      z-index: 2 !important;
+    }
+    .reel-live-tag {
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+      background: rgba(229,62,62,0.9) !important;
+      color: #fff !important;
+      font-size: .7rem !important;
+      font-weight: 700 !important;
+      padding: .25rem .65rem !important;
+      border-radius: 20px !important;
+      box-shadow: 0 4px 12px rgba(229,62,62,0.4) !important;
+    }
+    .reel-info {
+      padding: 1.25rem !important;
+      display: flex !important;
+      flex-direction: column !important;
+      flex: 1 !important;
+    }
+    .reel-cat {
+      font-size: .75rem !important;
+      color: #d4a847 !important;
+      font-weight: 600 !important;
+      margin-bottom: .35rem !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+    .reel-title {
+      font-family: 'Playfair Display', serif !important;
+      font-size: 1.05rem !important;
+      color: #ffffff !important;
+      margin-bottom: .6rem !important;
+      line-height: 1.35 !important;
+    }
+    .reel-price-row {
+      display: flex !important;
+      align-items: center !important;
+      gap: .6rem !important;
+      margin-bottom: 1rem !important;
+    }
+    .reel-price {
+      font-size: 1.2rem !important;
+      font-weight: 700 !important;
+      color: #f0c96e !important;
+    }
+    .reel-old-price {
+      font-size: .88rem !important;
+      color: #888899 !important;
+      text-decoration: line-through !important;
+    }
+    .reel-disc {
+      font-size: .72rem !important;
+      color: #25d366 !important;
+      background: rgba(37,211,102,0.15) !important;
+      padding: .2rem .55rem !important;
+      border-radius: 20px !important;
+      font-weight: 600 !important;
+    }
+    .reel-actions {
+      display: grid !important;
+      grid-template-columns: 1fr auto !important;
+      gap: .5rem !important;
+      margin-top: auto !important;
+    }
+    .btn-reel-order {
+      padding: .7rem 1rem !important;
+      background: linear-gradient(135deg, #d4a847, #b8860b) !important;
+      color: #000000 !important;
+      font-weight: 700 !important;
+      font-size: .88rem !important;
+      border-radius: 8px !important;
+      border: none !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: .5rem !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-reel-order:hover {
+      box-shadow: 0 4px 15px rgba(212,168,71,0.5) !important;
+      transform: translateY(-2px) !important;
+    }
+    .btn-reel-wa {
+      width: 44px !important;
+      height: 44px !important;
+      border-radius: 8px !important;
+      background: rgba(37,211,102,0.15) !important;
+      border: 1px solid #25d366 !important;
+      color: #25d366 !important;
+      font-size: 1.2rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+    }
+    .btn-reel-wa:hover {
+      background: #25d366 !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+    }
+    @media (max-width: 600px) {
+      .video-reels-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: .8rem !important;
+      }
+      .reel-info {
+        padding: .85rem .75rem !important;
+      }
+      .reel-title {
+        font-size: .9rem !important;
+      }
+      .reel-price {
+        font-size: 1rem !important;
+      }
+      .reel-actions {
+        grid-template-columns: 1fr !important;
+      }
+      .btn-reel-wa {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========== PRELOADER ========== -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo-wrap">
+      <img src="images/logo-icon.jpg" alt="MIRAZ Logo" class="preloader-logo-img"/>
+      <div class="preloader-ring"></div>
+    </div>
+    <div class="preloader-brand">MIRAZ</div>
+    <div class="preloader-sub">Luxury Lifestyle Store</div>
+    <div class="preloader-bar"><span></span></div>
+  </div>
+</div>
+<script>
+  (function() {
+    function dismissPre() {
+      var p = document.getElementById('preloader');
+      if (p) {
+        p.classList.add('gone');
+        setTimeout(function() { p.style.display = 'none'; }, 400);
+      }
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(dismissPre, 100);
+    } else {
+      window.addEventListener('DOMContentLoaded', dismissPre);
+      window.addEventListener('load', dismissPre);
+      setTimeout(dismissPre, 500);
+    }
+  })();
+</script>
+
+<!-- ========== TOP BAR ========== -->
+<div class="top-bar">
+  <div class="tb-container">
+    <div class="tb-left">
+      <span><i class="fas fa-truck"></i> <span data-i18n="topBarDelivery">৳৫০০+ অর্ডারে ফ্রি ডেলিভারি</span></span>
+    </div>
+    <div class="tb-center">
+      <span data-i18n="topBarTagline">✦ বাংলাদেশের ১ নম্বর লাক্সারি ব্র্যান্ড ✦</span>
+    </div>
+    <div class="tb-right" style="display:flex; align-items:center; gap:16px;">
+      <div class="desktop-lang-switcher" id="langSwitchDesktop">
+        <button class="lang-pill-btn active" data-lang="bn" onclick="setStoreLanguage('bn')" title="বাংলা">🇧🇩 বাংলা</button>
+        <button class="lang-pill-btn" data-lang="en" onclick="setStoreLanguage('en')" title="English">🇬🇧 EN</button>
+        <button class="lang-pill-btn" data-lang="ar" onclick="setStoreLanguage('ar')" title="العربية">🇸🇦 عربي</button>
+      </div>
+      <a href="https://www.facebook.com/share/18eWZxdvbr/" target="_blank" rel="noopener noreferrer" style="color:inherit; display:inline-flex; align-items:center; gap:6px;" title="MIRAZ Facebook Page">
+        <i class="fab fa-facebook" style="color:#1877f2;"></i> <span data-i18n="fbPage">ফেসবুক পেজ</span>
+      </a>
+      <a href="https://wa.me/8801339564967" target="_blank" rel="noopener noreferrer" style="color:inherit; display:inline-flex; align-items:center; gap:6px;">
+        <i class="fab fa-whatsapp" style="color:#25d366;"></i> <span>WhatsApp: 01339564967</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header id="header">
+  <div class="header-wrap">
+    <div class="container header-inner">
+
+      <button class="hamburger" id="hamburger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- MIRAZ LUXURY BRAND LOGO -->
+      <a href="index.html" class="brand-logo-link">
+        <div class="header-logo-badge">
+          <img src="images/logo-full.jpg" alt="MIRAZ Logo" class="header-logo-icon"/>
+        </div>
+        <div class="header-logo-text">
+          <span class="hl-brand">MIRAZ</span>
+          <span class="hl-tag" data-i18n="brandTag">LUXURY STORE</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="main-nav" id="mainNav">
+        <!-- Desktop Nav Items -->
+        <ul class="desktop-nav-list">
+          <li><a href="#home" class="nav-link" data-i18n="navHome">হোম</a></li>
+          <li class="has-dropdown" id="catNavDropdown">
+            <a href="javascript:void(0)" id="catNavTrigger" class="nav-link" role="button" aria-haspopup="true" aria-expanded="false"><span data-i18n="navCategory">ক্যাটাগরি</span> <i class="fas fa-chevron-down chev"></i></a>
+            <div class="mega-dropdown">
+              <div class="mega-inner">
+                <div class="mega-col">
+                  <h4 class="mega-title" style="cursor:pointer;" onclick="filterProductsFromNav('perfume', 'সুগন্ধি'); return false;"><i class="fas fa-spray-can-sparkles"></i> সুগন্ধি</h4>
+                  <a href="#new" onclick="filterProductsFromNav('perfume', 'পারফিউম'); return false;"><i class="fas fa-spray-can-sparkles"></i> পারফিউম</a>
+                  <a href="#new" onclick="filterProductsFromNav('attar', 'আতর'); return false;"><i class="fas fa-bottle-droplet"></i> আতর</a>
+                  <a href="#new" onclick="filterProductsFromNav('freshener', 'রুম ফ্রেশনার'); return false;"><i class="fas fa-wind"></i> রুম ফ্রেশনার</a>
+                </div>
+                <div class="mega-col">
+                  <h4 class="mega-title" style="cursor:pointer;" onclick="filterProductsFromNav('clothing', 'পোশাক'); return false;"><i class="fas fa-shirt"></i> পোশাক</h4>
+                  <a href="#new" onclick="filterProductsFromNav('ladies', 'লেডিস ফ্যাশন'); return false;"><i class="fas fa-person-dress"></i> লেডিস ফ্যাশন</a>
+                  <a href="#new" onclick="filterProductsFromNav('gents', 'জেন্টস পোশাক'); return false;"><i class="fas fa-vest"></i> জেন্টস পোশাক</a>
+                  <a href="#new" onclick="filterProductsFromNav('kids', 'কিডস কালেকশন'); return false;"><i class="fas fa-child"></i> কিডস কালেকশন</a>
+                </div>
+                <div class="mega-col">
+                  <h4 class="mega-title" style="cursor:pointer;" onclick="filterProductsFromNav('cosmetics', 'বিউটি'); return false;"><i class="fas fa-wand-sparkles"></i> বিউটি</h4>
+                  <a href="#new" onclick="filterProductsFromNav('cosmetics', 'কসমেটিক'); return false;"><i class="fas fa-wand-sparkles"></i> কসমেটিক</a>
+                  <a href="#new" onclick="filterProductsFromNav('skincare', 'স্কিনকেয়ার'); return false;"><i class="fas fa-spa"></i> স্কিনকেয়ার</a>
+                  <a href="#new" onclick="filterProductsFromNav('haircare', 'হেয়ারকেয়ার'); return false;"><i class="fas fa-pump-soap"></i> হেয়ারকেয়ার</a>
+                </div>
+                <div class="mega-col">
+                  <h4 class="mega-title" style="cursor:pointer;" onclick="filterProductsFromNav('showpiece', 'গিফট'); return false;"><i class="fas fa-gift"></i> গিফট</h4>
+                  <a href="#new" onclick="filterProductsFromNav('showpiece', 'শোপিস'); return false;"><i class="fas fa-gem"></i> শোপিস</a>
+                  <a href="#new" onclick="filterProductsFromNav('gift', 'গিফট সেট'); return false;"><i class="fas fa-gift"></i> গিফট সেট</a>
+                  <a href="#new" onclick="filterProductsFromNav('jewelry', 'জুয়েলারি'); return false;"><i class="fas fa-ring"></i> জুয়েলারি</a>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li><a href="#new" class="nav-link"><span data-i18n="navNew">নতুন</span> <span class="nav-badge">New</span></a></li>
+          <li><a href="#videoReels" class="nav-link"><i class="fas fa-play" style="font-size:0.75rem; color:var(--gold); margin-right:4px;"></i> <span data-i18n="navReels">ভিডিও রিলস</span></a></li>
+          <li><a href="#sale" class="nav-link"><span data-i18n="navOffers">অফার</span> <span class="nav-badge sale">Sale</span></a></li>
+          <li><a href="#about" class="nav-link" data-i18n="navAbout">সম্পর্কে</a></li>
+          <li><a href="#contact" class="nav-link" data-i18n="navContact">যোগাযোগ</a></li>
+        </ul>
+      </nav>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        <button class="mz-cart-pill-btn" id="cartPillBtn" onclick="toggleCart(); return false;" title="কার্ট">
+          <span>কার্ট</span>
+          <span class="mz-cart-badge" id="cartCountPill">0</span>
+        </button>
+        <button class="h-action-btn cart-trigger" id="cartBtn" title="কার্ট" style="display:none;">
+          <i class="fas fa-bag-shopping"></i>
+          <span class="h-badge" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+      <div class="search-overlay-inner">
+        <button class="search-close" id="closeSearch"><i class="fas fa-times"></i></button>
+        <div class="search-logo">
+          <img src="images/logo-icon.jpg" alt="MIRAZ" style="width:60px;height:60px;object-fit:cover;border-radius:50%;"/>
+        </div>
+        <h3 class="search-title">কী খুঁজছেন?</h3>
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="পারফিউম, আতর, কাপড়, কসমেটিক..." id="searchInput" autofocus/>
+        </div>
+        <div class="search-tags">
+          <span>পারফিউম</span><span>আতর</span><span>শাড়ি</span>
+          <span>থ্রি-পিস</span><span>লিপস্টিক</span><span>শোপিস</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ========== TOP-LEVEL INDEPENDENT MOBILE DRAWER ========== -->
+<aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation Drawer">
+  <!-- Mobile Drawer Header -->
+  <div class="mobile-drawer-header">
+    <div class="mdh-brand">
+      <img src="images/logo-icon.jpg" alt="MIRAZ" class="mdh-logo"/>
+      <div>
+        <div class="mdh-title">MIRAZ</div>
+        <div class="mdh-sub">LUXURY STORE</div>
+      </div>
+    </div>
+    <button class="nav-close-btn" id="drawerClose" aria-label="Close menu"><i class="fas fa-times"></i></button>
+  </div>
+
+  <!-- Mobile Drawer Body -->
+  <div class="mobile-drawer-body">
+    <!-- Language Selector -->
+    <div class="drawer-lang-section">
+      <div class="dls-label"><i class="fas fa-globe"></i> <span data-i18n="selectLanguage">ভাষা নির্বাচন করুন</span></div>
+      <div class="lang-pills-row">
+        <button class="lang-pill-btn active" data-lang="bn" onclick="setStoreLanguage('bn')">🇧🇩 বাংলা</button>
+        <button class="lang-pill-btn" data-lang="en" onclick="setStoreLanguage('en')">🇬🇧 English</button>
+        <button class="lang-pill-btn" data-lang="ar" onclick="setStoreLanguage('ar')">🇸🇦 العربية</button>
+      </div>
+    </div>
+
+    <!-- Category Accordion -->
+    <div class="drawer-cat-section">
+      <div class="drawer-section-heading">
+        <i class="fas fa-boxes-stacked"></i> <span data-i18n="allCategories">সকল ক্যাটাগরি</span>
+      </div>
+      
+      <!-- সুগন্ধি (Perfumes & Attar) -->
+      <div class="drawer-cat-block expanded">
+        <div class="dcb-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <div class="dcb-left">
+            <span class="dcb-icon">👑</span>
+            <div>
+              <div class="dcb-title" data-i18n="catFragrance">সুগন্ধি কালেকশন</div>
+              <div class="dcb-desc">পারফিউম, আতর, রুম ফ্রেশনার</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-down dcb-arrow"></i>
+        </div>
+        <div class="dcb-subitems">
+          <a href="#new" onclick="filterProductsFromNav('perfume', 'পারফিউম'); return false;">
+            <span><i class="fas fa-spray-can-sparkles"></i> <span data-i18n="catPerfume">পারফিউম কালেকশন</span></span>
+            <span class="dcb-count">12+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('attar', 'আতর'); return false;">
+            <span><i class="fas fa-bottle-droplet"></i> <span data-i18n="catAttar">আতর (Arabian Ittar)</span></span>
+            <span class="dcb-count">10+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('freshener', 'রুম ফ্রেশনার'); return false;">
+            <span><i class="fas fa-wind"></i> <span data-i18n="catFreshener">রুম ফ্রেশনার ও ডিফিউজার</span></span>
+            <span class="dcb-count">6+</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- পোশাক (Clothing) -->
+      <div class="drawer-cat-block">
+        <div class="dcb-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <div class="dcb-left">
+            <span class="dcb-icon">👗</span>
+            <div>
+              <div class="dcb-title" data-i18n="catClothing">পোশাক ও ফ্যাশন</div>
+              <div class="dcb-desc">লেডিস, জেন্টস ও কিডস</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-down dcb-arrow"></i>
+        </div>
+        <div class="dcb-subitems">
+          <a href="#new" onclick="filterProductsFromNav('ladies', 'লেডিস ফ্যাশন'); return false;">
+            <span><i class="fas fa-person-dress"></i> <span data-i18n="catLadies">লেডিস ফ্যাশন (থ্রি-পিস, শাড়ি)</span></span>
+            <span class="dcb-count">8+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('clothing', 'জেন্টস পোশাক'); return false;">
+            <span><i class="fas fa-vest"></i> <span data-i18n="catGents">জেন্টস পাঞ্জাবি ও পোশাক</span></span>
+            <span class="dcb-count">8+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('kids', 'কিডস কালেকশন'); return false;">
+            <span><i class="fas fa-child"></i> <span data-i18n="catKids">কিডস কালেকশন</span></span>
+            <span class="dcb-count">4+</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- কসমেটিক ও বিউটি -->
+      <div class="drawer-cat-block">
+        <div class="dcb-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <div class="dcb-left">
+            <span class="dcb-icon">💄</span>
+            <div>
+              <div class="dcb-title" data-i18n="catCosmetics">কসমেটিক ও বিউটি</div>
+              <div class="dcb-desc">মেকআপ, স্কিনকেয়ার ও হেয়ারকেয়ার</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-down dcb-arrow"></i>
+        </div>
+        <div class="dcb-subitems">
+          <a href="#new" onclick="filterProductsFromNav('cosmetics', 'কসমেটিক'); return false;">
+            <span><i class="fas fa-wand-sparkles"></i> <span data-i18n="catMakeup">প্রিমিয়াম কসমেটিক</span></span>
+            <span class="dcb-count">6+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('skincare', 'স্কিনকেয়ার'); return false;">
+            <span><i class="fas fa-spa"></i> <span data-i18n="catSkincare">স্কিনকেয়ার ট্রিটমেন্ট</span></span>
+            <span class="dcb-count">5+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('haircare', 'হেয়ারকেয়ার'); return false;">
+            <span><i class="fas fa-pump-soap"></i> <span data-i18n="catHaircare">হেয়ারকেয়ার প্রোডাক্ট</span></span>
+            <span class="dcb-count">5+</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- গিফট ও শোপিস -->
+      <div class="drawer-cat-block">
+        <div class="dcb-header" onclick="this.parentElement.classList.toggle('expanded')">
+          <div class="dcb-left">
+            <span class="dcb-icon">🎁</span>
+            <div>
+              <div class="dcb-title" data-i18n="catGifts">গিফট ও শোপিস</div>
+              <div class="dcb-desc">হোম ডেকর, গিফট বক্স, জুয়েলারি</div>
+            </div>
+          </div>
+          <i class="fas fa-chevron-down dcb-arrow"></i>
+        </div>
+        <div class="dcb-subitems">
+          <a href="#new" onclick="filterProductsFromNav('showpiece', 'শোপিস'); return false;">
+            <span><i class="fas fa-gem"></i> <span data-i18n="catShowpiece">লাক্সারি শোপিস</span></span>
+            <span class="dcb-count">6+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('gift', 'গিফট সেট'); return false;">
+            <span><i class="fas fa-gift"></i> <span data-i18n="catGiftSet">লাক্সারি গিফট বক্স সেট</span></span>
+            <span class="dcb-count">4+</span>
+          </a>
+          <a href="#new" onclick="filterProductsFromNav('jewelry', 'জুয়েলারি'); return false;">
+            <span><i class="fas fa-ring"></i> <span data-i18n="catJewelry">এক্সক্লুসিভ জুয়েলারি</span></span>
+            <span class="dcb-count">4+</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Navigation Links -->
+    <div class="drawer-quick-links">
+      <div class="drawer-section-heading">
+        <i class="fas fa-compass"></i> <span data-i18n="quickLinks">কুইক মেনু</span>
+      </div>
+      <a href="#home" class="drawer-link" onclick="window.closeMobileDrawer && window.closeMobileDrawer()"><i class="fas fa-house"></i> <span data-i18n="navHome">হোম পেজ</span></a>
+      <a href="#videoReels" class="drawer-link" onclick="window.closeMobileDrawer && window.closeMobileDrawer()"><i class="fas fa-circle-play" style="color:#e53e3e;"></i> <span data-i18n="navReels">ভিডিও রিলস (শর্ট ভিডিও)</span> <span class="badge-hot">LIVE</span></a>
+      <a href="#sale" class="drawer-link" onclick="window.closeMobileDrawer && window.closeMobileDrawer()"><i class="fas fa-fire" style="color:#d4a847;"></i> <span data-i18n="navOffers">স্পেশাল অফার ও ডিসকাউন্ট</span> <span class="badge-sale">SALE</span></a>
+      <a href="#about" class="drawer-link" onclick="window.closeMobileDrawer && window.closeMobileDrawer()"><i class="fas fa-shield-halved"></i> <span data-i18n="navAbout">আমাদের সম্পর্কে</span></a>
+      <a href="#contact" class="drawer-link" onclick="window.closeMobileDrawer && window.closeMobileDrawer()"><i class="fas fa-headset"></i> <span data-i18n="navContact">যোগাযোগ ও হেল্পলাইন</span></a>
+    </div>
+
+    <!-- Contact & Helpline -->
+    <div class="drawer-contact-card">
+      <div class="dcc-title"><i class="fas fa-phone-volume"></i> <span data-i18n="drawerHelp">প্রয়োজনে সরাসরি যোগাযোগ</span></div>
+      <a href="https://wa.me/8801339564967" target="_blank" rel="noopener noreferrer" class="btn-drawer-wa">
+        <i class="fab fa-whatsapp"></i> <span>WhatsApp: 01339564967</span>
+      </a>
+      <a href="tel:01339564967" class="btn-drawer-call">
+        <i class="fas fa-phone"></i> <span>কল করুন: 01339564967</span>
+      </a>
+      <a href="mailto:mirazofficial489@gmail.com" class="btn-drawer-call" style="margin-top:6px; font-size:0.78rem;">
+        <i class="fas fa-envelope"></i> <span>mirazofficial489@gmail.com</span>
+      </a>
+    </div>
+  </div>
+</aside>
+<div class="mobile-overlay" id="mobileOverlay"></div>
+
+<!-- ========== MAIN SEARCH BAR ========== -->
+<div class="mz-search-container">
+  <div class="mz-search-bar">
+    <i class="fas fa-search mz-search-icon"></i>
+    <input type="text" id="mzMainSearchInput" class="mz-search-input" placeholder="পণ্য খুঁজুন, যেমন: রয়্যাল" autocomplete="off" />
+  </div>
+</div>
+
+<!-- ========== SCREENSHOT-ACCURATE HERO SECTION ========== -->
+<section class="mz-hero-section" id="home">
+  <div class="container mz-hero-container">
+    
+    <!-- Hero Banner Image -->
+    <div class="mz-hero-banner-frame">
+      <img src="images/miraz-banner-hero.jpg" alt="MIRAZ Exclusive Fragrance and Perfume Oils" class="mz-hero-banner-img" />
+    </div>
+
+    <!-- Hero Typography -->
+    <div class="mz-hero-info">
+      <h1 class="mz-hero-title">
+        আতর আর পারফিউমে<br/>
+        রাজকীয় ছোঁয়া
+      </h1>
+      <p class="mz-hero-desc">
+        MIRAZ-এর পারফিউম অয়েল, এক্সট্রেট ডি পারফিউম আর উপহারের সেট। সঙ্গে পোশাক, কসমেটিক ও গ্যাজেট এক জায়গায়।
+      </p>
+      <div class="mz-hero-actions">
+        <a href="#new" onclick="if(window.filterProductsFromNav){window.filterProductsFromNav('all', 'সব পণ্য');} return false;" class="mz-hero-btn">
+          পণ্য দেখুন
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Categories Grid (Original Website Exact Categories) -->
+    <div class="mz-categories-grid">
+      <button class="mz-cat-card active" onclick="mzSelectCategory('all', 'সব পণ্য', this)">
+        <span class="mz-cat-ico"><i class="fas fa-boxes-stacked"></i></span>
+        <span class="mz-cat-name">সব পণ্য</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('perfume', 'পারফিউম ও আতর', this)">
+        <span class="mz-cat-ico"><i class="fas fa-spray-can-sparkles"></i></span>
+        <span class="mz-cat-name">পারফিউম ও আতর</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('clothing', 'জেন্টস ও পোশাক', this)">
+        <span class="mz-cat-ico"><i class="fas fa-vest"></i></span>
+        <span class="mz-cat-name">জেন্টস ও পোশাক</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('ladies', 'লেডিস ফ্যাশন', this)">
+        <span class="mz-cat-ico"><i class="fas fa-person-dress"></i></span>
+        <span class="mz-cat-name">লেডিস ফ্যাশন</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('cosmetics', 'কসমেটিক ও বিউটি', this)">
+        <span class="mz-cat-ico"><i class="fas fa-spa"></i></span>
+        <span class="mz-cat-name">কসমেটিক ও বিউটি</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('showpiece', 'শোপিস ও গিফট', this)">
+        <span class="mz-cat-ico"><i class="fas fa-gem"></i></span>
+        <span class="mz-cat-name">শোপিস ও গিফট</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('freshener', 'রুম ফ্রেশনার', this)">
+        <span class="mz-cat-ico"><i class="fas fa-wind"></i></span>
+        <span class="mz-cat-name">রুম ফ্রেশনার</span>
+      </button>
+
+      <button class="mz-cat-card" onclick="mzSelectCategory('kids', 'কিডস কালেকশন', this)">
+        <span class="mz-cat-ico"><i class="fas fa-child"></i></span>
+        <span class="mz-cat-name">কিডস কালেকশন</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ========== TRUST STRIP ========== -->
+<div class="trust-strip">
+  <div class="container">
+    <div class="trust-items">
+      <div class="trust-item">
+        <i class="fas fa-shield-halved"></i>
+        <span><strong>১০০% অরিজিনাল</strong> পণ্যের গ্যারান্টি</span>
+      </div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">
+        <i class="fas fa-truck-fast"></i>
+        <span><strong>ফ্রি ডেলিভারি</strong> ৳৫০০+ অর্ডারে</span>
+      </div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">
+        <i class="fas fa-rotate-left"></i>
+        <span><strong>৭ দিন রিটার্ন</strong> পলিসি</span>
+      </div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">
+        <i class="fas fa-headset"></i>
+        <span><strong>২৪/৭ সাপোর্ট</strong> সর্বদা পাশে</span>
+      </div>
+      <div class="trust-sep"></div>
+      <div class="trust-item">
+        <i class="fas fa-lock"></i>
+        <span><strong>নিরাপদ পেমেন্ট</strong> bKash | Nagad</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MARQUEE ========== -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <div class="mq-items">
+      <span class="mq-logo-mini"><img src="images/logo-icon.jpg" alt=""/></span>
+      <span>পারফিউম</span><span class="mq-dot">✦</span>
+      <span>আতর</span><span class="mq-dot">✦</span>
+      <span>লেডিস ফ্যাশন</span><span class="mq-dot">✦</span>
+      <span>কসমেটিক</span><span class="mq-dot">✦</span>
+      <span>শোপিস</span><span class="mq-dot">✦</span>
+      <span>গিফট আইটেম</span><span class="mq-dot">✦</span>
+      <span>জুয়েলারি</span><span class="mq-dot">✦</span>
+      <span>স্কিনকেয়ার</span><span class="mq-dot">✦</span>
+      <span class="mq-logo-mini"><img src="images/logo-icon.jpg" alt=""/></span>
+      <span>পারফিউম</span><span class="mq-dot">✦</span>
+      <span>আতর</span><span class="mq-dot">✦</span>
+      <span>লেডিস ফ্যাশন</span><span class="mq-dot">✦</span>
+      <span>কসমেটিক</span><span class="mq-dot">✦</span>
+      <span>শোপিস</span><span class="mq-dot">✦</span>
+      <span>গিফট আইটেম</span><span class="mq-dot">✦</span>
+      <span>জুয়েলারি</span><span class="mq-dot">✦</span>
+      <span>স্কিনকেয়ার</span>
+    </div>
+    <div class="mq-items" aria-hidden="true">
+      <span class="mq-logo-mini"><img src="images/logo-icon.jpg" alt=""/></span>
+      <span>পারফিউম</span><span class="mq-dot">✦</span>
+      <span>আতর</span><span class="mq-dot">✦</span>
+      <span>লেডিস ফ্যাশন</span><span class="mq-dot">✦</span>
+      <span>কসমেটিক</span><span class="mq-dot">✦</span>
+      <span>শোপিস</span><span class="mq-dot">✦</span>
+      <span>গিফট আইটেম</span><span class="mq-dot">✦</span>
+      <span>জুয়েলারি</span><span class="mq-dot">✦</span>
+      <span>স্কিনকেয়ার</span><span class="mq-dot">✦</span>
+      <span class="mq-logo-mini"><img src="images/logo-icon.jpg" alt=""/></span>
+      <span>পারফিউম</span><span class="mq-dot">✦</span>
+      <span>আতর</span><span class="mq-dot">✦</span>
+      <span>লেডিস ফ্যাশন</span><span class="mq-dot">✦</span>
+      <span>কসমেটিক</span><span class="mq-dot">✦</span>
+      <span>শোপিস</span><span class="mq-dot">✦</span>
+      <span>গিফট আইটেম</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CATEGORIES ========== -->
+<section class="section categories-section" id="categories">
+  <div class="container">
+    <!-- ★ MIRAZ Exclusive Fragrance & Perfume Oils Banner Slideshow (Dynamic Split Showcase) ★ -->
+    <div class="miraz-main-feature-banner reveal" id="mirazBannerSlideshow">
+      <img id="bannerSlideBg" src="images/miraz-banner-hero.jpg" alt="" class="banner-slide-bg" aria-hidden="true" />
+      <div class="banner-overlay-gradient"></div>
+
+      <!-- 1. Full Wide Graphic Banner (for miraz-banner-hero.jpg) -->
+      <img id="bannerSlideFull" src="images/miraz-banner-hero.jpg" alt="MIRAZ Luxury" class="banner-full-img" loading="eager" />
+
+      <!-- 2. Dynamic Luxury Product Showcase (for all products) -->
+      <div id="bannerSlideProductWrap" class="banner-product-wrap" style="display:none;">
+        <div class="bp-img-col">
+          <div class="bp-img-frame">
+            <img id="bannerSlideProdImg" src="" alt="MIRAZ Product" />
+            <div class="bp-pedestal"></div>
+          </div>
+        </div>
+        <div class="bp-info-col">
+          <span class="bp-tag" id="bpCatTag"><i class="fas fa-crown"></i> <span id="bpCatName">MIRAZ EXCLUSIVE</span></span>
+          <h2 class="bp-title" id="bpTitle">পণ্যের নাম</h2>
+          <p class="bp-desc" id="bpDesc">১০০% অরিজিনাল ও প্রিমিয়াম কোয়ালিটি পণ্য। পণ্য হাতে পেয়ে চেক করে ক্যাশ অন ডেলিভারিতে নেওয়ার সুযোগ।</p>
+          <div class="bp-price-row">
+            <span class="bp-price" id="bpPrice">৳১,২০০</span>
+            <span class="bp-old-price" id="bpOldPrice">৳১,৮০০</span>
+            <span class="bp-save-badge" id="bpSaveBadge">স্পেশাল অফার</span>
+          </div>
+          <div class="bp-features">
+            <span><i class="fas fa-shield-halved"></i> ১০০% অরিজিনাল</span>
+            <span><i class="fas fa-truck-fast"></i> দ্রুত ডেলিভারি</span>
+            <span><i class="fas fa-rotate-left"></i> ৭ দিন রিটার্ন</span>
+          </div>
+          <div class="bp-actions">
+            <button type="button" class="cta-primary bp-order-btn" id="bpOrderBtn">
+              <i class="fas fa-bolt"></i> <span>এখনই অর্ডার করুন</span>
+            </button>
+            <button type="button" class="bp-detail-btn" id="bpDetailBtn">
+              <i class="fas fa-eye"></i> <span>বিস্তারিত দেখুন</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-head">
+      <div class="sec-tag-wrap">
+        <span class="sec-tag">আমাদের বিভাগ</span>
+      </div>
+      <h2 class="sec-title">সব কিছু <em>এক জায়গায়</em></h2>
+      <p class="sec-desc">MIRAZ-এ পাবেন আপনার জীবনের সব প্রয়োজনীয় লাক্সারি পণ্য।</p>
+    </div>
+
+    <!-- ★ আতর ও পারফিউম — প্রধান ফিচার্ড ব্যানার ★ -->
+    <div class="perfume-featured-banner reveal" id="perfumeFeaturedBanner">
+      <div class="pfb-bg"></div>
+      <div class="pfb-content">
+        <div class="pfb-left">
+          <div class="pfb-tag" id="pfbTag">
+            <i class="fas fa-crown"></i> <span>প্রধান কালেকশন</span>
+          </div>
+          <h2 class="pfb-title" id="pfbTitle">আতর ও পারফিউম</h2>
+          <p class="pfb-desc" id="pfbDesc">খাঁটি আরবি আতর, প্রিমিয়াম উদ ও ফরাসি পারফিউম। সারাদিন সুবাস ছড়ায় আর বোতলের ডিজাইনও চমৎকার।</p>
+          <div class="pfb-features" id="pfbFeatures">
+            <span><i class="fas fa-check-circle"></i> ১০০% অরিজিনাল</span>
+            <span><i class="fas fa-check-circle"></i> দীর্ঘস্থায়ী</span>
+            <span><i class="fas fa-check-circle"></i> হালাল সার্টিফাইড</span>
+          </div>
+          <a href="#new" class="cta-primary pfb-btn" id="pfbBtn">
+            <i class="fas fa-spray-can-sparkles"></i>
+            <span id="pfbBtnText">পারফিউম কালেকশন দেখুন</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+        <div class="pfb-right">
+          <div class="pfb-products" id="pfbProductsGrid">
+            <div class="pfb-prod-card" onclick="openQuickView(1)" style="cursor:pointer;" title="প্রোডাক্ট প্রিভিউ দেখুন">
+              <div class="pfpp">
+                <img src="images/perfume-royal-1.jpg" alt="MIRAZ Royal Collection"/>
+              </div>
+              <span>Royal Collection</span>
+              <strong>৳৪,২০০</strong>
+            </div>
+            <div class="pfb-prod-card" onclick="openQuickView(2)" style="cursor:pointer;" title="প্রোডাক্ট প্রিভিউ দেখুন">
+              <div class="pfpp">
+                <img src="images/perfume-the-edge.jpg" alt="MIRAZ The Edge"/>
+              </div>
+              <span>The Edge</span>
+              <strong>৳৩,৮০০</strong>
+            </div>
+            <div class="pfb-prod-card" onclick="openQuickView(3)" style="cursor:pointer;" title="প্রোডাক্ট প্রিভিউ দেখুন">
+              <div class="pfpp">
+                <img src="images/perfume-edge-night.jpg" alt="MIRAZ The Edge of Night"/>
+              </div>
+              <span>The Edge of Night</span>
+              <strong>৳৩,৯০০</strong>
+            </div>
+            <div class="pfb-prod-card" onclick="openQuickView(4)" style="cursor:pointer;" title="প্রোডাক্ট প্রিভিউ দেখুন">
+              <div class="pfpp">
+                <img src="images/perfume-royal-marble.jpg" alt="MIRAZ Marble Reserve"/>
+              </div>
+              <span>Marble Reserve</span>
+              <strong>৳৪,৫০০</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- বাকি সব ক্যাটাগরি -->
+    <div class="other-cats-title reveal">
+      <span><i class="fas fa-layer-group"></i> অন্যান্য এক্সক্লুসিভ কালেকশন</span>
+    </div>
+
+    <div class="cats-grid" id="catsGrid">
+      <div class="cat-card-v2 cat-ladies reveal" onclick="filterProductsFromNav('ladies', 'লেডিস ফ্যাশন')" style="cursor:pointer;" title="লেডিস ফ্যাশন কালেকশন দেখুন">
+        <div class="cat-bg-layer"></div>
+        <div class="cat-content">
+          <div class="cat-icon-v2"><i class="fas fa-person-dress"></i></div>
+          <h3>লেডিস ফ্যাশন</h3>
+          <p>কাতান শাড়ি, ডিজাইনার থ্রি-পিস ও পার্টি ওয়্যার</p>
+          <div class="cat-cta">কালেকশন দেখুন <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <div class="cat-glow"></div>
+      </div>
+
+      <div class="cat-card-v2 cat-clothing reveal" onclick="filterProductsFromNav('clothing', 'সকল পোশাক')" style="cursor:pointer;" title="পোশাক কালেকশন দেখুন">
+        <div class="cat-bg-layer"></div>
+        <div class="cat-content">
+          <div class="cat-icon-v2"><i class="fas fa-user-tie"></i></div>
+          <h3>ছেলেদের পোশাক</h3>
+          <p>রয়েল এমব্রয়ডারি পাঞ্জাবি ও এক্সক্লুসিভ ড্রেস</p>
+          <div class="cat-cta">কালেকশন দেখুন <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <div class="cat-glow"></div>
+      </div>
+
+      <div class="cat-card-v2 cat-cosmetics reveal" onclick="filterProductsFromNav('cosmetics', 'কসমেটিক ও বিউটি')" style="cursor:pointer;" title="কসমেটিক কালেকশন দেখুন">
+        <div class="cat-bg-layer"></div>
+        <div class="cat-content">
+          <div class="cat-icon-v2"><i class="fas fa-spa"></i></div>
+          <h3>কসমেটিক ও স্কিনকেয়ার</h3>
+          <p>আইশ্যাডো প্যালেট, লিপস্টিক সেট ও বিউটি সিরাম</p>
+          <div class="cat-cta">কালেকশন দেখুন <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <div class="cat-glow"></div>
+      </div>
+
+      <div class="cat-card-v2 cat-showpiece reveal" onclick="filterProductsFromNav('showpiece', 'শোপিস & গিফট')" style="cursor:pointer;" title="শোপিস কালেকশন দেখুন">
+        <div class="cat-bg-layer"></div>
+        <div class="cat-content">
+          <div class="cat-icon-v2"><i class="fas fa-gem"></i></div>
+          <h3>শোপিস & লাক্সারি গিফট</h3>
+          <p>গোল্ডেন পিকক, ক্রিস্টাল ভাস ও হোম ডেকর</p>
+          <div class="cat-cta">কালেকশন দেখুন <i class="fas fa-arrow-right"></i></div>
+        </div>
+        <div class="cat-glow"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ========== FEATURED PRODUCTS ========== -->
+<section class="section featured-section" id="new">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap">
+        <span class="sec-tag" id="prodSecTag">বেস্টসেলার</span>
+      </div>
+      <h2 class="sec-title" id="prodSecTitle">সবচেয়ে বেশি <em>পছন্দের পণ্য</em></h2>
+      <p class="sec-desc" id="prodSecDesc">MIRAZ-এর প্রিমিয়াম কোয়ালিটি লাইফস্টাইল পণ্য কালেকশন</p>
+    </div>
+
+    <div class="filter-bar">
+      <button class="ftab active" data-filter="all" onclick="filterProductsFromNav('all', 'সব পণ্য')">সব পণ্য</button>
+      <button class="ftab" data-filter="perfume" onclick="filterProductsFromNav('perfume', 'পারফিউম ও আতর')">পারফিউম ও আতর</button>
+      <button class="ftab" data-filter="ladies" onclick="filterProductsFromNav('ladies', 'লেডিস ফ্যাশন')">লেডিস ফ্যাশন</button>
+      <button class="ftab" data-filter="clothing" onclick="filterProductsFromNav('clothing', 'জেন্টস ও পোশাক')">জেন্টস ও পোশাক</button>
+      <button class="ftab" data-filter="cosmetics" onclick="filterProductsFromNav('cosmetics', 'কসমেটিক ও বিউটি')">কসমেটিক ও বিউটি</button>
+      <button class="ftab" data-filter="showpiece" onclick="filterProductsFromNav('showpiece', 'শোপিস ও গিফট')">শোপিস ও গিফট</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+
+    <div class="center-btn">
+      <a href="#new" onclick="filterProductsFromNav('all', 'সব পণ্য'); return false;" class="cta-outline">
+        সব পণ্য দেখুন
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROMO BANNER (DYNAMIC DEALS & OFFERS SLIDER) ========== -->
+<section class="promo-section" id="sale">
+  <div class="promo-dark-layer"></div>
+  <div class="container">
+    <div id="promoSliderTrack" class="promo-slider-track">
+      <!-- Default First Slide (Hydrated dynamically by js/main.js) -->
+      <div class="promo-slide active" data-slide-index="0">
+        <div class="promo-layout">
+          <div class="promo-body">
+            <div class="promo-eyebrow">
+              <span class="deal-tag-icon">🔥</span> <span class="deal-tag-text">সীমিত সময়ের বিশেষ অফার</span>
+            </div>
+            <h2 class="promo-heading">আরবি আতর কালেকশনে<br/><span class="gold-grad">৩০% ছাড়!</span></h2>
+            <p class="promo-text">খাঁটি আরবি উদ ও কস্তুরীর মন জুড়ানো সুবাস। পার্সেল দেখে নেওয়ার নিশ্চয়তা পাবেন।</p>
+            <div class="cdown">
+              <div class="cdown-box"><span class="deal-hours">12</span><label>ঘণ্টা</label></div>
+              <div class="cdown-sep">:</div>
+              <div class="cdown-box"><span class="deal-minutes">45</span><label>মিনিট</label></div>
+              <div class="cdown-sep">:</div>
+              <div class="cdown-box"><span class="deal-seconds">00</span><label>সেকেন্ড</label></div>
+            </div>
+            <button class="cta-gold deal-order-btn" onclick="openInstantOrder(11)">
+              <i class="fas fa-bolt"></i>
+              <span>এখনই অর্ডার করুন</span>
+            </button>
+          </div>
+          <div class="promo-logo-side">
+            <div class="promo-logo-ring">
+              <img src="images/attar-1-royal-oud.jpg" alt="MIRAZ Special Deal" class="promo-perfume-img"/>
+              <div class="promo-ring pr1"></div>
+              <div class="promo-ring pr2"></div>
+            </div>
+            <div class="promo-badge-wrap">
+              <div class="promo-badge">
+                <strong class="deal-badge-pct">30%</strong>
+                <span>OFF</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Promo Slider Navigation & Dots -->
+    <div class="promo-nav-controls" id="promoNavControls">
+      <button class="promo-nav-arrow promo-prev-btn" id="promoPrevBtn" aria-label="পূর্ববর্তী অফার" title="পূর্ববর্তী অফার">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="promo-dots" id="promoDots">
+        <div class="promo-dot active" onclick="goToDealSlide(0)"></div>
+      </div>
+      <button class="promo-nav-arrow promo-next-btn" id="promoNextBtn" aria-label="পরবর্তী অফার" title="পরবর্তী অফার">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+      <div class="promo-slide-counter" id="promoCounter">অফার ১ / ৫</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== NEW ARRIVALS ========== -->
+<section class="section arrivals-section">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap"><span class="sec-tag">নতুন কালেকশন</span></div>
+      <h2 class="sec-title">সদ্য <em>যুক্ত হওয়া পণ্য</em></h2>
+    </div>
+    <div class="arrivals-grid" id="arrivalsGrid"></div>
+  </div>
+</section>
+
+<!-- ========== 🎬 MIRAZ EXCLUSIVE PRODUCT VIDEOS & REELS ========== -->
+<section class="section video-reels-section" id="videoReels">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap"><span class="sec-tag"><i class="fas fa-play-circle"></i> লাইভ ভিডিও প্রিভিউ</span></div>
+      <h2 class="sec-title">MIRAZ <em>ভিডিও রিলস</em> & শোকেস</h2>
+      <p class="sec-desc">প্রোডাক্ট কেমন তা সরাসরি ভিডিওতে দেখুন। কেনার আগেই কোয়ালিটি যাচাই করে নিশ্চিন্তে অর্ডার করতে পারেন।</p>
+    </div>
+
+    <div class="video-reels-grid">
+      <!-- Reel Card 1 -->
+      <div class="reel-card" id="reel-card-1">
+        <div class="reel-video-wrap">
+          <video class="reel-video" autoplay muted loop playsinline controls src="videos/video-1.mp4"></video>
+          <div class="reel-overlay">
+            <span class="reel-live-tag"><i class="fas fa-circle"></i> HD REEL</span>
+          </div>
+        </div>
+        <div class="reel-info">
+          <span class="reel-cat"><i class="fas fa-crown"></i> রয়্যাল কালেকশন</span>
+          <h3 class="reel-title">MIRAZ Royal Edition (ফরেস্ট রিজার্ভ)</h3>
+          <div class="reel-price-row">
+            <span class="reel-price">৳১,৮৫০</span>
+            <span class="reel-old-price">৳২,৪৫০</span>
+            <span class="reel-disc">২৫% ছাড়</span>
+          </div>
+          <div class="reel-actions">
+            <button class="btn-reel-order" onclick="openInstantOrder('MIRAZ Royal Edition Extrait', 1850, 'images/perfume-royal-1.jpg')">
+              <i class="fas fa-bolt"></i> সরাসরি অর্ডার
+            </button>
+            <button class="btn-reel-wa" title="WhatsApp-এ অর্ডার" onclick="orderProductWhatsApp('MIRAZ Royal Edition Extrait', 1850, 'images/perfume-royal-1.jpg')">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reel Card 2 -->
+      <div class="reel-card" id="reel-card-2">
+        <div class="reel-video-wrap">
+          <video class="reel-video" autoplay muted loop playsinline controls src="videos/video-2.mp4"></video>
+          <div class="reel-overlay">
+            <span class="reel-live-tag"><i class="fas fa-circle"></i> HD REEL</span>
+          </div>
+        </div>
+        <div class="reel-info">
+          <span class="reel-cat"><i class="fas fa-star"></i> সিগনেচার এডিশন</span>
+          <h3 class="reel-title">MIRAZ The Edge (গোল্ডেন লাক্সারি)</h3>
+          <div class="reel-price-row">
+            <span class="reel-price">৳১,৯৫০</span>
+            <span class="reel-old-price">৳২,৬৫০</span>
+            <span class="reel-disc">২৬% ছাড়</span>
+          </div>
+          <div class="reel-actions">
+            <button class="btn-reel-order" onclick="openInstantOrder('MIRAZ The Edge Edition', 1950, 'images/perfume-the-edge.jpg')">
+              <i class="fas fa-bolt"></i> সরাসরি অর্ডার
+            </button>
+            <button class="btn-reel-wa" title="WhatsApp-এ অর্ডার" onclick="orderProductWhatsApp('MIRAZ The Edge Edition', 1950, 'images/perfume-the-edge.jpg')">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reel Card 3 -->
+      <div class="reel-card" id="reel-card-3">
+        <div class="reel-video-wrap">
+          <video class="reel-video" autoplay muted loop playsinline controls src="videos/video-3.mp4"></video>
+          <div class="reel-overlay">
+            <span class="reel-live-tag"><i class="fas fa-circle"></i> HD REEL</span>
+          </div>
+        </div>
+        <div class="reel-info">
+          <span class="reel-cat"><i class="fas fa-moon"></i> নাইট পারফিউম</span>
+          <h3 class="reel-title">MIRAZ The Edge of Night (ব্ল্যাক ভেলভেট)</h3>
+          <div class="reel-price-row">
+            <span class="reel-price">৳২,১০০</span>
+            <span class="reel-old-price">৳২,৮০০</span>
+            <span class="reel-disc">২৫% ছাড়</span>
+          </div>
+          <div class="reel-actions">
+            <button class="btn-reel-order" onclick="openInstantOrder('MIRAZ The Edge of Night', 2100, 'images/perfume-edge-night.jpg')">
+              <i class="fas fa-bolt"></i> সরাসরি অর্ডার
+            </button>
+            <button class="btn-reel-wa" title="WhatsApp-এ অর্ডার" onclick="orderProductWhatsApp('MIRAZ The Edge of Night', 2100, 'images/perfume-edge-night.jpg')">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WHY MIRAZ ========== -->
+<section class="section why-section">
+  <div class="why-dark-bg">
+    <div class="why-pattern"></div>
+  </div>
+  <div class="container">
+    <div class="why-layout">
+      <div class="why-left">
+        <span class="sec-tag" style="color:#d4a847;background:rgba(212,168,71,.12);">কেন MIRAZ?</span>
+        <h2 class="why-title">আমরা কেন <em>আলাদা</em></h2>
+        <p class="why-desc">মানসম্মত আসল পণ্য আর বিশ্বস্ত সেবাই আমাদের মূল পরিচয়। ডেলিভারির সময় পার্সেল দেখে নেওয়ার নিশ্চয়তা পাবেন।</p>
+        <div class="why-logo-wrap">
+          <img src="images/logo-full.jpg" alt="MIRAZ" class="why-logo"/>
+        </div>
+        <a href="#contact" class="cta-primary" style="width:fit-content;margin-top:1.5rem">
+          <span>আমাদের সম্পর্কে জানুন</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+      <div class="why-right">
+        <div class="why-grid">
+          <div class="why-card reveal">
+            <div class="why-icon"><i class="fas fa-shield-halved"></i></div>
+            <h4>১০০% অরিজিনাল</h4>
+            <p>প্রতিটি পণ্য সম্পূর্ণ আসল। নকলের কোনো সুযোগ নেই।</p>
+          </div>
+          <div class="why-card reveal">
+            <div class="why-icon"><i class="fas fa-truck-fast"></i></div>
+            <h4>দ্রুত ডেলিভারি</h4>
+            <p>ঢাকায় ২৪ ঘণ্টা, সারাদেশে ৩-৫ দিনে পৌঁছাবে।</p>
+          </div>
+          <div class="why-card reveal">
+            <div class="why-icon"><i class="fas fa-rotate-left"></i></div>
+            <h4>সহজ রিটার্ন</h4>
+            <p>পণ্যে সমস্যা হলে ৭ দিনের মধ্যে ফেরত দিন।</p>
+          </div>
+          <div class="why-card reveal">
+            <div class="why-icon"><i class="fas fa-headset"></i></div>
+            <h4>২৪/৭ সাপোর্ট</h4>
+            <p>যেকোনো সমস্যায় আমরা সবসময় পাশে আছি।</p>
+          </div>
+          <div class="why-card reveal">
+            <div class="why-icon"><i class="fas fa-lock"></i></div>
+            <h4>নিরাপদ পেমেন্ট</h4>
+            <p>bKash, Nagad, Rocket, VISA সহ সব পেমেন্ট নিরাপদ।</p>
+          </div>
+          <div class="why-card reveal">
+            <div class="why-icon"><i class="fas fa-star"></i></div>
+            <h4>সেরা মান</h4>
+            <p>সর্বোচ্চ কোয়ালিটি নিশ্চিত করে সেরা দামে।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TESTIMONIALS ========== -->
+<section class="section reviews-section">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap"><span class="sec-tag">কাস্টমার রিভিউ</span></div>
+      <h2 class="sec-title">তারা কী বলেন <em>MIRAZ সম্পর্কে</em></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="rev-avatar">রা</div>
+          <div>
+            <strong>রাহেলা আক্তার</strong>
+            <span>ঢাকা</span>
+          </div>
+          <div class="rev-stars">★★★★★</div>
+        </div>
+        <p>"MIRAZ-এর আতর সত্যিই অসাধারণ! দীর্ঘস্থায়ী সুগন্ধ এবং প্যাকেজিং খুবই সুন্দর। আমি এখন থেকে শুধু MIRAZ থেকেই কিনব।"</p>
+        <div class="rev-product"><i class="fas fa-bag-shopping"></i> Royal Oud Attar</div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="rev-avatar">সু</div>
+          <div>
+            <strong>সুমাইয়া ইসলাম</strong>
+            <span>চট্টগ্রাম</span>
+          </div>
+          <div class="rev-stars">★★★★★</div>
+        </div>
+        <p>"লেডিস ড্রেসগুলো দেখতে যেমন সুন্দর, পরতেও তেমন আরামদায়ক। কোয়ালিটি নিয়ে কোনো প্রশ্নই নেই।"</p>
+        <div class="rev-product"><i class="fas fa-bag-shopping"></i> MIRAZ সিল্ক থ্রি-পিস</div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="rev-avatar">না</div>
+          <div>
+            <strong>নাফিসা খানম</strong>
+            <span>সিলেট</span>
+          </div>
+          <div class="rev-stars">★★★★★</div>
+        </div>
+        <p>"কসমেটিক প্রোডাক্টগুলো সব অরিজিনাল এবং দাম খুবই সঠিক। ডেলিভারিও দ্রুত হয়েছিল। MIRAZ-কে ধন্যবাদ!"</p>
+        <div class="rev-product"><i class="fas fa-bag-shopping"></i> গ্লো ফেস ক্রিম সেট</div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-top">
+          <div class="rev-avatar">কা</div>
+          <div>
+            <strong>কামরুল ইসলাম</strong>
+            <span>রাজশাহী</span>
+          </div>
+          <div class="rev-stars">★★★★★</div>
+        </div>
+        <p>"শোপিসগুলো দেখতে অসাধারণ, উপহার হিসেবে পারফেক্ট। আমার বন্ধুরাও অনেক পছন্দ করেছে। বারবার কিনব।"</p>
+        <div class="rev-product"><i class="fas fa-bag-shopping"></i> ক্রিস্টাল ফুলদানি</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 📦 UNBOXING & CUSTOMER PHOTO REVIEWS ========== -->
+<section class="section unboxing-section" id="unboxing">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap"><span class="sec-tag"><i class="fas fa-box-open"></i> ১০০% বাস্তব প্রমাণ</span></div>
+      <h2 class="sec-title">আনবক্সিং & কাস্টমার <em>ফটো রিভিউ</em></h2>
+      <p class="sec-desc">আমাদের কাস্টমারদের পাঠানো আসল পার্সেল ও আনবক্সিং ছবি। কেনার আগে দেখে নিন অন্যরা কেমন অভিজ্ঞতা পেয়েছেন।</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="unb-filter-bar">
+      <button class="unb-tab active" data-filter="all">সব ছবি ও রিভিউ (৬)</button>
+      <button class="unb-tab" data-filter="perfume">পারফিউম আনবক্সিং (৪)</button>
+      <button class="unb-tab" data-filter="photo">কাস্টমার ফটো রিভিউ (২)</button>
+    </div>
+
+    <!-- Unboxing Grid -->
+    <div class="unb-grid" id="unboxingGrid">
+      <!-- Unboxing Card 1 -->
+      <div class="unb-card reveal" data-cat="perfume">
+        <div class="unb-photo-wrap" onclick="openLightbox('images/perfume-royal-1.jpg', 'MIRAZ Royal Collection Extrait', 'প্রকৌশলী তানভীর আহমেদ • বনানী, ঢাকা', 'গতকাল হাতে পেয়েছি। প্রিমিয়াম গোল্ডেন প্যাকেজিং এবং ভারী গ্লাস বোতল দেখে সত্যিই অভিভূত। সুবাস প্রায় ১৪ ঘণ্টা স্থায়ী ছিল!')">
+          <img src="images/perfume-royal-1.jpg" alt="MIRAZ Royal Unboxing"/>
+          <div class="unb-badge-corner"><i class="fas fa-box-open"></i> আনবক্সিং ফটো</div>
+          <div class="unb-overlay-zoom"><span class="unb-zoom-btn"><i class="fas fa-magnifying-glass-plus"></i></span></div>
+        </div>
+        <div class="unb-info">
+          <div class="unb-user-row">
+            <div class="unb-user-name">
+              <strong>প্রকৌশলী তানভীর আহমেদ</strong>
+              <span>বনানী, ঢাকা</span>
+            </div>
+            <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+          </div>
+          <div class="unb-stars">★★★★★</div>
+          <p class="unb-quote">"গতকাল হাতে পেয়েছি। প্রিমিয়াম গোল্ডেন প্যাকেজিং এবং ভারী গ্লাস বোতল দেখে সত্যিই অভিভূত। সুবাস প্রায় ১৪ ঘণ্টা স্থায়ী ছিল!"</p>
+          <div class="unb-prod-tag"><i class="fas fa-spray-can-sparkles"></i> MIRAZ Royal Collection (100ml)</div>
+        </div>
+      </div>
+
+      <!-- Unboxing Card 2 -->
+      <div class="unb-card reveal" data-cat="perfume">
+        <div class="unb-photo-wrap" onclick="openLightbox('images/perfume-the-edge.jpg', 'MIRAZ The Edge Edition', 'সাদিয়া রহমান • ধানমন্ডি, ঢাকা', 'হাজব্যান্ডের জন্মদিনের গিফট হিসেবে নিয়েছিলাম। উনি তো স্মেল পেয়েই ফিদা! ক্যাশ অন ডেলিভারিতে চেক করে নিতে পেরে খুব ভালো লেগেছে।')">
+          <img src="images/perfume-the-edge.jpg" alt="MIRAZ The Edge Unboxing"/>
+          <div class="unb-badge-corner"><i class="fas fa-gift"></i> গিফট প্যাকেজ</div>
+          <div class="unb-overlay-zoom"><span class="unb-zoom-btn"><i class="fas fa-magnifying-glass-plus"></i></span></div>
+        </div>
+        <div class="unb-info">
+          <div class="unb-user-row">
+            <div class="unb-user-name">
+              <strong>সাদিয়া রহমান</strong>
+              <span>ধানমন্ডি, ঢাকা</span>
+            </div>
+            <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+          </div>
+          <div class="unb-stars">★★★★★</div>
+          <p class="unb-quote">"হাজব্যান্ডের জন্মদিনের গিফট হিসেবে নিয়েছিলাম। উনি তো স্মেল পেয়েই ফিদা! ক্যাশ অন ডেলিভারিতে চেক করে নিতে পেরে খুব ভালো লেগেছে।"</p>
+          <div class="unb-prod-tag"><i class="fas fa-spray-can-sparkles"></i> The Edge Extrait (50ml)</div>
+        </div>
+      </div>
+
+      <!-- Unboxing Card 3 -->
+      <div class="unb-card reveal" data-cat="perfume">
+        <div class="unb-photo-wrap" onclick="openLightbox('images/perfume-edge-night.jpg', 'MIRAZ The Edge of Night', 'ডা. ইমরান হোসেন • নাসিরাবাদ, চট্টগ্রাম', 'অফিসে বা সান্ধ্য অনুষ্ঠানে ব্যবহারের জন্য বেস্ট। চট্টগ্রামের ডেলিভারি মাত্র ২ দিনে পেয়েছি। প্যাকেজিং লেভেল ছিল ১০০/১০০!')">
+          <img src="images/perfume-edge-night.jpg" alt="MIRAZ Night Edition"/>
+          <div class="unb-badge-corner"><i class="fas fa-moon"></i> নাইট এডিশন</div>
+          <div class="unb-overlay-zoom"><span class="unb-zoom-btn"><i class="fas fa-magnifying-glass-plus"></i></span></div>
+        </div>
+        <div class="unb-info">
+          <div class="unb-user-row">
+            <div class="unb-user-name">
+              <strong>ডা. ইমরান হোসেন</strong>
+              <span>নাসিরাবাদ, চট্টগ্রাম</span>
+            </div>
+            <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+          </div>
+          <div class="unb-stars">★★★★★</div>
+          <p class="unb-quote">"অফিসে বা সান্ধ্য অনুষ্ঠানে ব্যবহারের জন্য বেস্ট। চট্টগ্রামের ডেলিভারি মাত্র ২ দিনে পেয়েছি। প্যাকেজিং লেভেল ছিল ১০০/১০০!"</p>
+          <div class="unb-prod-tag"><i class="fas fa-spray-can-sparkles"></i> The Edge of Night (100ml)</div>
+        </div>
+      </div>
+
+      <!-- Unboxing Card 4 -->
+      <div class="unb-card reveal" data-cat="perfume">
+        <div class="unb-photo-wrap" onclick="openLightbox('images/perfume-royal-marble.jpg', 'MIRAZ Marble Reserve', 'ফারহান কবির • উত্তরা, ঢাকা', 'মার্বেল ফিনিশ ক্যাপ আর গোল্ডেন টেক্সচার দেখতে অসাধারণ। রাজকীয় সুরভিত অ্যারোমা যা দীর্ঘক্ষণ রেশ ধরে রাখে।')">
+          <img src="images/perfume-royal-marble.jpg" alt="MIRAZ Marble Unboxing"/>
+          <div class="unb-badge-corner"><i class="fas fa-gem"></i> মার্বেল রিজার্ভ</div>
+          <div class="unb-overlay-zoom"><span class="unb-zoom-btn"><i class="fas fa-magnifying-glass-plus"></i></span></div>
+        </div>
+        <div class="unb-info">
+          <div class="unb-user-row">
+            <div class="unb-user-name">
+              <strong>ফারহান কবির</strong>
+              <span>উত্তরা, ঢাকা</span>
+            </div>
+            <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+          </div>
+          <div class="unb-stars">★★★★★</div>
+          <p class="unb-quote">"মার্বেল ফিনিশ ক্যাপ আর গোল্ডেন টেক্সচার দেখতে অসাধারণ। রাজকীয় সুরভিত অ্যারোমা যা দীর্ঘক্ষণ রেশ ধরে রাখে।"</p>
+          <div class="unb-prod-tag"><i class="fas fa-spray-can-sparkles"></i> Marble Reserve Royal Oud</div>
+        </div>
+      </div>
+
+      <!-- Unboxing Card 5 -->
+      <div class="unb-card reveal" data-cat="photo">
+        <div class="unb-photo-wrap" onclick="openLightbox('images/perfume-royal-waterfall.jpg', 'MIRAZ Waterfall Bloom', 'নুসরাত জাহান • উপশহর, সিলেট', 'পার্সেল খুলে এতো চমৎকার প্রেজেন্টেশন দেখে মন ভরে গেল। পারফিউমের সুগন্ধ খুবই ফ্রেশ ও ন্যাচারাল। ধন্যবাদ MIRAZ!')">
+          <img src="images/perfume-royal-waterfall.jpg" alt="MIRAZ Waterfall Bloom"/>
+          <div class="unb-badge-corner"><i class="fas fa-camera"></i> কাস্টমার ফটো</div>
+          <div class="unb-overlay-zoom"><span class="unb-zoom-btn"><i class="fas fa-magnifying-glass-plus"></i></span></div>
+        </div>
+        <div class="unb-info">
+          <div class="unb-user-row">
+            <div class="unb-user-name">
+              <strong>নুসরাত জাহান</strong>
+              <span>উপশহর, সিলেট</span>
+            </div>
+            <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+          </div>
+          <div class="unb-stars">★★★★★</div>
+          <p class="unb-quote">"পার্সেল খুলে এতো চমৎকার প্রেজেন্টেশন দেখে মন ভরে গেল। পারফিউমের সুগন্ধ খুবই ফ্রেশ ও ন্যাচারাল। ধন্যবাদ MIRAZ!"</p>
+          <div class="unb-prod-tag"><i class="fas fa-spray-can-sparkles"></i> Waterfall Bloom Edition</div>
+        </div>
+      </div>
+
+      <!-- Unboxing Card 6 -->
+      <div class="unb-card reveal" data-cat="photo">
+        <div class="unb-photo-wrap" onclick="openLightbox('images/logo-full.jpg', 'MIRAZ সিগনেচার পার্সেল', 'মাহির ফয়সাল • মিরপুর, ঢাকা', '১-ক্লিকে নাম ও ফোন নম্বর দিয়ে অর্ডার করেছিলাম, পরদিনই সুন্দর সিল করা বক্সে পার্সেল পৌঁছে গেছে। ক্যাশ অন ডেলিভারি সার্ভিস দারুণ!')">
+          <img src="images/logo-full.jpg" alt="MIRAZ Parcel"/>
+          <div class="unb-badge-corner"><i class="fas fa-box"></i> সিল্ড পার্সেল</div>
+          <div class="unb-overlay-zoom"><span class="unb-zoom-btn"><i class="fas fa-magnifying-glass-plus"></i></span></div>
+        </div>
+        <div class="unb-info">
+          <div class="unb-user-row">
+            <div class="unb-user-name">
+              <strong>মাহির ফয়সাল</strong>
+              <span>মিরপুর, ঢাকা</span>
+            </div>
+            <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+          </div>
+          <div class="unb-stars">★★★★★</div>
+          <p class="unb-quote">"১-ক্লিকে নাম ও ফোন নম্বর দিয়ে অর্ডার করেছিলাম, পরদিনই সুন্দর সিল করা বক্সে পার্সেল পৌঁছে গেছে। ক্যাশ অন ডেলিভারি সার্ভিস দারুণ!"</p>
+          <div class="unb-prod-tag"><i class="fas fa-check-double"></i> MIRAZ লাক্সারি প্যাকেজিং</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unboxing Submission Banner -->
+    <div class="unb-cta-card reveal">
+      <div class="unb-cta-left">
+        <h3><i class="fas fa-camera-retro"></i> আপনার আনবক্সিং ছবি পাঠিয়ে ক্যাশব্যাক নিন!</h3>
+        <p>MIRAZ থেকে পণ্য কিনে আনবক্সিং ছবি বা ভিডিও আমাদের WhatsApp-এ পাঠান। আপনার পরবর্তী কেনাকাটায় সাথে সাথে পাবেন <strong>অতিরিক্ত ১০% ক্যাশব্যাক ডিসকাউন্ট!</strong></p>
+      </div>
+      <a href="https://wa.me/8801339564967?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20MIRAZ%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%86%E0%A6%AE%E0%A6%BE%E0%A6%B0%20%E0%A6%86%E0%A6%A8%E0%A6%AC%E0%A6%95%E0%A7%8D%E0%A6%B8%E0%A6%BF%E0%A6%82%20%E0%A6%9B%E0%A6%AC%E0%A6%BF%20%E0%A6%B6%E0%A7%87%E0%A6%AF%E0%A6%BC%E0%A6%BE%E0%A6%B0%20%E0%A6%95%E0%A6%B0%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" target="_blank" class="unb-wa-submit-btn">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp-এ ছবি পাঠান (01339564967)</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section class="section about-section" id="about">
+  <div class="container">
+    <div class="about-layout">
+      <div class="about-left reveal">
+        <div class="about-logo-hero">
+          <img src="images/logo-full.jpg" alt="MIRAZ" class="about-logo-big"/>
+          <div class="about-logo-glow"></div>
+        </div>
+        <div class="about-numbers">
+          <div class="abt-num">
+            <strong>৫০K+</strong>
+            <span>সন্তুষ্ট গ্রাহক</span>
+          </div>
+          <div class="abt-num">
+            <strong>১.২K+</strong>
+            <span>প্রোডাক্ট</span>
+          </div>
+          <div class="abt-num">
+            <strong>৬৪+</strong>
+            <span>জেলায় ডেলিভারি</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-right reveal">
+        <span class="sec-tag">আমাদের গল্প</span>
+        <h2 class="about-title">আমাদের <em>কথা ও প্রতিশ্রুতি</em></h2>
+        <div class="about-divider"></div>
+        <p>ব্রাহ্মণবাড়িয়া থেকে শুরু করে আজ সারা বাংলাদেশে হাজারো মানুষের আস্থা অর্জন করেছে MIRAZ। আসল কোয়ালিটির পারফিউম, আতর ও অভিজাত ফ্যাশন আইটেম সরাসরি আপনাদের হাতে পৌঁছে দেওয়াই আমাদের কাজ।</p>
+        <p>অনলাইনে কেনাকাটায় প্রতারণার ভয় দূর করতে আমরা ক্যাশ অন ডেলিভারি এবং পার্সেল খুলে চেক করে মূল্য পরিশোধের পুরো সুবিধা দিয়ে থাকি।</p>
+        <p>ভালো মানের পণ্য, সঠিক দাম আর দ্রুত ডেলিভারি—এই তিনটি নীতিতেই আমরা প্রতিদিন কাজ করি।</p>
+        <div class="about-quote">
+          <i class="fas fa-quote-left"></i>
+          <em>"খাঁটি পণ্যের বিশ্বস্ত ঠিকানা: MIRAZ"</em>
+        </div>
+        <a href="#contact" class="cta-primary">
+          <span>আমাদের সাথে কথা বলুন</span>
+          <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GALLERY ========== -->
+<section class="section gallery-section">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap"><span class="sec-tag">আমাদের গ্যালারি</span></div>
+      <h2 class="sec-title">MIRAZ <em>কালেকশন</em></h2>
+    </div>
+    <div class="gallery-masonry">
+      <div class="gal-item gi-tall" onclick="filterProductsFromNav('perfume', 'পারফিউম ও আতর')">
+        <img src="images/perfume-royal-1.jpg" alt="পারফিউম কালেকশন" class="gal-img"/>
+        <div class="gal-over">
+          <span class="gal-tag">লাক্সারি সুগন্ধি</span>
+          <div class="gal-title"><i class="fas fa-spray-can-sparkles" style="color:var(--gold);"></i> পারফিউম ও আতর</div>
+          <span class="gal-btn">পণ্য দেখুন <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="gal-item" onclick="filterProductsFromNav('ladies', 'লেডিস ফ্যাশন')">
+        <img src="images/clothing-threepiece-silk.jpg" alt="লেডিস ফ্যাশন" class="gal-img"/>
+        <div class="gal-over">
+          <span class="gal-tag">উইমেন্স ফ্যাশন</span>
+          <div class="gal-title"><i class="fas fa-person-dress" style="color:var(--gold);"></i> লেডিস ফ্যাশন</div>
+          <span class="gal-btn">পণ্য দেখুন <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="gal-item" onclick="filterProductsFromNav('cosmetics', 'কসমেটিক ও বিউটি')">
+        <img src="images/cosmetics-lipstick-set.jpg" alt="কসমেটিক ও স্কিনকেয়ার" class="gal-img"/>
+        <div class="gal-over">
+          <span class="gal-tag">বিউটি কেয়ার</span>
+          <div class="gal-title"><i class="fas fa-wand-sparkles" style="color:var(--gold);"></i> কসমেটিক ও বিউটি</div>
+          <span class="gal-btn">পণ্য দেখুন <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="gal-item gi-tall" onclick="filterProductsFromNav('showpiece', 'শোপিস ও গিফট')">
+        <img src="images/showpiece-golden-peacock.jpg" alt="শোপিস কালেকশন" class="gal-img"/>
+        <div class="gal-over">
+          <span class="gal-tag">হোম ডেকর</span>
+          <div class="gal-title"><i class="fas fa-gem" style="color:var(--gold);"></i> গোল্ডেন শোপিস</div>
+          <span class="gal-btn">পণ্য দেখুন <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="gal-item" onclick="filterProductsFromNav('clothing', 'জেন্টস ও পোশাক')">
+        <img src="images/clothing-panjabi-royal.jpg" alt="জেন্টস পোশাক" class="gal-img"/>
+        <div class="gal-over">
+          <span class="gal-tag">প্রিমিয়াম পোশাক</span>
+          <div class="gal-title"><i class="fas fa-vest" style="color:var(--gold);"></i> জেন্টস পাঞ্জাবি ও কাবলি</div>
+          <span class="gal-btn">পণ্য দেখুন <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+
+      <div class="gal-item" onclick="filterProductsFromNav('perfume', 'পারফিউম ও আতর')">
+        <img src="images/attar-1-royal-oud.jpg" alt="আতর ও গিফট" class="gal-img"/>
+        <div class="gal-over">
+          <span class="gal-tag">স্পেশাল গিফট সেট</span>
+          <div class="gal-title"><i class="fas fa-gift" style="color:var(--gold);"></i> রয়েল আতর ও প্যাকেজ</div>
+          <span class="gal-btn">পণ্য দেখুন <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT ========== -->
+<section class="section contact-section" id="contact">
+  <div class="container">
+    <div class="sec-head">
+      <div class="sec-tag-wrap"><span class="sec-tag">যোগাযোগ</span></div>
+      <h2 class="sec-title">আমাদের সাথে <em>কথা বলুন</em></h2>
+    </div>
+    <div class="contact-layout">
+      <div class="contact-info reveal">
+        <div class="contact-logo-sm">
+          <img src="images/logo-full.jpg" alt="MIRAZ" style="object-position:center 38%;"/>
+        </div>
+        <p class="contact-brand-desc">অর্ডার সংক্রান্ত যেকোনো প্রশ্ন থাকলে বা পণ্য সম্পর্কে জানতে আমাদের সরাসরি ফোন বা WhatsApp করতে পারেন।</p>
+        <div class="cinfo-items">
+          <a href="tel:01339564967" class="cinfo-item">
+            <span class="ci-icon"><i class="fas fa-phone"></i></span>
+            <div><strong>ফোন</strong><span>01339564967</span></div>
+          </a>
+          <a href="mailto:mirazofficial489@gmail.com" class="cinfo-item">
+            <span class="ci-icon"><i class="fas fa-envelope"></i></span>
+            <div><strong>ইমেইল</strong><span>mirazofficial489@gmail.com</span></div>
+          </a>
+          <div class="cinfo-item">
+            <span class="ci-icon"><i class="fas fa-location-dot"></i></span>
+            <div><strong>ঠিকানা</strong><span>Brahmanbaria, Bangladesh</span></div>
+          </div>
+          <a href="https://www.facebook.com/share/18eWZxdvbr/" target="_blank" rel="noopener noreferrer" class="cinfo-item">
+            <span class="ci-icon fb"><i class="fab fa-facebook-f"></i></span>
+            <div><strong>ফেসবুক পেজ</strong><span>MIRAZ Official Facebook Page</span></div>
+          </a>
+          <a href="https://wa.me/8801339564967" target="_blank" rel="noopener noreferrer" class="cinfo-item">
+            <span class="ci-icon wa"><i class="fab fa-whatsapp"></i></span>
+            <div><strong>WhatsApp</strong><span>01339564967 (সরাসরি মেসেজ দিন)</span></div>
+          </a>
+        </div>
+        <div class="soc-row">
+          <a href="https://www.facebook.com/share/18eWZxdvbr/" target="_blank" rel="noopener noreferrer" class="soc-btn fb-btn" title="Facebook Page"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/_mdmiraz489?vrfl=ZHFkN2pzb2l4dml5" target="_blank" rel="noopener noreferrer" class="soc-btn ig-btn" title="Instagram Profile"><i class="fab fa-instagram"></i></a>
+          <a href="https://youtube.com/@mdmiraz-489?si=01ATi4RojWahb44t" target="_blank" rel="noopener noreferrer" class="soc-btn yt-btn" title="YouTube Channel"><i class="fab fa-youtube"></i></a>
+          <a href="https://t.me/+8801339564967" target="_blank" rel="noopener noreferrer" class="soc-btn tg-btn" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://wa.me/8801339564967" target="_blank" rel="noopener noreferrer" class="soc-btn wa-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="contact-form-wrap reveal">
+        <form class="contact-form-v2" id="contactForm">
+          <h3>মেসেজ পাঠান</h3>
+          <div class="cf-row">
+            <div class="cf-field">
+              <label>আপনার নাম *</label>
+              <input type="text" id="cfName" placeholder="নাম লিখুন" required/>
+            </div>
+            <div class="cf-field">
+              <label>ফোন নম্বর *</label>
+              <input type="tel" id="cfPhone" placeholder="০১XXXXXXXXX" required/>
+            </div>
+          </div>
+          <div class="cf-field">
+            <label>ইমেইল</label>
+            <input type="email" id="cfEmail" placeholder="email@example.com"/>
+          </div>
+          <div class="cf-field">
+            <label>বিষয়</label>
+            <select id="cfSubject">
+              <option value="সাধারণ অনুসন্ধান">বিষয় নির্বাচন করুন</option>
+              <option value="অর্ডার সম্পর্কিত">অর্ডার সম্পর্কিত</option>
+              <option value="পণ্যের তথ্য">পণ্যের তথ্য</option>
+              <option value="রিটার্ন/রিফান্ড">রিটার্ন/রিফান্ড</option>
+              <option value="অন্যান্য">অন্যান্য</option>
+            </select>
+          </div>
+          <div class="cf-field">
+            <label>বার্তা *</label>
+            <textarea id="cfMessage" placeholder="আপনার বার্তা লিখুন..." rows="5" required></textarea>
+          </div>
+          <button type="submit" class="cta-primary cf-submit">
+            <span>মেসেজ পাঠান</span>
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== NEWSLETTER ========== -->
+<section class="newsletter-section">
+  <div class="nl-pattern"></div>
+  <div class="container">
+    <div class="nl-layout">
+      <div class="nl-logo">
+        <img src="images/logo-full.jpg" alt="MIRAZ" style="object-position:center 38%;"/>
+      </div>
+      <div class="nl-text">
+        <h3>MIRAZ নিউজলেটার</h3>
+        <p>নতুন পণ্য ও এক্সক্লুসিভ অফার সবার আগে পেতে সাবস্ক্রাইব করুন</p>
+      </div>
+      <form class="nl-form-v2" id="nlForm">
+        <input type="email" placeholder="আপনার ইমেইল ঠিকানা..." required/>
+        <button type="submit">
+          <span>সাবস্ক্রাইব</span>
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="footer-v2">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand-col">
+        <img src="images/logo-full.jpg" alt="MIRAZ" class="footer-logo-img"/>
+        <p>আসল ও প্রিমিয়াম লাইফস্টাইল পণ্যের বিশ্বস্ত অনলাইন শপ। সারা বাংলাদেশে ক্যাশ অন ডেলিভারি সুবিধা।</p>
+        <p style="font-size:0.82rem; color:#cbd5e1; margin:0.35rem 0 0.85rem; line-height:1.6;">
+          <i class="fas fa-location-dot" style="color:var(--gold); margin-right:5px;"></i> Brahmanbaria, Bangladesh<br/>
+          <i class="fas fa-envelope" style="color:var(--gold); margin-right:5px;"></i> mirazofficial489@gmail.com | 
+          <i class="fas fa-phone" style="color:var(--gold); margin:0 4px 0 6px;"></i> 01339564967
+        </p>
+        <div class="soc-row">
+          <a href="https://www.facebook.com/share/18eWZxdvbr/" target="_blank" rel="noopener noreferrer" class="soc-btn fb-btn" title="Facebook Page"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://www.instagram.com/_mdmiraz489?vrfl=ZHFkN2pzb2l4dml5" target="_blank" rel="noopener noreferrer" class="soc-btn ig-btn" title="Instagram Profile"><i class="fab fa-instagram"></i></a>
+          <a href="https://youtube.com/@mdmiraz-489?si=01ATi4RojWahb44t" target="_blank" rel="noopener noreferrer" class="soc-btn yt-btn" title="YouTube Channel"><i class="fab fa-youtube"></i></a>
+          <a href="https://t.me/+8801339564967" target="_blank" rel="noopener noreferrer" class="soc-btn tg-btn" title="Telegram"><i class="fab fa-telegram"></i></a>
+          <a href="https://wa.me/8801339564967" target="_blank" rel="noopener noreferrer" class="soc-btn wa-btn" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>ক্যাটাগরি</h4>
+        <ul>
+          <li><a href="#">পারফিউম & আতর</a></li>
+          <li><a href="#">লেডিস ফ্যাশন</a></li>
+          <li><a href="#">সকল পোশাক</a></li>
+          <li><a href="#">কসমেটিক</a></li>
+          <li><a href="#">শোপিস & গিফট</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>সহায়তা</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">শিপিং পলিসি</a></li>
+          <li><a href="#">রিটার্ন পলিসি</a></li>
+          <li><a href="#">প্রাইভেসি পলিসি</a></li>
+          <li><a href="#">যোগাযোগ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>পেমেন্ট মেথড</h4>
+        <div class="pay-row">
+          <span class="pay-tag">bKash</span>
+          <span class="pay-tag">Nagad</span>
+          <span class="pay-tag">Rocket</span>
+          <span class="pay-tag">VISA</span>
+          <span class="pay-tag">Cash</span>
+        </div>
+        <h4 style="margin-top:1.5rem">অ্যাপ ডাউনলোড</h4>
+        <div class="app-row">
+          <a href="#" class="app-btn"><i class="fab fa-google-play"></i> Google Play</a>
+          <a href="#" class="app-btn"><i class="fab fa-apple"></i> App Store</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom-v2">
+      <p>© ২০২৬ <strong>MIRAZ</strong>. সকল স্বত্ব সংরক্ষিত। | <a href="https://miraz.com" target="_blank">miraz.com</a></p>
+      <p>Made with <i class="fas fa-heart" style="color:#e91e8c"></i> in Bangladesh 🇧🇩</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ========== CART SIDEBAR ========== -->
+<div class="cart-drawer" id="cartSidebar">
+  <div class="cart-drawer-head">
+    <div class="cdh-logo"><img src="images/logo-full.jpg" alt="MIRAZ" style="object-position:center 38%;"/></div>
+    <h3>আপনার কার্ট</h3>
+    <button id="closeCart"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="cart-drawer-body" id="cartItems">
+    <div class="empty-cart-state">
+      <i class="fas fa-bag-shopping"></i>
+      <h4>কার্ট খালি</h4>
+      <p>কেনাকাটা শুরু করুন</p>
+      <button class="cta-primary" onclick="toggleCart()">
+        <span>পণ্য দেখুন</span>
+        <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+  <div class="cart-drawer-foot" id="cartFooter" style="display:none">
+    <div class="cart-total-row">
+      <span>সর্বমোট:</span>
+      <strong id="cartTotal">৳০</strong>
+    </div>
+    <div class="cart-foot-btns">
+      <button class="cta-primary cart-checkout-btn" id="cartQuickOrderBtn" style="width:100%;justify-content:center;">
+        <i class="fas fa-bolt"></i>
+        <span>⚡ সরাসরি ১-ক্লিকে অর্ডার করুন</span>
+      </button>
+      <button class="qof-wa-btn" id="cartWhatsAppBtn" style="width:100%;justify-content:center;margin-top:.5rem;">
+        <i class="fab fa-whatsapp"></i>
+        <span>WhatsApp-এ কার্ট অর্ডার পাঠান</span>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="drawer-overlay" id="cartOverlay"></div>
+
+<!-- ========== BACK TO TOP ========== -->
+<button class="btt-btn" id="backToTop">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<!-- ========== QUICK ORDER MODAL (১ ক্লিকে অর্ডার) ========== -->
+<div class="modal-bg" id="quickOrderModal">
+  <div class="modal-box modal-order-box">
+    <div class="modal-head">
+      <img src="images/logo-full.jpg" alt="MIRAZ" style="width:38px;height:38px;object-fit:cover;object-position:center 38%;border-radius:50%;border:1.5px solid var(--gold);"/>
+      <div>
+        <h3>⚡ সরাসরি অর্ডার করুন</h3>
+        <span style="font-size:.72rem;color:var(--text-3);">ক্যাশ অন ডেলিভারি (পণ্য হাতে পেয়ে চেক করে টাকা দিন)</span>
+      </div>
+      <button class="modal-x" id="closeOrderModal"><i class="fas fa-times"></i></button>
+    </div>
+    
+    <div class="order-modal-body" id="orderModalFormContainer">
+      <!-- Product Summary preview -->
+      <div class="order-product-card" id="orderProductCard">
+        <img src="images/perfume-royal-1.jpg" alt="" id="orderProdImg" class="opc-thumb"/>
+        <div class="opc-details">
+          <h4 id="orderProdName">MIRAZ Royal Collection</h4>
+          <div class="opc-price-row">
+            <span class="opc-unit-price" id="orderProdPrice">৳৪,২০০</span>
+            <div class="opc-qty-wrap">
+              <button type="button" class="qty-btn" id="qtyMinus"><i class="fas fa-minus"></i></button>
+              <span id="orderQty">১</span>
+              <button type="button" class="qty-btn" id="qtyPlus"><i class="fas fa-plus"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Checkout Form -->
+      <form id="quickOrderForm" class="quick-order-form">
+        <div class="qof-field">
+          <label><i class="fas fa-user"></i> আপনার নাম *</label>
+          <input type="text" id="custName" placeholder="যেমন: মোহাম্মদ মিরাজ" required/>
+        </div>
+
+        <div class="qof-field">
+          <label><i class="fas fa-phone"></i> মোবাইল নম্বর *</label>
+          <input type="tel" id="custPhone" placeholder="যেমন: 017XXXXXXXX" required/>
+        </div>
+
+        <div class="qof-field">
+          <label><i class="fas fa-location-dot"></i> আপনার সম্পূর্ণ ঠিকানা *</label>
+          <textarea id="custAddress" rows="2" placeholder="বাড়ি/রোড নম্বর, এলাকা, থানা, জেলা..." required></textarea>
+        </div>
+
+        <div class="qof-field">
+          <label><i class="fas fa-truck"></i> ডেলিভারি এলাকা *</label>
+          <select id="custArea">
+            <option value="60">ঢাকার ভেতরে (৳৬০ ডেলিভারি চার্জ)</option>
+            <option value="120">ঢাকার বাইরে (৳১২০ ডেলিভারি চার্জ)</option>
+          </select>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="order-breakdown">
+          <div class="ob-row">
+            <span>পণ্যের মূল্য:</span>
+            <span id="obSubtotal">৳৪,২০০</span>
+          </div>
+          <div class="ob-row">
+            <span>ডেলিভারি চার্জ:</span>
+            <span id="obDelivery">৳৬০</span>
+          </div>
+          <div class="ob-row ob-total">
+            <span>সর্বমোট প্রদেয়:</span>
+            <strong id="obTotal">৳৪,২৬০</strong>
+          </div>
+        </div>
+
+        <!-- Payment method notice -->
+        <div class="cod-badge-notice">
+          <i class="fas fa-shield-alt"></i>
+          <span>ক্যাশ অন ডেলিভারি: পার্সেল হাতে পেয়ে খুলে দেখে তারপর মূল্য পরিশোধ করবেন।</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="cta-primary qof-submit-btn">
+          <i class="fas fa-bolt"></i>
+          <span>অর্ডার কনফার্ম করুন (৳<span id="btnTotal">৪,২৬০</span>)</span>
+        </button>
+
+        <!-- WhatsApp alternative inside modal -->
+        <button type="button" class="qof-wa-btn" id="modalWhatsAppBtn">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp-এ সরাসরি অর্ডার করুন</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Order Success View (Hidden by default) -->
+    <div class="order-success-view" id="orderSuccessView" style="display:none;">
+      <div class="os-icon">
+        <i class="fas fa-check"></i>
+      </div>
+      <h3>🎉 আপনার অর্ডার সফল হয়েছে!</h3>
+      <p class="os-order-id">অর্ডার আইডি: <strong id="successOrderId">#MIRAZ-2849</strong></p>
+      <div class="os-box">
+        <p>ধন্যবাদ, <strong id="successCustName">সম্মানিত ক্রেতা</strong>! আমাদের কাস্টমার প্রতিনিধি খুব শীঘ্রই আপনার <strong><span id="successCustPhone"></span></strong> নম্বরে কল করে অর্ডার কনফার্ম করবেন।</p>
+      </div>
+      <div class="os-actions">
+        <button type="button" class="cta-primary" id="successDoneBtn" style="width:100%;justify-content:center;">
+          <span>কেনাকাটা চালিয়ে যান</span>
+        </button>
+        <button type="button" class="qof-wa-btn" id="successWaFollowupBtn" style="width:100%;justify-content:center;">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp-এ মেসেজ পাঠান</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ADD CATEGORY MODAL ========== -->
+<div class="modal-bg" id="addCatModal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <img src="images/logo-full.jpg" alt="MIRAZ" style="width:36px;height:36px;object-fit:cover;object-position:center 38%;border-radius:50%;border:1px solid var(--gold);"/>
+      <h3>নতুন ক্যাটাগরি</h3>
+      <button class="modal-x" id="closeCatModal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body-v2">
+      <div class="cf-field">
+        <label>ক্যাটাগরির নাম *</label>
+        <input type="text" id="newCatName" placeholder="যেমন: জুয়েলারি"/>
+      </div>
+      <div class="cf-field">
+        <label>আইকন ক্লাস</label>
+        <input type="text" id="newCatIcon" placeholder="fas fa-star"/>
+      </div>
+      <div class="cf-field">
+        <label>রঙ থিম</label>
+        <select id="newCatColor">
+          <option value="cat-perfume">বেগুনি</option>
+          <option value="cat-ladies">গোলাপি</option>
+          <option value="cat-clothing">নীল</option>
+          <option value="cat-cosmetics">সবুজ</option>
+          <option value="cat-showpiece">সোনালি</option>
+        </select>
+      </div>
+      <button class="cta-primary" id="saveCat" style="width:100%;justify-content:center;">
+        <span>ক্যাটাগরি যোগ করুন</span>
+        <i class="fas fa-plus"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Floating Social Contact (Facebook & WhatsApp) -->
+<a href="https://www.facebook.com/share/18eWZxdvbr/" target="_blank" rel="noopener noreferrer" class="floating-fb-btn" id="floatingFbBtn" title="ফেসবুক পেজ ভিজিট করুন">
+  <i class="fab fa-facebook-f"></i>
+  <span class="ffb-tooltip">ফেসবুক পেজ</span>
+</a>
+<a href="https://wa.me/8801339564967?text=%E0%A6%86%E0%A6%B8%E0%A6%B8%E0%A6%BE%E0%A6%B2%E0%A6%BE%E0%A6%AE%E0%A7%81%20%E0%A6%86%E0%A6%B2%E0%A6%BE%E0%A6%87%E0%A6%95%E0%A7%81%E0%A6%AE%20MIRAZ%2C%20%E0%A6%86%E0%A6%AE%E0%A6%BF%20%E0%A6%95%E0%A7%87%E0%A6%A8%E0%A6%BE%E0%A6%95%E0%A6%BE%E0%A6%9F%E0%A6%BE%E0%A6%B0%20%E0%A6%AC%E0%A7%8D%E0%A6%AF%E0%A6%BE%E0%A6%AA%E0%A6%BE%E0%A6%B0%E0%A7%87%20%E0%A6%9C%E0%A6%BE%E0%A6%A8%E0%A6%A4%E0%A7%87%20%E0%A6%9A%E0%A6%BE%E0%A6%87%E0%A5%A4" target="_blank" rel="noopener noreferrer" class="floating-wa-btn" id="floatingWaBtn" title="WhatsApp-এ মেসেজ দিন">
+  <i class="fab fa-whatsapp"></i>
+  <span class="fwa-tooltip">WhatsApp চ্যাট</span>
+</a>
+
+<!-- ========== 🔍 INTERACTIVE QUICK VIEW MODAL (GOLDEN POPUP) ========== -->
+<div class="modal-bg" id="quickViewModal">
+  <div class="modal-box modal-qv-box">
+    <button class="qv-close-btn" id="closeQuickView"><i class="fas fa-times"></i></button>
+    <div class="qv-grid">
+      <!-- Left: High-Res Image (100% Uncropped, Clean Borderless Luxury View) -->
+      <div class="qv-image-col">
+        <div class="qv-badge-pill" id="qvBadge">নতুন কালেকশন</div>
+        <div class="qv-img-frame" id="qvImgFrame" title="ক্লিক করে সম্পূর্ণ এইচডি ছবি দেখুন">
+          <img src="images/perfume-royal-1.jpg" alt="MIRAZ Product" id="qvImage"/>
+        </div>
+      </div>
+
+      <!-- Right: Details, Sizes & Ordering -->
+      <div class="qv-details-col">
+        <div class="qv-cat-tag" id="qvCat">পারফিউম & আতর</div>
+        <h2 class="qv-title" id="qvTitle">MIRAZ Royal Collection - Extrait De Parfum</h2>
+        
+        <div class="qv-rating-row">
+          <span class="qv-stars" id="qvStars">★★★★★</span>
+          <span class="qv-rating-text" id="qvReviews">৫.০ (১৮৪টি রিভিউ)</span>
+        </div>
+
+        <div class="qv-price-row">
+          <span class="qv-current-price" id="qvPrice">৳৪,২০০</span>
+          <span class="qv-old-price" id="qvOldPrice">৳৫,৫০০</span>
+          <span class="qv-save-badge" id="qvSaveBadge">৳১,৩০০ সাশ্রয়</span>
+        </div>
+
+        <!-- Size Selector (৫০ মি.লি. / ১০০ মি.লি.) -->
+        <div class="qv-option-block" id="qvSizeBlock">
+          <div class="qv-option-label">
+            <span><i class="fas fa-bottle-droplet" style="color:var(--gold);"></i> বোতলের সাইজ নির্বাচন করুন:</span>
+            <span style="color:var(--gold-light);font-size:.78rem;" id="selectedSizeText">৫০ মি.লি.</span>
+          </div>
+          <div class="qv-size-selector">
+            <button type="button" class="qv-size-pill active" data-size="50" data-mult="1">
+              <strong>৫০ মি.লি. (50ml)</strong>
+              <span id="pillPrice50">৳৪,২০০</span>
+            </button>
+            <button type="button" class="qv-size-pill" data-size="100" data-mult="1.45">
+              <strong>১০০ মি.লি. (100ml)</strong>
+              <span id="pillPrice100">৳৬,০৯০ (স্পেশাল অফার)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Fragrance Notes / Product Specs -->
+        <div class="qv-notes-box" id="qvNotesBox">
+          <div class="qv-note-item">
+            <i class="fas fa-wind"></i>
+            <strong>টপ নোট</strong>
+            <span>বার্গামট ও জাফরান</span>
+          </div>
+          <div class="qv-note-item">
+            <i class="fas fa-gem"></i>
+            <strong>বেস নোট</strong>
+            <span>রাজকীয় উড ও অ্যাম্বার</span>
+          </div>
+          <div class="qv-note-item">
+            <i class="fas fa-clock"></i>
+            <strong>স্থায়িত্ব</strong>
+            <span>১৪+ ঘণ্টা সুরভি</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="qv-actions-grid">
+          <button type="button" class="btn-qv-buy" id="qvBuyNowBtn">
+            <i class="fas fa-bolt"></i>
+            <span>⚡ সরাসরি এখনই কিনুন</span>
+          </button>
+          <button type="button" class="btn-qv-cart" id="qvAddToCartBtn">
+            <i class="fas fa-bag-shopping"></i>
+            <span>কার্টে যোগ করুন</span>
+          </button>
+          <button type="button" class="btn-qv-wa" id="qvWhatsAppBtn">
+            <i class="fab fa-whatsapp"></i>
+            <span>WhatsApp-এ বিস্তারিত ও অর্ডার করুন</span>
+          </button>
+        </div>
+
+        <div style="font-size:.75rem;color:var(--text-3);display:flex;gap:1rem;margin-top:.5rem;justify-content:center;">
+          <span><i class="fas fa-shield-alt" style="color:var(--gold);"></i> ১০০% অরিজিনাল</span>
+          <span><i class="fas fa-truck" style="color:var(--gold);"></i> দ্রুত ডেলিভারি</span>
+          <span><i class="fas fa-hand-holding-dollar" style="color:var(--gold);"></i> ক্যাশ অন ডেলিভারি</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 📦 UNBOXING LIGHTBOX MODAL ========== -->
+<div class="unb-lightbox-modal" id="unbLightboxModal">
+  <div class="unb-lightbox-box">
+    <button class="unb-lb-close" id="closeLightbox"><i class="fas fa-times"></i></button>
+    <img src="" alt="" class="unb-lb-img" id="lbImg"/>
+    <div class="unb-lb-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+        <div>
+          <h3 id="lbTitle" style="color:var(--gold);font-family:var(--ff-head);font-size:1.3rem;"></h3>
+          <span id="lbUser" style="color:#fff;font-weight:600;font-size:.9rem;"></span>
+        </div>
+        <span class="unb-verified-tag"><i class="fas fa-check-circle"></i> ভেরিফাইড ক্রেতা</span>
+      </div>
+      <div class="unb-stars" style="margin-bottom:.75rem;">★★★★★ <span>৫.০ রেটিং</span></div>
+      <p id="lbQuote" style="color:#cbd5e1;font-size:.9rem;line-height:1.6;font-style:italic;margin-bottom:1.25rem;"></p>
+      <div style="display:flex;gap:.75rem;flex-wrap:wrap;">
+        <button type="button" class="cta-primary" id="lbOrderThisBtn" style="padding:.6rem 1.4rem;font-size:.85rem;">
+          <i class="fas fa-bolt"></i>
+          <span>এই পারফিউমটি ১-ক্লিকে অর্ডার করুন</span>
+        </button>
+        <a href="https://wa.me/8801339564967" target="_blank" class="qof-wa-btn" style="padding:.6rem 1.4rem;font-size:.85rem;">
+          <i class="fab fa-whatsapp"></i>
+          <span>WhatsApp-এ বিস্তারিত জানুন</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast-v2" id="toast"></div>
+
+<script src="js/main.js?v=6.9"></script>
+</body>
+</html>

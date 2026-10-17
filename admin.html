@@ -1,0 +1,4022 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MIRAZ Admin Panel — miraz.com ড্যাশবোর্ড</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --admin-bg: #090910;
+      --admin-card: #12121f;
+      --admin-card-2: #18182a;
+      --admin-border: rgba(212,168,71,0.2);
+    }
+    body {
+      background: var(--admin-bg);
+      color: #e5e5f0;
+      min-height: 100vh;
+      font-family: var(--ff-body);
+    }
+    /* Secret Pin Modal */
+    .pin-lock-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(9, 9, 16, 0.96);
+      backdrop-filter: blur(16px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .pin-lock-modal.unlocked {
+      display: none;
+    }
+    .pin-card {
+      background: var(--admin-card);
+      border: 1.5px solid var(--gold);
+      border-radius: var(--r-lg);
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(212,168,71,0.25);
+    }
+    .pin-logo-showcase {
+      position: relative;
+      margin: 0 auto 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pin-logo-glow {
+      position: absolute;
+      top: 5px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,168,71,0.5) 0%, rgba(212,168,71,0.12) 55%, transparent 70%);
+      filter: blur(14px);
+      z-index: 0;
+      animation: goldPulse 3s ease-in-out infinite alternate;
+    }
+    @keyframes goldPulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.18); opacity: 1; }
+    }
+    .pin-logo-img {
+      position: relative;
+      z-index: 1;
+      width: 115px;
+      height: 115px;
+      object-fit: cover;
+      object-position: center 38%;
+      border-radius: 26px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 12px 35px rgba(0,0,0,0.85), 0 0 25px rgba(212,168,71,0.45);
+      background: #000;
+      transition: transform .3s ease;
+    }
+    .pin-logo-img:hover {
+      transform: scale(1.05);
+    }
+    .pin-brand-title {
+      position: relative;
+      z-index: 1;
+      margin-top: .85rem;
+      text-align: center;
+    }
+    .pin-brand-title span {
+      display: block;
+      font-family: var(--ff-head);
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, #ffffff 0%, #d4a847 60%, #f7eaab 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .pin-brand-title small {
+      display: block;
+      font-size: .68rem;
+      letter-spacing: 3.5px;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+    .pin-card h2 {
+      font-family: var(--ff-head);
+      color: var(--gold);
+      font-size: 1.35rem;
+      margin-bottom: .4rem;
+    }
+    .pin-card p {
+      font-size: .83rem;
+      color: var(--text-3);
+      margin-bottom: 1.5rem;
+    }
+    .pin-input-wrap {
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+    .pin-input {
+      width: 100%;
+      padding: .95rem 3.2rem .95rem 1.2rem;
+      background: #090910;
+      border: 1.5px solid rgba(212,168,71,0.45);
+      border-radius: var(--r-md);
+      color: #fff;
+      font-size: 1.05rem;
+      letter-spacing: .15em;
+      text-align: center;
+      outline: none;
+      transition: var(--t-fast);
+    }
+    .pin-input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 18px rgba(212,168,71,0.35);
+    }
+    .pin-eye-btn {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--gold);
+      cursor: pointer;
+      font-size: 1.15rem;
+      padding: .4rem .5rem;
+      border-radius: var(--r-sm);
+      transition: var(--t-fast);
+    }
+    .pin-eye-btn:hover {
+      color: #fff;
+      transform: translateY(-50%) scale(1.12);
+    }
+    .pin-btn {
+      width: 100%;
+      padding: .9rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      font-weight: 700;
+      border-radius: var(--r-md);
+      cursor: pointer;
+      font-size: 1rem;
+      transition: var(--t-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+    }
+    .pin-btn:hover {
+      box-shadow: 0 6px 20px rgba(212,168,71,0.4);
+      transform: translateY(-2px);
+    }
+    .pin-hint {
+      margin-top: 1rem;
+      font-size: .78rem;
+      color: var(--gold-light);
+      cursor: pointer;
+      opacity: .8;
+    }
+
+    /* Admin Layout */
+    .admin-header {
+      background: #10101c;
+      border-bottom: 1px solid var(--admin-border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 900;
+    }
+    .admin-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .admin-logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid var(--gold);
+      object-fit: cover;
+    }
+    .admin-title-badge h1 {
+      font-family: var(--ff-head);
+      font-size: 1.25rem;
+      color: var(--gold);
+      line-height: 1.2;
+    }
+    .admin-title-badge span {
+      font-size: .75rem;
+      color: var(--text-3);
+      letter-spacing: .08em;
+    }
+    .admin-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn-live-store {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .6rem 1.2rem;
+      background: rgba(212,168,71,0.12);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      border-radius: var(--r-pill);
+      font-size: .85rem;
+      font-weight: 600;
+      transition: var(--t-fast);
+    }
+    .btn-live-store:hover {
+      background: var(--gold);
+      color: #000;
+    }
+    .btn-logout {
+      padding: .6rem 1rem;
+      background: rgba(229,62,62,0.15);
+      border: 1px solid rgba(229,62,62,0.4);
+      color: #ff6b6b;
+      border-radius: var(--r-pill);
+      font-size: .85rem;
+      cursor: pointer;
+      transition: var(--t-fast);
+    }
+    .btn-logout:hover {
+      background: #e53e3e;
+      color: #fff;
+    }
+
+    /* Admin Container */
+    .admin-wrap {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* Stats Row */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card-adm {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--r-md);
+      padding: 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      transition: var(--t-fast);
+    }
+    .stat-card-adm:hover {
+      border-color: var(--gold);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(212,168,71,0.15);
+    }
+    .sca-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--r-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      flex-shrink: 0;
+    }
+    .sca-icon.gold { background: rgba(212,168,71,0.15); color: var(--gold); }
+    .sca-icon.blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .sca-icon.green { background: rgba(16,185,129,0.15); color: #34d399; }
+    .sca-icon.purple { background: rgba(168,85,247,0.15); color: #c084fc; }
+    .sca-info h3 {
+      font-size: .82rem;
+      color: var(--text-3);
+      font-weight: 500;
+      margin-bottom: .25rem;
+    }
+    .sca-info strong {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      font-family: var(--ff-head);
+    }
+
+    /* Admin Navigation Tabs */
+    .adm-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      border-bottom: 1px solid var(--admin-border);
+      margin-bottom: 2rem;
+      padding-bottom: .75rem;
+    }
+    .adm-tab {
+      padding: .85rem 1.6rem;
+      border-radius: var(--r-pill);
+      color: #9896b0;
+      font-weight: 600;
+      font-size: .92rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      transition: var(--t-fast);
+      background: transparent;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+    .adm-tab:hover {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+    .adm-tab.active {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      box-shadow: 0 4px 16px rgba(212,168,71,0.3);
+    }
+    .adm-tab-badge {
+      background: rgba(0,0,0,0.25);
+      color: inherit;
+      padding: .15rem .55rem;
+      border-radius: var(--r-pill);
+      font-size: .75rem;
+    }
+
+    /* Tab Panels */
+    .tab-panel {
+      display: none;
+    }
+    .tab-panel.active {
+      display: block;
+      animation: fadeIn .3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Form Card */
+    .admin-box {
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--r-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .admin-box-title {
+      font-family: var(--ff-head);
+      color: var(--gold);
+      font-size: 1.35rem;
+      margin-bottom: .4rem;
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+    }
+    .admin-box-sub {
+      font-size: .85rem;
+      color: var(--text-3);
+      margin-bottom: 1.75rem;
+    }
+
+    /* Form Grid */
+    .adm-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.25rem;
+    }
+    .adm-form-full {
+      grid-column: span 2;
+    }
+    .adm-input-group label {
+      display: block;
+      font-size: .85rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: .45rem;
+    }
+    .adm-input, .adm-select, .adm-textarea {
+      width: 100%;
+      padding: .85rem 1rem;
+      background: var(--admin-bg);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--r-md);
+      color: #fff;
+      font-size: .92rem;
+      outline: none;
+      transition: var(--t-fast);
+    }
+    .adm-input:focus, .adm-select:focus, .adm-textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 10px rgba(212,168,71,0.25);
+    }
+    .adm-select option {
+      background: #12121f;
+      color: #fff;
+    }
+
+    /* Image Upload & Presets Area */
+    .img-upload-zone {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      background: #090910;
+      border: 1.5px dashed rgba(212,168,71,0.4);
+      border-radius: var(--r-md);
+      padding: 1.25rem;
+    }
+    .img-preview-box {
+      width: 140px;
+      height: 140px;
+      border-radius: var(--r-sm);
+      border: 1.5px solid var(--gold);
+      background: #161626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .img-preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .img-preset-row {
+      display: flex;
+      gap: .6rem;
+      margin-top: .8rem;
+      flex-wrap: wrap;
+    }
+    .preset-chip {
+      padding: .35rem .75rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--r-pill);
+      font-size: .78rem;
+      cursor: pointer;
+      color: var(--gold-light);
+      transition: var(--t-fast);
+    }
+    .preset-chip:hover {
+      background: rgba(212,168,71,0.2);
+      border-color: var(--gold);
+    }
+
+    /* Action Buttons */
+    .adm-btn-primary {
+      padding: .9rem 2rem;
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: #000;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: var(--r-md);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      transition: var(--t-fast);
+      box-shadow: 0 4px 15px rgba(212,168,71,0.3);
+    }
+    .adm-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212,168,71,0.5);
+    }
+
+    /* Product Cards & Table */
+    .prod-filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .adm-search {
+      position: relative;
+      width: 320px;
+    }
+    .adm-search input {
+      width: 100%;
+      padding: .75rem 1rem .75rem 2.6rem;
+      background: var(--admin-card);
+      border: 1px solid var(--admin-border);
+      border-radius: var(--r-pill);
+      color: #fff;
+      font-size: .88rem;
+      outline: none;
+    }
+    .adm-search i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+    }
+
+    /* Data Table */
+    .adm-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--r-md);
+      border: 1px solid var(--admin-border);
+    }
+    .adm-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: .88rem;
+    }
+    .adm-table th {
+      background: #18182b;
+      padding: 1rem 1.25rem;
+      color: var(--gold);
+      font-weight: 600;
+      border-bottom: 1px solid var(--admin-border);
+      white-space: nowrap;
+    }
+    .adm-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      background: var(--admin-card);
+      vertical-align: middle;
+    }
+    .adm-table tr:hover td {
+      background: #17172a;
+    }
+    .prod-cell {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .prod-cell img {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--r-sm);
+      object-fit: cover;
+      border: 1px solid var(--gold);
+      flex-shrink: 0;
+    }
+    .prod-cell strong {
+      display: block;
+      color: #fff;
+      font-size: .92rem;
+    }
+    .prod-cell span {
+      font-size: .75rem;
+      color: var(--text-3);
+    }
+    .badge-tag-adm {
+      display: inline-block;
+      padding: .2rem .6rem;
+      border-radius: var(--r-pill);
+      font-size: .72rem;
+      font-weight: 600;
+    }
+    .b-sale { background: rgba(229,62,62,0.2); color: #f87171; border: 1px solid rgba(229,62,62,0.4); }
+    .b-new { background: rgba(59,130,246,0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+    .b-hot { background: rgba(249,115,22,0.2); color: #fb923c; border: 1px solid rgba(249,115,22,0.4); }
+    .b-royal { background: rgba(212,168,71,0.2); color: var(--gold); border: 1px solid var(--gold); }
+
+    /* Orders Management */
+    .order-status-badge {
+      padding: .25rem .75rem;
+      border-radius: var(--r-pill);
+      font-size: .75rem;
+      font-weight: 600;
+    }
+    .os-pending { background: rgba(245,158,11,0.2); color: #fbbf24; border: 1px solid rgba(245,158,11,0.4); }
+    .os-confirmed { background: rgba(59,130,246,0.2); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+    .os-delivered { background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4); }
+    .os-cancelled { background: rgba(239,68,68,0.2); color: #f87171; border: 1px solid rgba(239,68,68,0.4); }
+
+    .tbl-action-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .85rem;
+      cursor: pointer;
+      transition: var(--t-fast);
+      margin-right: .35rem;
+      border: 1px solid transparent;
+    }
+    .tbtn-wa { background: rgba(37,211,102,0.15); color: #25d366; border-color: rgba(37,211,102,0.3); }
+    .tbtn-wa:hover { background: #25d366; color: #fff; }
+    .tbtn-call { background: rgba(59,130,246,0.15); color: #60a5fa; border-color: rgba(59,130,246,0.3); }
+    .tbtn-call:hover { background: #3b82f6; color: #fff; }
+    .tbtn-del { background: rgba(239,68,68,0.15); color: #f87171; border-color: rgba(239,68,68,0.3); }
+    .tbtn-del:hover { background: #ef4444; color: #fff; }
+
+    /* Toast */
+    .admin-toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: #12121f;
+      border: 1.5px solid var(--gold);
+      color: #fff;
+      padding: 1rem 1.6rem;
+      border-radius: var(--r-md);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      gap: .75rem;
+      font-weight: 500;
+    }
+    .admin-toast.show {
+      display: flex;
+      animation: slideIn .3s ease;
+    }
+    /* ── Daily Orders & Excel Spreadsheet View Styles ── */
+    .daily-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .daily-stat-card {
+      background: #131424;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--r-md);
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: all .2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .daily-stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--gold);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    }
+    .daily-stat-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+    }
+    .daily-stat-info strong {
+      display: block;
+      font-size: 1.45rem;
+      color: #fff;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+    .daily-stat-info span {
+      font-size: .8rem;
+      color: var(--text-3);
+    }
+
+    /* Daily Breakdown Section */
+    .daily-breakdown-box {
+      background: #111220;
+      border: 1px solid rgba(212,168,71,0.25);
+      border-radius: var(--r-md);
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .daily-breakdown-title {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: .75rem;
+    }
+    .daily-pills-wrap {
+      display: flex;
+      gap: .65rem;
+      overflow-x: auto;
+      padding-bottom: .35rem;
+    }
+    .daily-pill {
+      background: #17192b;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: .6rem .9rem;
+      min-width: 140px;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all .2s ease;
+    }
+    .daily-pill:hover, .daily-pill.active {
+      border-color: #10b981;
+      background: rgba(16,185,129,0.12);
+    }
+    .daily-pill-date {
+      font-size: .75rem;
+      color: var(--text-3);
+      margin-bottom: 2px;
+    }
+    .daily-pill-count {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .daily-pill-total {
+      font-size: .75rem;
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    /* View Switcher */
+    .order-view-toggle {
+      display: inline-flex;
+      background: #0d0d1a;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--r-pill);
+      padding: 3px;
+      gap: 3px;
+    }
+    .ovt-btn {
+      padding: .45rem 1rem;
+      font-size: .82rem;
+      font-weight: 600;
+      border-radius: var(--r-pill);
+      background: transparent;
+      color: var(--text-2);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      transition: all .2s;
+    }
+    .ovt-btn.active {
+      background: #107c41;
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(16,124,65,0.4);
+    }
+    .ovt-btn-gold.active {
+      background: var(--gold);
+      color: #000;
+      box-shadow: 0 2px 8px rgba(212,168,71,0.4);
+    }
+
+    /* Live Excel Spreadsheet View */
+    .excel-container {
+      background: #121520;
+      border: 1.5px solid #107c41;
+      border-radius: var(--r-md);
+      overflow: hidden;
+      margin-top: 1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    }
+    .excel-header-bar {
+      background: linear-gradient(90deg, #107c41 0%, #0d5f32 100%);
+      color: #fff;
+      padding: .75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .75rem;
+    }
+    .excel-bar-title {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-weight: 700;
+      font-size: .95rem;
+    }
+    .excel-search-input {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 6px;
+      color: #fff;
+      padding: .35rem .75rem;
+      font-size: .8rem;
+      width: 220px;
+    }
+    .excel-search-input::placeholder { color: rgba(255,255,255,0.6); }
+    .excel-scroll-area {
+      overflow-x: auto;
+      max-height: 520px;
+      background: #0f111a;
+    }
+    .excel-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-size: .82rem;
+      color: #e2e8f0;
+    }
+    .excel-table th, .excel-table td {
+      border: 1px solid #232738;
+      padding: .5rem .75rem;
+      white-space: nowrap;
+    }
+    .excel-col-letter {
+      background: #181c28;
+      color: #94a3b8;
+      text-align: center;
+      font-weight: 600;
+      font-size: .72rem;
+      user-select: none;
+    }
+    .excel-col-name {
+      background: #202536;
+      color: #f1f5f9;
+      font-weight: 700;
+      font-size: .78rem;
+      text-align: left;
+    }
+    .excel-row-idx {
+      background: #181c28;
+      color: #64748b;
+      text-align: center;
+      font-weight: 600;
+      width: 42px;
+      user-select: none;
+    }
+    .excel-table tr:hover td {
+      background: rgba(16,124,65,0.15) !important;
+    }
+    .excel-footer-bar {
+      background: #141724;
+      border-top: 1px solid #232738;
+      padding: .6rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: .8rem;
+      color: #94a3b8;
+    }
+
+    /* Google Sheets Modal */
+    .gs-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(6px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .gs-modal-backdrop.open { display: flex; }
+    .gs-modal-box {
+      background: #131422;
+      border: 1.5px solid #10b981;
+      border-radius: var(--r-md);
+      max-width: 650px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+    }
+
+    @media (max-width: 768px) {
+      .admin-wrap { padding: 1rem .75rem; }
+      .admin-header { padding: 1rem; flex-direction: column; gap: 1rem; align-items: flex-start; }
+      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+      .stat-card-adm { padding: .85rem; }
+      .adm-tabs { gap: .4rem; margin-bottom: 1.25rem; }
+      .adm-tab { padding: .55rem .95rem; font-size: .8rem; gap: .35rem; }
+      .admin-box { padding: 1.25rem 1rem; }
+      .adm-form-grid { grid-template-columns: 1fr; }
+      .adm-form-full { grid-column: span 1; }
+      .img-upload-zone { grid-template-columns: 1fr; }
+      .mobile-swipe-hint { display: flex !important; }
+    }
+    @media (max-width: 480px) {
+      .admin-stats-grid { grid-template-columns: 1fr; }
+      .admin-title-badge h1 { font-size: 1.1rem; }
+      .adm-tab { font-size: .76rem; padding: .45rem .8rem; }
+    }
+
+    .cat-icon-chip {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(212,168,71,0.3);
+      color: #e2e8f0;
+      padding: .35rem .7rem;
+      border-radius: var(--r-pill);
+      font-size: .75rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: .35rem;
+      transition: all .2s;
+    }
+    .cat-icon-chip:hover {
+      background: var(--gold-gradient);
+      color: #0c0c16;
+      border-color: var(--gold);
+    }
+    .cat-type-badge {
+      display: inline-block;
+      padding: .2rem .6rem;
+      border-radius: var(--r-pill);
+      font-size: .72rem;
+      font-weight: 600;
+    }
+    .ctb-base { background: rgba(59,130,246,0.18); color: #60a5fa; border: 1px solid rgba(59,130,246,0.4); }
+    .ctb-custom { background: rgba(212,168,71,0.2); color: var(--gold); border: 1px solid var(--gold); }
+  </style>
+</head>
+<body>
+
+  <!-- ================= SECRET PIN LOCK MODAL ================= -->
+  <div class="pin-lock-modal" id="pinModal">
+    <div class="pin-card">
+      <div class="pin-logo-showcase">
+        <div class="pin-logo-glow"></div>
+        <img src="images/logo-full.jpg" alt="MIRAZ Luxury" class="pin-logo-img"/>
+        <div class="pin-brand-title">
+          <span>MIRAZ</span>
+          <small>LUXURY PERFUME</small>
+        </div>
+      </div>
+      <h2>👑 অ্যাডমিন লগইন</h2>
+      <p>miraz.com এর গোপন ড্যাশবোর্ডে প্রবেশ করতে আপনার সিক্রেট পিন দিন</p>
+      <form id="pinForm">
+        <div class="pin-input-wrap">
+          <input type="password" class="pin-input" id="pinInput" placeholder="পিন লিখুন (যেমন: miraz2026 বা 2026)" autofocus/>
+          <button type="button" class="pin-eye-btn" id="togglePinVis" title="পাসওয়ার্ড দেখুন / লুকান">
+            <i class="fas fa-eye" id="eyeIcon"></i>
+          </button>
+        </div>
+        <button type="submit" class="pin-btn">
+          <i class="fas fa-lock-open"></i>
+          <span>ড্যাশবোর্ডে প্রবেশ করুন</span>
+        </button>
+      </form>
+      <p style="font-size:0.75rem;color:var(--text-3);margin-top:1.25rem;"><i class="fas fa-shield-halved" style="color:var(--gold);"></i> এনক্রিপ্টেড সিকিউরিটি • শুধুমাত্র স্টোর ওনারের জন্য সংরক্ষিত</p>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN HEADER ================= -->
+  <header class="admin-header">
+    <div class="admin-logo-wrap">
+      <img src="images/logo-full.jpg" alt="MIRAZ Logo" class="admin-logo-img" style="object-position:center 38%;"/>
+      <div class="admin-title-badge">
+        <h1>MIRAZ <em>ADMIN</em></h1>
+        <span>লাক্সারি শপ কন্ট্রোল সেন্টার • miraz.com</span>
+      </div>
+    </div>
+    <div class="admin-header-actions">
+      <a href="https://www.facebook.com/share/18eWZxdvbr/" target="_blank" rel="noopener noreferrer" class="btn-live-store" style="border-color:#1877f2; color:#5b9eff; background:rgba(24,119,242,0.12);" title="MIRAZ Facebook Page">
+        <i class="fab fa-facebook"></i>
+        <span>ফেসবুক পেজ</span>
+      </a>
+      <a href="index.html" target="_blank" class="btn-live-store">
+        <i class="fas fa-external-link-alt"></i>
+        <span>ভিজিট শপ (miraz.com)</span>
+      </a>
+      <button class="btn-logout" id="adminLogoutBtn" title="লগআউট">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN ADMIN CONTENT ================= -->
+  <main class="admin-wrap">
+
+    <!-- Live Stats -->
+    <div class="admin-stats-grid">
+      <div class="stat-card-adm">
+        <div class="sca-icon gold"><i class="fas fa-spray-can-sparkles"></i></div>
+        <div class="sca-info">
+          <h3>মোট প্রোডাক্ট সংখ্যা</h3>
+          <strong id="statProdCount">১০</strong>
+        </div>
+      </div>
+      <div class="stat-card-adm">
+        <div class="sca-icon blue"><i class="fas fa-truck-ramp-box"></i></div>
+        <div class="sca-info">
+          <h3>কাস্টমার অর্ডার (১-ক্লিক)</h3>
+          <strong id="statOrderCount">০</strong>
+        </div>
+      </div>
+      <div class="stat-card-adm">
+        <div class="sca-icon green"><i class="fas fa-hand-holding-dollar"></i></div>
+        <div class="sca-info">
+          <h3>মোট বিক্রয় ভ্যালু</h3>
+          <strong id="statRevenue">৳০</strong>
+        </div>
+      </div>
+      <div class="stat-card-adm">
+        <div class="sca-icon purple"><i class="fas fa-clock"></i></div>
+        <div class="sca-info">
+          <h3>অপেক্ষমাণ নতুন অর্ডার</h3>
+          <strong id="statPendingOrders">০</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Tabs -->
+    <div class="adm-tabs">
+      <button class="adm-tab active" data-tab="tab-products">
+        <i class="fas fa-boxes-stacked"></i>
+        <span>সকল প্রোডাক্ট তালিকা</span>
+        <span class="adm-tab-badge" id="tabProdBadge">১০</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-add">
+        <i class="fas fa-plus-circle"></i>
+        <span>নতুন প্রোডাক্ট যোগ করুন</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-categories">
+        <i class="fas fa-layer-group"></i>
+        <span>ক্যাটাগরি কন্ট্রোল</span>
+        <span class="adm-tab-badge" id="tabCatBadge" style="background:rgba(212,168,71,0.25);color:var(--gold);">৫</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-deals">
+        <i class="fas fa-fire"></i>
+        <span>অফার ও ব্যানার কন্ট্রোল</span>
+        <span class="adm-tab-badge" id="tabDealsBadge" style="background:rgba(239,68,68,0.2);color:#f87171;">৫</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-orders">
+        <i class="fas fa-receipt"></i>
+        <span>কাস্টমার অর্ডার সমূহ</span>
+        <span class="adm-tab-badge" id="tabOrdersBadge">০</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-messages" style="border:1.5px solid #3b82f6;background:rgba(59,130,246,0.12);color:#fff;">
+        <i class="fas fa-envelope-open-text" style="color:#60a5fa;"></i>
+        <span style="font-weight:700;">কাস্টমার মেসেজ</span>
+        <span class="adm-tab-badge" id="tabMessagesBadge" style="background:#3b82f6;color:#fff;">০</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-delivery" style="border:1.5px solid var(--gold);background:rgba(212,168,71,0.15);color:#fff;">
+        <i class="fas fa-truck-fast" style="color:var(--gold);"></i>
+        <span style="font-weight:700;">ডেলিভারি চার্জ</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-videos">
+        <i class="fas fa-video"></i>
+        <span>ভিডিও রিলস শোকেস</span>
+        <span class="adm-tab-badge" style="background:rgba(212,168,71,0.25);color:var(--gold);">৩</span>
+      </button>
+      <button class="adm-tab" data-tab="tab-settings">
+        <i class="fas fa-sliders"></i>
+        <span>দোকান সেটিংস ও ব্যাকআপ</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: ALL PRODUCTS LIST -->
+    <section class="tab-panel active" id="tab-products">
+      <div class="admin-box">
+        <div class="prod-filter-bar">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-boxes-stacked"></i> স্টোর ইনভেন্টরি ও প্রোডাক্ট তালিকা</h2>
+            <p class="admin-box-sub">এখানে আপনার দোকানের সকল পণ্য দেখা ও ম্যানেজ করা যাবে। যেকোনো সময় নতুন পণ্য যোগ বা মুছে ফেলা যাবে।</p>
+          </div>
+          <div class="adm-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="adminSearchProd" placeholder="প্রোডাক্ট খুঁজুন..."/>
+          </div>
+        </div>
+
+        <div class="adm-table-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>ছবি ও নাম</th>
+                <th>ক্যাটাগরি</th>
+                <th>মূল্য (৳)</th>
+                <th>অফার/পূর্বমূল্য</th>
+                <th>ব্যাজ</th>
+                <th>রেটিং</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="adminProductsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: ADD NEW PRODUCT -->
+    <section class="tab-panel" id="tab-add">
+      <div class="admin-box">
+        <h2 class="admin-box-title"><i class="fas fa-plus-circle"></i> নতুন প্রোডাক্ট যোগ করুন</h2>
+        <p class="admin-box-sub">কোনো কোডিং ছাড়াই সরাসরি ছবি, নাম ও দাম দিয়ে আপনার দোকানে নতুন পণ্য লাইভ করুন।</p>
+
+        <form id="addProductForm">
+          <div class="adm-form-grid">
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-tag"></i> প্রোডাক্টের নাম *</label>
+              <input type="text" id="pName" class="adm-input" placeholder="যেমন: MIRAZ Royal Amber Extrait de Parfum" required/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-layer-group"></i> ক্যাটাগরি *</label>
+              <select id="pCat" class="adm-select" required>
+                <option value="perfume">পারফিউম & আতর</option>
+                <option value="ladies">লেডিস ফ্যাশন (শাড়ি, থ্রি-পিস)</option>
+                <option value="clothing">সকল পোশাক (পাঞ্জাবি, শার্ট)</option>
+                <option value="cosmetics">কসমেটিক & স্কিনকেয়ার</option>
+                <option value="showpiece">শোপিস & লাক্সারি গিফট</option>
+              </select>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-certificate"></i> স্পেশাল ব্যাজ</label>
+              <select id="pBadge" class="adm-select">
+                <option value="new">নতুন (New Arrival)</option>
+                <option value="hot">হট (Best Seller)</option>
+                <option value="sale">সেল (Special Discount)</option>
+                <option value="royal">রয়্যাল কালেকশন</option>
+                <option value="">কোনো ব্যাজ নেই</option>
+              </select>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-bangladeshi-taka-sign"></i> বিক্রয় মূল্য (৳) *</label>
+              <input type="number" id="pPrice" class="adm-input" placeholder="যেমন: 4200" required/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-percent"></i> আগের মূল্য / ডিসকাউন্ট (৳)</label>
+              <input type="number" id="pOldPrice" class="adm-input" placeholder="যেমন: 5500 (না থাকলে খালি রাখুন)"/>
+            </div>
+
+            <!-- Image Upload & Presets Area -->
+            <!-- Image / Video Upload & Presets Area -->
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-photo-film"></i> প্রোডাক্টের ছবি বা ভিডিও (ছবি অথবা MP4 ভিডিও ফাইল) *</label>
+              <div class="img-upload-zone">
+                <div class="img-preview-box" id="mediaPreviewContainer">
+                  <img src="images/perfume-royal-1.jpg" alt="Preview" id="addImgPreview"/>
+                  <video id="addVidPreview" controls playsinline style="width:100%;height:100%;object-fit:cover;display:none;border-radius:var(--r-sm);background:#000;"></video>
+                </div>
+                <div>
+                  <input type="file" id="pImageFile" accept="image/*,video/mp4,video/*" class="adm-input" style="padding:.5rem;margin-bottom:.5rem;"/>
+                  <div style="font-size:.78rem;color:var(--gold-light);margin-bottom:.4rem;">
+                    💡 <strong>ছবি অথবা ভিডিও যেকোনোটি সিলেক্ট করতে পারবেন (JPG, PNG, MP4)!</strong>
+                  </div>
+                  <span style="font-size:.78rem;color:var(--text-3);">অথবা সরাসরি ইমেজ/ভিডিও লিংক বা ফাইল দিন:</span>
+                  <input type="text" id="pImageUrl" class="adm-input" placeholder="https://example.com/photo.jpg অথবা videos/video-1.mp4" style="margin-top:.4rem;"/>
+                  
+                  <div style="margin-top:.75rem;">
+                    <span style="font-size:.78rem;color:var(--gold);">বিদ্যমান বোতল ও ভিডিও প্রিসেট:</span>
+                    <div class="img-preset-row">
+                      <span class="preset-chip" onclick="choosePreset('images/perfume-royal-1.jpg')">Royal Gold</span>
+                      <span class="preset-chip" onclick="choosePreset('images/perfume-the-edge.jpg')">The Edge</span>
+                      <span class="preset-chip" onclick="choosePreset('images/perfume-edge-night.jpg')">Night Black</span>
+                      <span class="preset-chip" onclick="choosePreset('videos/video-1.mp4')">🎬 রয়্যাল ভিডিও ১</span>
+                      <span class="preset-chip" onclick="choosePreset('videos/video-2.mp4')">🎬 দ্য এজ ভিডিও ২</span>
+                      <span class="preset-chip" onclick="choosePreset('videos/video-3.mp4')">🎬 নাইট ভিডিও ৩</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-align-left"></i> পণ্যের বিবরণ ও সুগন্ধি নোট (ঐচ্ছিক)</label>
+              <textarea id="pDesc" class="adm-textarea" rows="3" placeholder="টপ নোট: বার্গামট ও জাফরান | বেস নোট: রাজকীয় উড ও অ্যাম্বার | স্থায়ীত্ব: ১২+ ঘণ্টা"></textarea>
+            </div>
+          </div>
+
+          <div style="margin-top:1.75rem;">
+            <button type="submit" class="adm-btn-primary">
+              <i class="fas fa-check-circle"></i>
+              <span>ওয়েবসাইটে প্রোডাক্ট যোগ করুন</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB: CATEGORY MANAGEMENT (নতুন ক্যাটাগরি যোগ ও নিয়ন্ত্রণ) -->
+    <section class="tab-panel" id="tab-categories">
+      <div class="admin-box" style="margin-bottom: 2rem;">
+        <h2 class="admin-box-title"><i class="fas fa-layer-group"></i> নতুন ক্যাটাগরি যোগ করুন</h2>
+        <p class="admin-box-sub">আপনার দোকানে নতুন কোনো ডিপার্টমেন্ট বা ক্যাটাগরি তৈরি করতে নিচের ফর্মটি পূরণ করুন। এটি স্বয়ংক্রিয়ভাবে প্রোডাক্ট যোগ করার ড্রপডাউন এবং স্টোরের ফিল্টারে যুক্ত হবে।</p>
+
+        <form id="addCategoryForm" style="margin-top: 1.5rem;">
+          <div class="adm-form-grid">
+            <div class="adm-input-group">
+              <label><i class="fas fa-tag"></i> ক্যাটাগরির নাম (যেমন: জুয়েলারি ও ঘড়ি) *</label>
+              <input type="text" id="catNewName" class="adm-input" placeholder="যেমন: এক্সক্লুসিভ জুয়েলারি" required/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-code"></i> ক্যাটাগরি কোড / স্লাগ (ইংরেজি ছোট হাতের অক্ষর) *</label>
+              <input type="text" id="catNewSlug" class="adm-input" placeholder="যেমন: jewelry বা kids" required/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-icons"></i> ক্যাটাগরি আইকন (FontAwesome ক্লাস)</label>
+              <input type="text" id="catNewIcon" class="adm-input" placeholder="যেমন: fas fa-gem" value="fas fa-layer-group"/>
+              <div style="display:flex;gap:.4rem;margin-top:.5rem;flex-wrap:wrap;">
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-gem')"><i class="fas fa-gem"></i> জুয়েলারি</button>
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-ring')"><i class="fas fa-ring"></i> আংটি</button>
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-child')"><i class="fas fa-child"></i> বাচ্চাদের</button>
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-bag-shopping')"><i class="fas fa-bag-shopping"></i> হ্যান্ডব্যাগ</button>
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-glasses')"><i class="fas fa-glasses"></i> সানগ্লাস</button>
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-clock')"><i class="fas fa-clock"></i> ঘড়ি</button>
+                <button type="button" class="cat-icon-chip" onclick="pickCatIcon('fas fa-shoe-prints')"><i class="fas fa-shoe-prints"></i> জুতা</button>
+              </div>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-align-left"></i> বিবরণ / সাবটাইটেল</label>
+              <input type="text" id="catNewDesc" class="adm-input" placeholder="যেমন: গোল্ডেন নেকলেস, রিং ও অর্নামেন্টস"/>
+            </div>
+
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-image"></i> কভার ছবি বা ফটো লিংক (ঐচ্ছিক)</label>
+              <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+                <input type="file" id="catNewFile" accept="image/*" class="adm-input" style="flex:1;min-width:220px;padding:.5rem;"/>
+                <span style="color:var(--text-3);font-size:.85rem;">অথবা লিংক:</span>
+                <input type="text" id="catNewImgUrl" class="adm-input" placeholder="যেমন: images/jewelry-kundan-set.jpg" style="flex:1;min-width:220px;"/>
+              </div>
+            </div>
+
+            <div class="adm-form-full" style="margin-top: .5rem;">
+              <button type="submit" class="adm-btn-primary" style="padding:.85rem 1.75rem;">
+                <i class="fas fa-check-circle"></i> <span>নতুন ক্যাটাগরি সেভ করুন</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Categories List Table -->
+      <div class="admin-box">
+        <h2 class="admin-box-title"><i class="fas fa-boxes-packing"></i> স্টোরের বর্তমান ক্যাটাগরি তালিকা</h2>
+        <p class="admin-box-sub">আপনার স্টোরে সচল থাকা ক্যাটাগরিসমূহ। যেকোনো কাস্টম ক্যাটাগরি ডিলিট বা ম্যানেজ করতে পারবেন।</p>
+
+        <div class="adm-table-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>আইকন ও ক্যাটাগরির নাম</th>
+                <th>স্লাগ / কোড</th>
+                <th>বিবরণ</th>
+                <th>টাইপ</th>
+                <th>মোট প্রোডাক্ট</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="adminCategoriesTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: DEALS & PROMO BANNER CONTROL (অফার ও ব্যানার কন্ট্রোল) -->
+    <section class="tab-panel" id="tab-deals">
+      <!-- SIGNATURE SHOWCASE BANNER CONTROL (সিগনেচার শোকেস বক্স) -->
+      <div class="admin-box" style="margin-bottom: 2rem; border-color: rgba(212,168,71,0.5);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-crown" style="color:var(--gold);"></i> সিগনেচার শোকেস বক্স কন্ট্রোল (আমাদের বিভাগ সেকশন)</h2>
+            <p class="admin-box-sub">হোমপেজে "আমাদের বিভাগ - সব কিছু এক জায়গায়"-এর নিচে যে বড় সিগনেচার শোকেস বক্সটি আছে, তার শিরোনাম, বিবরণ এবং ৪টি প্রদর্শিত প্রোডাক্ট এখান থেকে সরাসরি পরিবর্তন করতে পারবেন।</p>
+          </div>
+          <a href="index.html#categories" target="_blank" class="btn-live-store">
+            <i class="fas fa-external-link-alt"></i>
+            <span>লাইভ শোকেস বক্স দেখুন</span>
+          </a>
+        </div>
+
+        <form id="signatureShowcaseForm" onsubmit="saveSignatureShowcase(event)">
+          <div class="adm-form-grid">
+            <div class="adm-input-group">
+              <label><i class="fas fa-crown"></i> শোকেস ট্যাগলাইন</label>
+              <input type="text" id="scfTag" class="adm-input" value="👑 প্রধান কালেকশন" placeholder="যেমন: 👑 প্রধান কালেকশন বা ✨ সিগনেচার বিভাগ"/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-heading"></i> মূল শিরোনাম *</label>
+              <input type="text" id="scfTitle" class="adm-input" value="আতর ও পারফিউম" placeholder="যেমন: আতর ও পারফিউম" required/>
+            </div>
+
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-align-left"></i> বিস্তারিত বিবরণ</label>
+              <textarea id="scfDesc" class="adm-textarea" rows="2" placeholder="বিশ্বের সেরা আরবি আতর, উদ ও ফরাসি পারফিউম — MIRAZ-এর সিগনেচার কালেকশন।">বিশ্বের সেরা আরবি আতর, উদ ও ফরাসি পারফিউম — MIRAZ-এর সিগনেচার কালেকশন। দীর্ঘস্থায়ী সুগন্ধ, অসাধারণ প্যাকেজিং।</textarea>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-circle-check"></i> ৩টি ফিচার বুলেট (কমা দিয়ে আলাদা করুন)</label>
+              <input type="text" id="scfFeatures" class="adm-input" value="১০০% অরিজিনাল, দীর্ঘস্থায়ী, হালাল সার্টিফাইড" placeholder="যেমন: ১০০% অরিজিনাল, দীর্ঘস্থায়ী, হালাল সার্টিফাইড"/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-arrow-pointer"></i> বাটন টেক্সট</label>
+              <input type="text" id="scfBtnText" class="adm-input" value="পারফিউম কালেকশন দেখুন" placeholder="যেমন: কালেকশন দেখুন"/>
+            </div>
+
+            <!-- 4 Featured Products Selectors -->
+            <div class="adm-input-group adm-form-full" style="background:#131326;padding:1.25rem;border-radius:var(--r-md);border:1px solid rgba(212,168,71,0.25);margin-top:.5rem;">
+              <h4 style="color:var(--gold);font-size:.95rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;">
+                <i class="fas fa-th-large"></i> ডানে প্রদর্শিত ৪টি প্রোডাক্ট নির্বাচন করুন:
+              </h4>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:1rem;">
+                <div>
+                  <label style="display:block;font-size:.8rem;color:var(--text-2);margin-bottom:.35rem;font-weight:600;">১ম প্রোডাক্ট (উপরে বামে):</label>
+                  <select id="scfProd1" class="adm-select" style="font-size:.85rem;padding:.5rem;"></select>
+                </div>
+                <div>
+                  <label style="display:block;font-size:.8rem;color:var(--text-2);margin-bottom:.35rem;font-weight:600;">২য় প্রোডাক্ট (উপরে ডানে):</label>
+                  <select id="scfProd2" class="adm-select" style="font-size:.85rem;padding:.5rem;"></select>
+                </div>
+                <div>
+                  <label style="display:block;font-size:.8rem;color:var(--text-2);margin-bottom:.35rem;font-weight:600;">৩য় প্রোডাক্ট (নিচে বামে):</label>
+                  <select id="scfProd3" class="adm-select" style="font-size:.85rem;padding:.5rem;"></select>
+                </div>
+                <div>
+                  <label style="display:block;font-size:.8rem;color:var(--text-2);margin-bottom:.35rem;font-weight:600;">৪র্থ প্রোডাক্ট (নিচে ডানে):</label>
+                  <select id="scfProd4" class="adm-select" style="font-size:.85rem;padding:.5rem;"></select>
+                </div>
+              </div>
+            </div>
+
+            <div class="adm-form-full" style="display:flex;gap:1rem;margin-top:.75rem;align-items:center;flex-wrap:wrap;">
+              <button type="submit" class="adm-btn-primary" style="padding:.85rem 1.75rem;">
+                <i class="fas fa-save"></i> <span>সিগনেচার শোকেস সংরক্ষণ করুন</span>
+              </button>
+              <button type="button" class="btn-live-store" onclick="resetSignatureShowcase()">
+                <i class="fas fa-rotate-left"></i> <span>ডিফল্ট রিসেট</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Section Intro & Slider Settings -->
+      <div class="admin-box" style="margin-bottom: 2rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-fire" style="color:#ef4444;"></i> অফার ও লাইভ ব্যানার স্লাইডার কন্ট্রোল</h2>
+            <p class="admin-box-sub">ওয়েবসাইটের হোমপেজে যে অফার ব্যানারটি আছে, সেখানে একের পর এক প্রোডাক্ট বিজ্ঞাপনের মতো ঘুরতে থাকবে। আপনি যেকোনো সময় নতুন অফার যোগ করতে পারবেন বা রোটেশন গতি পরিবর্তন করতে পারবেন।</p>
+          </div>
+          <a href="index.html#sale" target="_blank" class="btn-live-store">
+            <i class="fas fa-external-link-alt"></i>
+            <span>লাইভ অফার ব্যানার দেখুন</span>
+          </a>
+        </div>
+
+        <!-- Slider Speed & Auto-rotate Toggle -->
+        <div style="background:#131326;border:1px solid rgba(212,168,71,0.3);border-radius:var(--r-md);padding:1.25rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;">
+          <div style="display:flex;align-items:center;gap:1rem;">
+            <label style="display:flex;align-items:center;gap:.6rem;cursor:pointer;font-size:.9rem;color:#fff;font-weight:600;">
+              <input type="checkbox" id="dealAutoRotateToggle" checked style="width:18px;height:18px;accent-color:var(--gold);"/>
+              <span>অটো-রোটেশন চালু রাখুন (একের পর এক পরিবর্তন হবে)</span>
+            </label>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <label style="font-size:.85rem;color:var(--text-2);"><i class="fas fa-stopwatch"></i> স্লাইড পরিবর্তনের গতি:</label>
+            <select id="dealSpeedSelect" class="adm-select" style="width:160px;padding:.45rem .8rem;font-size:.85rem;">
+              <option value="4000">৪ সেকেন্ড পর পর</option>
+              <option value="5000" selected>৫ সেকেন্ড পর পর (প্রস্তাবিত)</option>
+              <option value="7000">৭ সেকেন্ড পর পর</option>
+              <option value="10000">১০ সেকেন্ড পর পর</option>
+            </select>
+            <button type="button" class="adm-btn-primary" onclick="saveDealSliderSettings()" style="padding:.5rem 1rem;font-size:.82rem;">
+              <i class="fas fa-save"></i> <span>সেভ সেটিংস</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offer Countdown Timer Control Box -->
+      <div class="admin-box" style="margin-bottom: 2rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-clock" style="color:#f59e0b;"></i> অফার কাউন্টডাউন টাইমার নিয়ন্ত্রণ (সময় পরিবর্তন)</h2>
+            <p class="admin-box-sub">ওয়েবসাইটের অফার ব্যানারে যে <strong>১২ ঘণ্টা : ৪৩ মিনিট : ৪৩ সেকেন্ড</strong> সময়টি উল্টোভাবে গণনা হচ্ছে, তা আপনি এখান থেকে যেকোনো সময় পরিবর্তন বা রিসেট করতে পারবেন।</p>
+          </div>
+          <div id="adminTimerPreviewBadge" style="background:rgba(212,168,71,0.18);border:1.5px solid var(--gold);padding:.5rem 1.1rem;border-radius:24px;color:#fff;font-size:.9rem;font-weight:700;display:flex;align-items:center;gap:8px;">
+            <i class="fas fa-stopwatch" style="color:var(--gold);"></i>
+            <span>লাইভ বাকি সময়: <strong id="adminLiveTimerText" style="color:var(--gold-light);font-size:1.05rem;">--:--:--</strong></span>
+          </div>
+        </div>
+
+        <div style="background:#131326;border:1px solid rgba(212,168,71,0.3);border-radius:var(--r-md);padding:1.5rem;">
+          <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.25rem;">
+            <div>
+              <label style="display:block;font-size:.85rem;color:#cbd5e1;margin-bottom:.4rem;font-weight:600;"><i class="fas fa-hourglass-start" style="color:var(--gold);"></i> অফারের ঘণ্টা (Hours):</label>
+              <input type="number" id="dealTimerHoursInput" class="adm-input" min="0" max="720" value="12" style="width:110px;padding:.55rem .8rem;font-size:1rem;font-weight:bold;text-align:center;color:#f0c96e;"/>
+            </div>
+            <div>
+              <label style="display:block;font-size:.85rem;color:#cbd5e1;margin-bottom:.4rem;font-weight:600;"><i class="fas fa-stopwatch" style="color:var(--gold);"></i> অফারের মিনিট (Minutes):</label>
+              <input type="number" id="dealTimerMinutesInput" class="adm-input" min="0" max="59" value="45" style="width:110px;padding:.55rem .8rem;font-size:1rem;font-weight:bold;text-align:center;color:#f0c96e;"/>
+            </div>
+            <div style="margin-top:auto;">
+              <button type="button" class="adm-btn-primary" onclick="saveDealCountdownTimer()" style="padding:.65rem 1.4rem;font-size:.9rem;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fas fa-check-circle"></i> <span>টাইমার সেভ ও শুরু করুন</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Preset Buttons -->
+          <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;padding-top:1rem;border-top:1px dashed rgba(212,168,71,0.25);">
+            <span style="font-size:.82rem;color:var(--text-3);font-weight:600;"><i class="fas fa-bolt" style="color:var(--gold);"></i> এক ক্লিকে সময় নির্ধারণ:</span>
+            <button type="button" class="adm-btn-secondary" onclick="setPresetTimer(6, 0)" style="padding:.35rem .75rem;font-size:.8rem;">৬ ঘণ্টা</button>
+            <button type="button" class="adm-btn-secondary" onclick="setPresetTimer(12, 0)" style="padding:.35rem .75rem;font-size:.8rem;">১২ ঘণ্টা</button>
+            <button type="button" class="adm-btn-secondary" onclick="setPresetTimer(24, 0)" style="padding:.35rem .75rem;font-size:.8rem;">২৪ ঘণ্টা (১ দিন)</button>
+            <button type="button" class="adm-btn-secondary" onclick="setPresetTimer(48, 0)" style="padding:.35rem .75rem;font-size:.8rem;">৪৮ ঘণ্টা (২ দিন)</button>
+            <button type="button" class="adm-btn-secondary" onclick="setPresetTimer(72, 0)" style="padding:.35rem .75rem;font-size:.8rem;">৭২ ঘণ্টা (৩ দিন)</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add New Deal Offer Form -->
+      <div class="admin-box" style="margin-bottom: 2rem;">
+        <h2 class="admin-box-title"><i class="fas fa-plus-circle"></i> নতুন অফার / প্রমোশন ব্যানার যোগ করুন</h2>
+        <p class="admin-box-sub">নিচের ফর্মে দোকানের যেকোনো পণ্য নির্বাচন করুন বা নিজের মতো অফারের হেডলাইন ও ডিসকাউন্ট লিখে সেভ করুন।</p>
+
+        <form id="addDealForm" style="margin-top: 1.5rem;">
+          <div class="adm-form-grid">
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-box-open"></i> সংযুক্ত প্রোডাক্ট নির্বাচন করুন (প্রোডাক্ট সিলেক্ট করলে নাম, দাম ও ছবি অটো-লোড হবে)</label>
+              <select id="dealProductSelect" class="adm-select" onchange="onDealProductSelected(this.value)">
+                <option value="">-- স্টোরের একটি প্রোডাক্ট নির্বাচন করুন (ঐচ্ছিক) --</option>
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-heading"></i> অফারের মূল শিরোনাম *</label>
+              <input type="text" id="dealTitle" class="adm-input" placeholder="যেমন: আরবি আতর কালেকশনে" required/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-sparkles"></i> গোল্ডেন হাইলাইট টেক্সট *</label>
+              <input type="text" id="dealHighlight" class="adm-input" placeholder="যেমন: ৩০% ছাড়! বা বিশেষ ঈদ অফার!" required/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-tag"></i> অফার ট্যাগলাইন / আইকন সহ</label>
+              <input type="text" id="dealTagText" class="adm-input" placeholder="যেমন: বিশেষ অফার — সীমিত সময়" value="বিশেষ অফার — সীমিত সময়"/>
+            </div>
+
+            <div class="adm-input-group">
+              <label><i class="fas fa-percent"></i> ডিসকাউন্ট ব্যাজ লেখা *</label>
+              <input type="text" id="dealBadge" class="adm-input" placeholder="যেমন: 30% OFF বা ২৫% ছাড়" value="30% OFF" required/>
+            </div>
+
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-align-left"></i> অফারের বিবরণ / সাবটাইটেল</label>
+              <input type="text" id="dealDesc" class="adm-input" placeholder="যেমন: বিশ্বের সেরা রাজকীয় খাঁটি সুগন্ধি ও উড এখন আপনার হাতের কাছে। এখনই অর্ডার করুন।"/>
+            </div>
+
+            <div class="adm-input-group adm-form-full">
+              <label><i class="fas fa-image"></i> অফার প্রোডাক্টের ছবি (ফাইল নির্বাচন অথবা লিংক) *</label>
+              <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+                <input type="file" id="dealFile" accept="image/*" class="adm-input" style="flex:1;min-width:220px;padding:.5rem;"/>
+                <span style="color:var(--text-3);font-size:.85rem;">অথবা লিংক:</span>
+                <input type="text" id="dealImgUrl" class="adm-input" placeholder="যেমন: images/attar-1-royal-oud.jpg" style="flex:1;min-width:220px;"/>
+              </div>
+              <div id="dealImgPreviewWrap" style="display:none;margin-top:.75rem;">
+                <img id="dealImgPreview" src="" alt="Deal Preview" style="height:90px;border-radius:10px;border:1px solid var(--gold);object-fit:cover;"/>
+              </div>
+            </div>
+
+            <div class="adm-form-full" style="margin-top:.5rem;">
+              <button type="submit" class="adm-btn-primary" style="padding:.85rem 1.75rem;">
+                <i class="fas fa-plus-circle"></i> <span>নতুন অফার ব্যানার সেভ করুন</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Active Deals List -->
+      <div class="admin-box">
+        <h2 class="admin-box-title"><i class="fas fa-list-check"></i> বর্তমানে সক্রিয় অফার স্লাইডার তালিকা</h2>
+        <p class="admin-box-sub">নিচের অফারগুলো ক্রমান্বয়ে হোমপেজের অফার ব্যানারে লাইভ প্রদর্শিত হচ্ছে। যেকোনো অফার এক ক্লিকেই মুছে ফেলতে পারবেন।</p>
+
+        <div id="adminDealsCardsGrid" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:1.25rem;margin-top:1.25rem;">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: CUSTOMER ORDERS (1-CLICK ORDERS & EXCEL SPREADSHEET) -->
+    <section class="tab-panel" id="tab-orders">
+      <div class="admin-box">
+        <div class="prod-filter-bar">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-receipt"></i> লাইভ কাস্টমার অর্ডার ও এক্সেল স্প্রেডশিট সেন্টার</h2>
+            <p class="admin-box-sub">প্রতিদিনের কাস্টমার অর্ডার স্বয়ংক্রিয়ভাবে কম্পিউটারের এক্সেল শিট ফাইলে জমা হচ্ছে। মোবাইল ও গুগল শিটের সাথেও লাইভ সিঙ্ক করা যাবে।</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+            <div class="order-view-toggle">
+              <button type="button" class="ovt-btn active" id="btnViewList" onclick="switchOrderView('list')">
+                <i class="fas fa-table-list"></i> <span>তালিকা ভিউ</span>
+              </button>
+              <button type="button" class="ovt-btn" id="btnViewExcel" onclick="switchOrderView('excel')">
+                <i class="fas fa-file-excel"></i> <span>এক্সেল স্প্রেডশিট মোড</span>
+              </button>
+            </div>
+            <button class="btn-live-store" id="refreshOrdersBtn">
+              <i class="fas fa-rotate"></i>
+              <span>রিফ্রেশ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 📊 Daily Customer Orders & Live Stats Cards -->
+        <div class="daily-stats-grid">
+          <div class="daily-stat-card" style="border-left: 3px solid #3b82f6;">
+            <div class="daily-stat-icon" style="background: rgba(59,130,246,0.15); color: #60a5fa;">
+              <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="daily-stat-info">
+              <strong id="statTodayOrders">০টি</strong>
+              <span>📅 আজকের কাস্টমার অর্ডার</span>
+              <div style="font-size:.75rem;color:#93c5fd;margin-top:2px;" id="statTodayRevenue">আজকের বিক্রয়: ৳০</div>
+            </div>
+          </div>
+
+          <div class="daily-stat-card" style="border-left: 3px solid #10b981;">
+            <div class="daily-stat-icon" style="background: rgba(16,185,129,0.15); color: #34d399;">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="daily-stat-info">
+              <strong id="statUniqueCustomers">০ জন</strong>
+              <span>👥 মোট কাস্টমার সংখ্যা</span>
+              <div style="font-size:.75rem;color:#6ee7b7;margin-top:2px;" id="statTotalOrdersCount">সর্বমোট ০টি অর্ডার</div>
+            </div>
+          </div>
+
+          <div class="daily-stat-card" style="border-left: 3px solid var(--gold);">
+            <div class="daily-stat-icon" style="background: rgba(212,168,71,0.15); color: var(--gold);">
+              <i class="fas fa-file-excel"></i>
+            </div>
+            <div class="daily-stat-info">
+              <strong style="color:var(--gold);font-size:1.15rem;">স্বয়ংক্রিয় সেভ</strong>
+              <span>💻 আসল এক্সেল শিট</span>
+              <div style="font-size:.75rem;color:var(--gold-light);margin-top:2px;">📁 miraz_orders.xlsx প্রস্তুত</div>
+            </div>
+          </div>
+
+          <div class="daily-stat-card" style="border-left: 3px solid #f59e0b;">
+            <div class="daily-stat-icon" style="background: rgba(245,158,11,0.15); color: #fbbf24;">
+              <i class="fas fa-truck-ramp-box"></i>
+            </div>
+            <div class="daily-stat-info">
+              <strong id="statPendingDeliveryCount">০টি</strong>
+              <span>⏳ পেন্ডিং ডেলিভারি</span>
+              <div style="font-size:.75rem;color:#fde68a;margin-top:2px;">কাস্টমারদের পাঠানো বাকি</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 📅 Daily Orders Breakdown (প্রতিদিন কতজন কাস্টমার অর্ডার করেছে তার হিসাব) -->
+        <div class="daily-breakdown-box">
+          <div class="daily-breakdown-title">
+            <span><i class="fas fa-chart-line"></i> প্রতিদিনের কাস্টমার ও বিক্রয় বিশ্লেষণ (Daily Breakdown)</span>
+            <span style="font-size:.75rem;font-weight:normal;color:var(--text-3);">ক্লিক করে নির্দিষ্ট দিনের অর্ডার ফিল্টার করুন</span>
+          </div>
+          <div class="daily-pills-wrap" id="dailyBreakdownPills">
+            <!-- Dynamic daily breakdown pills populated from orders -->
+            <div class="daily-pill active" onclick="filterOrdersByDay('all', this)">
+              <div class="daily-pill-date">সকল দিন</div>
+              <div class="daily-pill-count" id="pillAllOrdersCount">০টি</div>
+              <div class="daily-pill-total" id="pillAllOrdersTotal">৳০</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Delivery Banner inside Orders Tab -->
+        <div style="background: rgba(212,168,71,0.08); border: 1.5px solid var(--gold); border-radius: var(--r-md); padding: .85rem 1.25rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <div style="width:36px;height:36px;border-radius:50%;background:rgba(212,168,71,0.15);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.1rem;">
+              <i class="fas fa-truck-fast"></i>
+            </div>
+            <div>
+              <strong style="color:#fff;font-size:.9rem;">বর্তমান ক্যাশ অন ডেলিভারি চার্জ:</strong>
+              <span style="color:var(--gold);font-weight:700;font-size:1rem;margin-left:8px;" id="quickDelSummary">
+                ঢাকার ভেতরে: ৳৬০ &nbsp;|&nbsp; ঢাকার বাইরে: ৳১২০
+              </span>
+            </div>
+          </div>
+          <button type="button" class="adm-btn-primary" onclick="document.querySelector('.adm-tab[data-tab=\'tab-delivery\']').click()" style="padding:.5rem 1rem;font-size:.82rem;">
+            <i class="fas fa-pen-to-square"></i> <span>চার্জ পরিবর্তন</span>
+          </button>
+        </div>
+
+        <!-- Order Export & Management Toolbar (Excel & Google Sheets) -->
+        <div style="background: #131326; border: 1.5px solid rgba(16,185,129,0.35); border-radius: var(--r-md); padding: 1.15rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.35);">
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <div style="width:42px;height:42px;border-radius:10px;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;color:#10b981;font-size:1.3rem;">
+              <i class="fas fa-file-excel"></i>
+            </div>
+            <div>
+              <strong style="color:#fff;font-size:.96rem;display:flex;align-items:center;gap:.4rem;">
+                <span>মাইক্রোসফট এক্সেল ও গুগল শিট হাব</span>
+                <span style="background:rgba(16,185,129,0.2);color:#34d399;font-size:.7rem;padding:2px 8px;border-radius:12px;font-weight:600;">আসল .XLSX ফাইল</span>
+              </strong>
+              <p style="font-size:.8rem;color:var(--text-3);margin:.2rem 0 0 0;">
+                ডাউনলোড ফাইলে ক্লিক করলে সরাসরি Microsoft Excel-এ ওপেন হবে এবং গুগল শিটেও ১-ক্লিকে দেখতে পাবেন।
+              </p>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;">
+            <a href="/api/orders/download-excel" target="_blank" class="adm-btn-primary" style="background:#059669;border-color:#10b981;color:#fff;padding:.65rem 1.25rem;font-size:.85rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem;" title="ক্লিক করলে সরাসরি মাইক্রোসফট এক্সেলে খুলবে (.xlsx)">
+              <i class="fas fa-file-excel"></i> <span>মাইক্রোসফট এক্সেল (.XLSX) ডাউনলোড</span>
+            </a>
+            <button type="button" class="btn-live-store" onclick="openDirectGoogleSheets()" style="border-color:#38bdf8;color:#38bdf8;padding:.65rem 1.15rem;font-size:.85rem;" title="ব্রাউজারে সরাসরি নতুন গুগল শিট ওপেন করুন">
+              <i class="fas fa-arrow-up-right-from-square"></i> <span>সরাসরি গুগল শিটে খুলুন</span>
+            </button>
+            <a href="/api/orders/download-csv" target="_blank" class="btn-live-store" style="padding:.65rem 1rem;font-size:.85rem;text-decoration:none;" title="CSV স্প্রেডশিট ডাউনলোড">
+              <i class="fas fa-file-csv"></i> <span>.CSV ডাউনলোড</span>
+            </a>
+            <button type="button" class="btn-live-store" onclick="openGoogleSheetModal()" style="border-color:#34d399;color:#34d399;padding:.65rem 1.15rem;font-size:.85rem;" title="মোবাইলে গুগল শিটে লাইভ অটো-আপডেট সেটআপ">
+              <i class="fab fa-google-drive"></i> <span>মোবাইল অটো-সিঙ্ক</span>
+            </button>
+            <button type="button" class="btn-live-store" onclick="printOrdersInvoiceReport()" style="padding:.65rem 1rem;font-size:.85rem;" title="অর্ডার প্রিন্ট বা PDF হিসেবে সংরক্ষণ করুন">
+              <i class="fas fa-print"></i> <span>প্রিন্ট / চালান</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- VIEW 1: REGULAR CARD & LIST VIEW -->
+        <div id="adminOrdersListView">
+          <!-- Mobile Swipe Hint -->
+          <div class="mobile-swipe-hint" style="font-size:.78rem;color:var(--text-3);margin-bottom:.65rem;display:none;align-items:center;gap:.4rem;padding:.4rem .8rem;background:rgba(212,168,71,0.06);border-radius:6px;border:1px dashed rgba(212,168,71,0.25);">
+            <i class="fas fa-arrows-left-right" style="color:var(--gold);"></i>
+            <span>মোবাইলে পুরো অর্ডার দেখতে টেবিলটি ডানে-বামে আঙুল দিয়ে টানুন (Scroll)</span>
+          </div>
+
+          <div class="adm-table-wrap">
+            <table class="adm-table">
+              <thead>
+                <tr>
+                  <th>অর্ডার আইডি</th>
+                  <th>তারিখ ও সময়</th>
+                  <th>কাস্টমারের নাম ও ফোন</th>
+                  <th>সম্পূর্ণ ঠিকানা</th>
+                  <th>প্রোডাক্ট ও পরিমাণ</th>
+                  <th>সর্বমোট (৳)</th>
+                  <th>স্ট্যাটাস</th>
+                  <th>যোগাযোগ ও অ্যাকশন</th>
+                </tr>
+              </thead>
+              <tbody id="adminOrdersTableBody">
+                <!-- Dynamically populated from localStorage -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- VIEW 2: LIVE EXCEL SPREADSHEET MODE (হুবহু এক্সেল শিটের মতো) -->
+        <div id="adminOrdersExcelView" style="display:none;">
+          <div class="excel-container">
+            <div class="excel-header-bar">
+              <div class="excel-bar-title">
+                <i class="fas fa-file-excel" style="font-size:1.3rem;"></i>
+                <div>
+                  <div>MIRAZ_Customer_Orders_Excel.csv</div>
+                  <div style="font-size:.72rem;opacity:.85;font-weight:normal;">Microsoft Excel & Google Sheets কম্প্যাটিবল লাইভ শিট</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;">
+                <input type="text" class="excel-search-input" id="excelSearchFilter" placeholder="🔍 এক্সেলে খুঁজুন (নাম, ফোন, আইডি)..." oninput="filterExcelRows(this.value)">
+                <a href="/api/orders/download-excel" target="_blank" class="adm-btn-primary" style="background:#fff;color:#107c41;padding:.35rem .85rem;font-size:.8rem;font-weight:700;border:none;">
+                  <i class="fas fa-download"></i> সেভ করুন
+                </a>
+              </div>
+            </div>
+
+            <div class="excel-scroll-area">
+              <table class="excel-table" id="excelSpreadsheetTable">
+                <thead>
+                  <!-- Excel Column Letters Row -->
+                  <tr>
+                    <th class="excel-col-letter">#</th>
+                    <th class="excel-col-letter">A</th>
+                    <th class="excel-col-letter">B</th>
+                    <th class="excel-col-letter">C</th>
+                    <th class="excel-col-letter">D</th>
+                    <th class="excel-col-letter">E</th>
+                    <th class="excel-col-letter">F</th>
+                    <th class="excel-col-letter">G</th>
+                    <th class="excel-col-letter">H</th>
+                    <th class="excel-col-letter">I</th>
+                    <th class="excel-col-letter">J</th>
+                    <th class="excel-col-letter">K</th>
+                    <th class="excel-col-letter">L</th>
+                    <th class="excel-col-letter">M</th>
+                  </tr>
+                  <!-- Excel Column Headers Row -->
+                  <tr>
+                    <th class="excel-col-name" style="text-align:center;">রো</th>
+                    <th class="excel-col-name">অর্ডার আইডি</th>
+                    <th class="excel-col-name">তারিখ ও সময়</th>
+                    <th class="excel-col-name">গ্রাহকের নাম</th>
+                    <th class="excel-col-name">মোবাইল নম্বর</th>
+                    <th class="excel-col-name">সম্পূর্ণ ঠিকানা</th>
+                    <th class="excel-col-name">ডেলিভারি এরিয়া</th>
+                    <th class="excel-col-name">পণ্যের নাম</th>
+                    <th class="excel-col-name">পরিমাণ</th>
+                    <th class="excel-col-name">একক মূল্য (৳)</th>
+                    <th class="excel-col-name">ডেলিভারি চার্জ (৳)</th>
+                    <th class="excel-col-name">সর্বমোট টাকা (৳)</th>
+                    <th class="excel-col-name">পেমেন্ট পদ্ধতি</th>
+                    <th class="excel-col-name">অর্ডার স্ট্যাটাস</th>
+                  </tr>
+                </thead>
+                <tbody id="excelSpreadsheetTbody">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="excel-footer-bar">
+              <div>
+                <span id="excelTotalRowsText">📊 মোট রো: ১টি</span> &nbsp;|&nbsp;
+                <span id="excelAvgOrderText">গড় অর্ডার: ৳০</span>
+              </div>
+              <div>
+                <strong>সর্বমোট রাজস্ব (SUM): <span style="color:#34d399;" id="excelSumRevenueText">৳০</span></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 📱 GOOGLE SHEETS LIVE AUTO-SYNC MODAL -->
+    <div class="gs-modal-backdrop" id="googleSheetModal">
+      <div class="gs-modal-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+          <div style="display:flex;align-items:center;gap:.6rem;">
+            <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.2);display:flex;align-items:center;justify-content:center;color:#34d399;font-size:1.2rem;">
+              <i class="fab fa-google-drive"></i>
+            </div>
+            <div>
+              <h3 style="color:#fff;font-size:1.15rem;margin:0;">গুগল শিট অটোমেটিক সিঙ্ক (Mobile & PC)</h3>
+              <span style="font-size:.78rem;color:var(--text-3);">অর্ডার হওয়ামাত্রই আপনার মোবাইলের গুগল শিটে স্বয়ংক্রিয়ভাবে লেখা হয়ে যাবে</span>
+            </div>
+          </div>
+          <button type="button" onclick="closeGoogleSheetModal()" style="background:none;border:none;color:#94a3b8;font-size:1.4rem;cursor:pointer;">&times;</button>
+        </div>
+
+        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:1rem;margin-bottom:1.25rem;">
+          <h4 style="color:#34d399;font-size:.9rem;margin:0 0 .5rem 0;"><i class="fas fa-circle-check"></i> এটা কিভাবে কাজ করে?</h4>
+          <p style="font-size:.82rem;color:#cbd5e1;line-height:1.5;margin:0;">
+            ১. আপনি গুগল ড্রাইভে গিয়ে একটি নতুন <strong>Google Sheet</strong> খুলবেন।<br/>
+            ২. গুগল শিটের <strong>Extensions &gt; Apps Script</strong> এ গিয়ে নিচের কোডটি পেস্ট করবেন।<br/>
+            ৩. <strong>Deploy &gt; New deployment &gt; Web app</strong> নির্বাচন করে সেভ করবেন।<br/>
+            ৪. প্রাপ্ত লিংকটি নিচের বক্সে পেস্ট করে <strong>"সিঙ্ক চালু করুন"</strong> চাপবেন।<br/>
+            এরপর থেকে যেকোনো কাস্টমার অর্ডার দিলে সাথে সাথে তা আপনার গুগল শিটের নতুন রো হিসেবে যোগ হবে!
+          </p>
+        </div>
+
+        <div style="margin-bottom:1rem;">
+          <label style="display:block;font-size:.85rem;color:#fff;margin-bottom:.4rem;font-weight:600;">Google Apps Script Webhook URL:</label>
+          <input type="url" id="googleSheetWebhookInput" placeholder="https://script.google.com/macros/s/.../exec" style="width:100%;padding:.75rem 1rem;background:#0b0c16;border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;font-size:.85rem;font-family:monospace;">
+        </div>
+
+        <div style="display:flex;gap:.6rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+          <button type="button" class="adm-btn-primary" onclick="saveGoogleSheetWebhook()" style="background:#059669;border-color:#10b981;color:#fff;padding:.65rem 1.25rem;">
+            <i class="fas fa-check"></i> সিঙ্ক লিংক সেভ করুন
+          </button>
+          <button type="button" class="btn-live-store" onclick="copyGoogleAppsScriptCode()" style="padding:.65rem 1.15rem;">
+            <i class="fas fa-code"></i> গুগল শিট স্ক্রিপ্ট কোড কপি করুন
+          </button>
+        </div>
+
+        <div style="background:#090a14;border:1px solid #1e2235;border-radius:8px;padding:.85rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
+            <span style="font-size:.78rem;color:#94a3b8;font-weight:600;">Google Apps Script কোড:</span>
+            <button type="button" onclick="copyGoogleAppsScriptCode()" style="background:none;border:none;color:#34d399;font-size:.75rem;cursor:pointer;"><i class="fas fa-copy"></i> কপি</button>
+          </div>
+          <pre id="gasCodeBlock" style="margin:0;font-size:.72rem;color:#a7f3d0;font-family:monospace;white-space:pre-wrap;max-height:160px;overflow-y:auto;background:rgba(0,0,0,0.4);padding:.6rem;border-radius:6px;">function doPost(e) {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var data = JSON.parse(e.postData.contents);
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow(["অর্ডার আইডি", "তারিখ", "নাম", "ফোন", "ঠিকানা", "পণ্য", "পরিমাণ", "মূল্য", "ডেলিভারি", "সর্বমোট", "পেমেন্ট", "স্ট্যাটাস"]);
+  }
+  sheet.appendRow([
+    data.id, data.date, data.name, data.phone,
+    data.address, data.product, data.qty, data.price,
+    data.delivery, data.total, data.paymentMethod, data.status
+  ]);
+  return ContentService.createTextOutput("OK");
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CUSTOMER MESSAGES INBOX (কাস্টমারদের পাঠানো মেসেজ) -->
+    <section class="tab-panel" id="tab-messages">
+      <div class="admin-box">
+        <div class="prod-filter-bar">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-envelope-open-text" style="color:#60a5fa;"></i> কাস্টমার মেসেজ ইনবক্স</h2>
+            <p class="admin-box-sub">ওয়েবসাইটের 'আমাদের সাথে কথা বলুন' (Contact) ফর্ম থেকে কাস্টমাররা যেসব মেসেজ পাঠায়, সেগুলো এখানে স্বয়ংক্রিয়ভাবে জমা হয়।</p>
+          </div>
+          <button class="btn-live-store" onclick="renderMessagesTable()" style="border-color:#3b82f6; color:#60a5fa; background:rgba(59,130,246,0.12);">
+            <i class="fas fa-rotate"></i>
+            <span>মেসেজ রিফ্রেশ</span>
+          </button>
+        </div>
+
+        <!-- Summary & Info card -->
+        <div style="background: rgba(59,130,246,0.08); border: 1.5px solid #3b82f6; border-radius: var(--r-md); padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+          <div style="display:flex;align-items:center;gap:.75rem;">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;color:#60a5fa;font-size:1.2rem;">
+              <i class="fas fa-inbox"></i>
+            </div>
+            <div>
+              <strong style="color:#fff;font-size:.95rem;">মোট কাস্টমার বার্তা:</strong>
+              <div style="color:#60a5fa;font-weight:700;font-size:1.05rem;margin-top:.15rem;" id="totalMessagesSummary">
+                ০টি নতুন বার্তা
+              </div>
+            </div>
+          </div>
+          <button type="button" class="adm-btn-danger" onclick="clearAllMessages()" style="padding:.55rem 1.1rem;font-size:.82rem;">
+            <i class="fas fa-trash-can"></i> <span>সব মেসেজ পরিষ্কার করুন</span>
+          </button>
+        </div>
+
+        <!-- Messages Table -->
+        <div class="adm-table-wrap">
+          <table class="adm-table">
+            <thead>
+              <tr>
+                <th>আইডি ও সময়</th>
+                <th>কাস্টমারের নাম</th>
+                <th>মোবাইল নম্বর</th>
+                <th>ইমেইল</th>
+                <th>বিষয়</th>
+                <th style="min-width:220px;">বার্তা (Message)</th>
+                <th>অ্যাকশন</th>
+              </tr>
+            </thead>
+            <tbody id="adminMessagesTableBody">
+              <!-- Dynamically populated from localStorage -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB: DELIVERY CHARGE SETTINGS (ডেলিভারি চার্জ নিয়ন্ত্রণ) -->
+    <section class="tab-panel" id="tab-delivery">
+      <div class="admin-box" style="border: 1.5px solid var(--gold); box-shadow: 0 4px 30px rgba(0,0,0,0.5);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem;">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-truck-fast" style="color:var(--gold);"></i> ক্যাশ অন ডেলিভারি চার্জ সেটিংস</h2>
+            <p class="admin-box-sub">হোমপেজের ১-ক্লিক অর্ডার ফর্ম এবং কুইক ভিউ চেকআউটে প্রদর্শিত ডেলিভারি চার্জ এখান থেকে খুব সহজে পরিবর্তন করতে পারবেন।</p>
+          </div>
+          <a href="index.html" target="_blank" class="btn-live-store">
+            <i class="fas fa-external-link-alt"></i> <span>লাইভ চেকআউট ফর্ম দেখুন</span>
+          </a>
+        </div>
+
+        <form id="deliveryChargeForm" onsubmit="saveDeliveryCharges(event)">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem;margin-bottom:1.5rem;">
+            <div class="adm-input-group" style="background:#131326;padding:1.25rem;border-radius:var(--r-md);border:1px solid rgba(212,168,71,0.3);">
+              <label style="font-size:1rem;margin-bottom:.6rem;"><i class="fas fa-city" style="color:var(--gold);"></i> <strong>ঢাকার ভেতরে ডেলিভারি চার্জ (টাকা) *</strong></label>
+              <input type="number" id="delChargeInside" class="adm-input" value="60" min="0" step="1" required style="font-size:1.2rem;font-weight:700;color:var(--gold);padding:.75rem;"/>
+              <span style="font-size:.78rem;color:var(--text-3);margin-top:.4rem;display:block;">বর্তমান ডিফল্ট: ৬০ টাকা</span>
+            </div>
+
+            <div class="adm-input-group" style="background:#131326;padding:1.25rem;border-radius:var(--r-md);border:1px solid rgba(96,165,250,0.3);">
+              <label style="font-size:1rem;margin-bottom:.6rem;"><i class="fas fa-map-location-dot" style="color:#60a5fa;"></i> <strong>ঢাকার বাইরে ডেলিভারি চার্জ (টাকা) *</strong></label>
+              <input type="number" id="delChargeOutside" class="adm-input" value="120" min="0" step="1" required style="font-size:1.2rem;font-weight:700;color:#60a5fa;padding:.75rem;"/>
+              <span style="font-size:.78rem;color:var(--text-3);margin-top:.4rem;display:block;">বর্তমান ডিফল্ট: ১২০ টাকা</span>
+            </div>
+
+            <div class="adm-input-group" style="background:#131326;padding:1.25rem;border-radius:var(--r-md);border:1px solid rgba(52,211,153,0.3);">
+              <label style="font-size:1rem;margin-bottom:.6rem;"><i class="fas fa-gift" style="color:#34d399;"></i> <strong>ফ্রি ডেলিভারি অফার (ন্যূনতম অর্ডার)</strong></label>
+              <input type="number" id="delFreeAbove" class="adm-input" placeholder="যেমন: ৩০০০ (খালি রাখলে প্রযোজ্য নয়)" min="0" step="50" style="font-size:1.2rem;padding:.75rem;"/>
+              <span style="font-size:.78rem;color:var(--text-3);margin-top:.4rem;display:block;">ক্রেতা এত টাকার পণ্য কিনলে ডেলিভারি স্বয়ংক্রিয়ভাবে ফ্রি হবে।</span>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:center;">
+            <button type="submit" class="adm-btn-primary" style="padding:.9rem 2rem;font-size:1rem;">
+              <i class="fas fa-save"></i> <span>ডেলিভারি চার্জ সংরক্ষণ করুন</span>
+            </button>
+            <button type="button" class="btn-live-store" onclick="resetDeliveryCharges()" style="padding:.9rem 1.5rem;font-size:.95rem;">
+              <i class="fas fa-rotate-left"></i> <span>ডিফল্ট রিসেট (৬০/১২০)</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- TAB 4: STORE SETTINGS & DATA -->
+    <section class="tab-panel" id="tab-settings">
+      <div class="admin-box">
+        <h2 class="admin-box-title"><i class="fas fa-sliders"></i> দোকান সেটিংস ও ব্যাকআপ</h2>
+        <p class="admin-box-sub">আপনার স্টোরের ডেটা ব্যাকআপ নেওয়া এবং ডিফল্ট ডেটায় রিসেট করার ব্যবস্থা।</p>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;">
+          <div style="background:#090910;padding:1.5rem;border-radius:var(--r-md);border:1px solid var(--gold);">
+            <h4 style="color:var(--gold);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;">
+              <i class="fas fa-key"></i> <span>সিক্রেট পিন পরিবর্তন করুন</span>
+            </h4>
+            <p style="font-size:.82rem;color:var(--text-3);margin-bottom:1rem;">আপনার অ্যাডমিন প্যানেলের সিকিউরিটি বাড়াতে নিজের পছন্দমতো নতুন পিন কোড সেট করুন।</p>
+            <form id="changePinForm" onsubmit="updateAdminPin(event)">
+              <div style="margin-bottom:.75rem;">
+                <label style="display:block;font-size:.78rem;color:var(--text-2);margin-bottom:.3rem;">বর্তমান পিন:</label>
+                <input type="password" id="currPinInput" class="adm-input" placeholder="বর্তমান পিন লিখুন" required style="font-size:.85rem;padding:.5rem;"/>
+              </div>
+              <div style="margin-bottom:.75rem;">
+                <label style="display:block;font-size:.78rem;color:var(--text-2);margin-bottom:.3rem;">নতুন সিক্রেট পিন:</label>
+                <input type="password" id="newPinInput" class="adm-input" placeholder="নতুন পিন দিন" required style="font-size:.85rem;padding:.5rem;"/>
+              </div>
+              <div style="margin-bottom:1rem;">
+                <label style="display:block;font-size:.78rem;color:var(--text-2);margin-bottom:.3rem;">নতুন পিন পুনরায় দিন:</label>
+                <input type="password" id="confirmPinInput" class="adm-input" placeholder="নতুন পিন নিশ্চিত করুন" required style="font-size:.85rem;padding:.5rem;"/>
+              </div>
+              <button type="submit" class="adm-btn-primary" style="width:100%;justify-content:center;padding:.65rem 1rem;font-size:.85rem;">
+                <i class="fas fa-save"></i> <span>পিন সেভ করুন</span>
+              </button>
+            </form>
+          </div>
+
+          <div style="background:#090910;padding:1.5rem;border-radius:var(--r-md);border:1px solid var(--admin-border);">
+            <h4 style="color:var(--gold);margin-bottom:.5rem;"><i class="fas fa-file-export"></i> অর্ডার ডেটা এক্সপোর্ট</h4>
+            <p style="font-size:.82rem;color:var(--text-3);margin-bottom:1rem;">কাস্টমারদের সকল অর্ডার JSON ফরম্যাটে ডাউনলোড করে এক্সেল বা ড্রাইভ ব্যাকআপে রাখুন।</p>
+            <button class="btn-live-store" onclick="exportOrdersJson()">
+              <i class="fas fa-download"></i>
+              <span>অর্ডার ডেটা ডাউনলোড করুন</span>
+            </button>
+          </div>
+
+          <div style="background:#090910;padding:1.5rem;border-radius:var(--r-md);border:1px solid var(--admin-border);">
+            <h4 style="color:#f87171;margin-bottom:.5rem;"><i class="fas fa-triangle-exclamation"></i> ডেমো ডেটা রিসেট</h4>
+            <p style="font-size:.82rem;color:var(--text-3);margin-bottom:1rem;">নতুন করে শুরু করতে চাইলে কাস্টম প্রোডাক্ট ও অর্ডার লিস্ট রিসেট করতে পারবেন।</p>
+            <button class="btn-logout" onclick="clearAdminData()">
+              <i class="fas fa-trash"></i>
+              <span>সকল কাস্টম ডেটা ক্লিয়ার করুন</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: VIDEO REELS MANAGEMENT -->
+    <section class="tab-panel" id="tab-videos">
+      <div class="admin-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
+          <div>
+            <h2 class="admin-box-title"><i class="fas fa-video"></i> MIRAZ প্রোডাক্ট ভিডিও রিলস গ্যালারি</h2>
+            <p class="admin-box-sub">আপনার স্টোরে প্রদর্শিত বাস্তব প্রোডাক্ট ভিডিও প্রিভিউ ও ফাইল ম্যানেজমেন্ট।</p>
+          </div>
+          <a href="index.html#videoReels" target="_blank" class="btn-live-store">
+            <i class="fas fa-play"></i>
+            <span>লাইভ ভিডিও সেকশন দেখুন</span>
+          </a>
+        </div>
+
+        <!-- Video Location Note -->
+        <div style="background:rgba(212,168,71,0.08);border:1px solid var(--gold);padding:1rem 1.25rem;border-radius:var(--r-md);margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:.8rem;">
+          <i class="fas fa-folder-open" style="color:var(--gold);font-size:1.4rem;margin-top:2px;"></i>
+          <div style="font-size:.85rem;line-height:1.6;">
+            <strong style="color:var(--gold-light);">ভিডিও ফাইল লোকেশন:</strong> <code>c:\Users\mdtus\Downloads\miraz.com\videos\</code><br/>
+            যেকোনো নতুন ভিডিও এই ফোল্ডারে পেস্ট করে <code>video-1.mp4</code>, <code>video-2.mp4</code> নামে প্রতিস্থাপন করতে পারেন, অথবা নিচের ফর্ম দিয়ে সরাসরি ব্রাউজার থেকেই আপলোড করতে পারেন।
+          </div>
+        </div>
+
+        <!-- Direct Video Reel Upload Form -->
+        <div style="background:#131326;border:1.5px solid var(--gold);border-radius:var(--r-md);padding:1.5rem;margin-bottom:2rem;box-shadow:0 8px 30px rgba(0,0,0,0.5);">
+          <h3 style="color:var(--gold);font-size:1.15rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.6rem;">
+            <i class="fas fa-cloud-arrow-up"></i> সরাসরি নতুন ভিডিও রিলস আপলোড ও পোস্ট করুন
+          </h3>
+          <p style="font-size:.82rem;color:var(--text-3);margin-bottom:1.25rem;">আপনার ফোন বা কম্পিউটার থেকে সরাসরি যেকোনো প্রডাক্টের ভিডিও সিলেক্ট করে ওয়েবসাইটে লাইভ রিলস পোস্ট করুন।</p>
+          
+          <form id="addReelForm" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;align-items:end;">
+            <div>
+              <label style="display:block;font-size:.82rem;color:#fff;margin-bottom:.4rem;font-weight:600;"><i class="fas fa-video"></i> ভিডিও ফাইল নির্বাচন করুন (MP4) *</label>
+              <input type="file" id="newReelFile" accept="video/mp4,video/*" class="adm-input" style="padding:.5rem;" required/>
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:#fff;margin-bottom:.4rem;font-weight:600;"><i class="fas fa-heading"></i> রিলসের নাম / শিরোনাম *</label>
+              <input type="text" id="newReelTitle" class="adm-input" placeholder="যেমন: MIRAZ গোল্ডেন পারফিউম" required/>
+            </div>
+            <div>
+              <label style="display:block;font-size:.82rem;color:#fff;margin-bottom:.4rem;font-weight:600;"><i class="fas fa-bangladeshi-taka-sign"></i> বিক্রয় মূল্য (৳) *</label>
+              <input type="number" id="newReelPrice" class="adm-input" placeholder="যেমন: 2200" required/>
+            </div>
+            <div>
+              <button type="submit" class="adm-btn-primary" style="width:100%;justify-content:center;padding:.85rem 1rem;">
+                <i class="fas fa-paper-plane"></i> <span>ভিডিও রিলস পোস্ট করুন</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Selected Video Live Preview Box -->
+          <div id="reelPreviewWrap" style="display:none;margin-top:1.25rem;padding:1rem;background:#090910;border-radius:var(--r-sm);border:1px dashed var(--gold);">
+            <div style="font-size:.82rem;color:var(--gold);font-weight:700;margin-bottom:.6rem;">
+              <i class="fas fa-eye"></i> নির্বাচিত ভিডিও প্রিভিউ (Live Preview):
+            </div>
+            <video id="newReelPreviewVid" controls playsinline style="max-height:220px;border-radius:var(--r-sm);background:#000;"></video>
+          </div>
+        </div>
+
+        <!-- Video Preview Grid -->
+        <h3 style="color:#fff;font-size:1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem;">
+          <i class="fas fa-clapperboard" style="color:var(--gold);"></i> বর্তমানে সক্রিয় ভিডিও রিলস সমূহ:
+        </h3>
+        <!-- Dynamic User Uploaded Reels -->
+        <div id="customReelsContainer" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;margin-bottom:1.25rem;"></div>
+
+        <!-- Base Reels -->
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem;">
+          <!-- Reel 1 -->
+          <div id="adm-vid-card-1" style="background:#090910;border:1px solid var(--admin-border);border-radius:var(--r-md);padding:1rem;display:flex;flex-direction:column;gap:.75rem;transition:var(--t-fast);">
+            <video src="videos/video-1.mp4" controls playsinline style="width:100%;aspect-ratio:9/16;max-height:260px;object-fit:cover;border-radius:var(--r-sm);background:#000;"></video>
+            <div>
+              <span style="font-size:.72rem;color:var(--gold);font-weight:600;">রিলস ১</span>
+              <h4 style="font-size:.9rem;color:#fff;margin:.2rem 0;">MIRAZ Royal Edition</h4>
+              <p style="font-size:.75rem;color:var(--text-3);">ফাইল: <code>videos/video-1.mp4</code></p>
+            </div>
+            <button id="btn-del-vid-1" onclick="toggleDeleteVideo(1)" style="margin-top:auto;padding:.6rem;border-radius:var(--r-sm);font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;border:1px solid #ef4444;background:rgba(239,68,68,0.15);color:#ef4444;transition:var(--t-fast);">
+              <i class="fas fa-trash"></i> <span>ওয়েবসাইট থেকে ডিলিট করুন</span>
+            </button>
+          </div>
+
+          <!-- Reel 2 -->
+          <div id="adm-vid-card-2" style="background:#090910;border:1px solid var(--admin-border);border-radius:var(--r-md);padding:1rem;display:flex;flex-direction:column;gap:.75rem;transition:var(--t-fast);">
+            <video src="videos/video-2.mp4" controls playsinline style="width:100%;aspect-ratio:9/16;max-height:260px;object-fit:cover;border-radius:var(--r-sm);background:#000;"></video>
+            <div>
+              <span style="font-size:.72rem;color:var(--gold);font-weight:600;">রিলস ২</span>
+              <h4 style="font-size:.9rem;color:#fff;margin:.2rem 0;">MIRAZ The Edge Edition</h4>
+              <p style="font-size:.75rem;color:var(--text-3);">ফাইল: <code>videos/video-2.mp4</code></p>
+            </div>
+            <button id="btn-del-vid-2" onclick="toggleDeleteVideo(2)" style="margin-top:auto;padding:.6rem;border-radius:var(--r-sm);font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;border:1px solid #ef4444;background:rgba(239,68,68,0.15);color:#ef4444;transition:var(--t-fast);">
+              <i class="fas fa-trash"></i> <span>ওয়েবসাইট থেকে ডিলিট করুন</span>
+            </button>
+          </div>
+
+          <!-- Reel 3 -->
+          <div id="adm-vid-card-3" style="background:#090910;border:1px solid var(--admin-border);border-radius:var(--r-md);padding:1rem;display:flex;flex-direction:column;gap:.75rem;transition:var(--t-fast);">
+            <video src="videos/video-3.mp4" controls playsinline style="width:100%;aspect-ratio:9/16;max-height:260px;object-fit:cover;border-radius:var(--r-sm);background:#000;"></video>
+            <div>
+              <span style="font-size:.72rem;color:var(--gold);font-weight:600;">রিলস ৩</span>
+              <h4 style="font-size:.9rem;color:#fff;margin:.2rem 0;">MIRAZ The Edge of Night</h4>
+              <p style="font-size:.75rem;color:var(--text-3);">ফাইল: <code>videos/video-3.mp4</code></p>
+            </div>
+            <button id="btn-del-vid-3" onclick="toggleDeleteVideo(3)" style="margin-top:auto;padding:.6rem;border-radius:var(--r-sm);font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;border:1px solid #ef4444;background:rgba(239,68,68,0.15);color:#ef4444;transition:var(--t-fast);">
+              <i class="fas fa-trash"></i> <span>ওয়েবসাইট থেকে ডিলিট করুন</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="admin-toast" id="adminToast">
+    <i class="fas fa-check-circle" style="color:var(--gold);"></i>
+    <span id="adminToastMsg">সফলভাবে সম্পন্ন হয়েছে!</span>
+  </div>
+
+  <script>
+    // Secret PIN Authentication (Customizable, Multi-PIN Support & Eye Toggle)
+    const getAdminPin = () => (localStorage.getItem('miraz_admin_custom_pin') || 'miraz2026').trim();
+    const pinModal = document.getElementById('pinModal');
+    const pinForm  = document.getElementById('pinForm');
+    const pinInput = document.getElementById('pinInput');
+    const togglePinVis = document.getElementById('togglePinVis');
+    const eyeIcon = document.getElementById('eyeIcon');
+
+    // Eye Toggle: Show/Hide Password
+    if (togglePinVis) {
+      togglePinVis.addEventListener('click', () => {
+        if (pinInput.type === 'password') {
+          pinInput.type = 'text';
+          eyeIcon.className = 'fas fa-eye-slash';
+        } else {
+          pinInput.type = 'password';
+          eyeIcon.className = 'fas fa-eye';
+        }
+      });
+    }
+
+    // Auto unlock if already logged in this session
+    if (sessionStorage.getItem('miraz_admin_auth') === 'true') {
+      pinModal.classList.add('unlocked');
+    }
+
+    // PIN Verification Function
+    const isValidPin = (val) => {
+      const clean = val.trim().toLowerCase();
+      if (!clean) return false;
+      const custom = getAdminPin().toLowerCase();
+      // Allow custom pin or any common owner PINs (miraz2026, 2026, 1234, admin, phone)
+      const allowed = [custom, 'miraz2026', '2026', '1234', 'admin', '0133', '01339564967'];
+      return allowed.includes(clean);
+    };
+
+    pinForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (isValidPin(pinInput.value)) {
+        sessionStorage.setItem('miraz_admin_auth', 'true');
+        pinModal.classList.add('unlocked');
+        showAdminToast('👑 স্বাগতম অ্যাডমিন! MIRAZ ড্যাশবোর্ডে প্রবেশ করেছেন।');
+        loadAllAdminData();
+      } else {
+        alert('❌ ভুল পিন কোড!\n\nআপনি নিচের যেকোনো একটি পিন দিয়ে ঢুকতে পারবেন:\n• 2026\n• miraz2026\n• 1234\n\n(ড্যাশবোর্ডের ভেতরে গিয়ে দোকান সেটিংস থেকে যেকোনো সময় নতুন পিন সেট করতে পারবেন)');
+        pinInput.value = '';
+        pinInput.focus();
+      }
+    });
+
+    // Change Admin PIN Logic
+    window.updateAdminPin = (e) => {
+      e.preventDefault();
+      const curr = document.getElementById('currPinInput').value.trim();
+      const newP = document.getElementById('newPinInput').value.trim();
+      const conf = document.getElementById('confirmPinInput').value.trim();
+
+      if (!isValidPin(curr)) {
+        alert('❌ বর্তমান সিক্রেট পিনটি ভুল হয়েছে! আবার চেষ্টা করুন।');
+        return;
+      }
+      if (newP.length < 4) {
+        alert('❌ নতুন পিন কোড কমপক্ষে ৪ ডিজিটের হতে হবে!');
+        return;
+      }
+      if (newP !== conf) {
+        alert('❌ নতুন পিন এবং নিশ্চিতকরণ পিন মেলেনি!');
+        return;
+      }
+
+      localStorage.setItem('miraz_admin_custom_pin', newP);
+      document.getElementById('changePinForm').reset();
+      showAdminToast('🔐 সিক্রেট পিন সফলভাবে পরিবর্তন করা হয়েছে!');
+    };
+
+    document.getElementById('adminLogoutBtn').addEventListener('click', () => {
+      sessionStorage.removeItem('miraz_admin_auth');
+      pinModal.classList.remove('unlocked');
+    });
+
+    // Preset Media Selector (Image or Video)
+    let selectedImageSrc = 'images/perfume-royal-1.jpg';
+    window.choosePreset = (src) => {
+      selectedImageSrc = src;
+      const img = document.getElementById('addImgPreview');
+      const vid = document.getElementById('addVidPreview');
+      if (src.endsWith('.mp4') || src.includes('video')) {
+        img.style.display = 'none';
+        vid.style.display = 'block';
+        vid.src = src;
+        vid.play().catch(() => {});
+      } else {
+        vid.style.display = 'none';
+        img.style.display = 'block';
+        img.src = src;
+      }
+      document.getElementById('pImageUrl').value = '';
+    };
+
+    // File Upload with instant image or video preview
+    document.getElementById('pImageFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const img = document.getElementById('addImgPreview');
+        const vid = document.getElementById('addVidPreview');
+        if (file.type.startsWith('video/')) {
+          const videoUrl = URL.createObjectURL(file);
+          selectedImageSrc = videoUrl;
+          img.style.display = 'none';
+          vid.style.display = 'block';
+          vid.src = videoUrl;
+          vid.play().catch(() => {});
+          showAdminToast('🎬 ভিডিও ফাইল সফলভাবে লোড হয়েছে!');
+        } else {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            selectedImageSrc = evt.target.result;
+            vid.style.display = 'none';
+            img.style.display = 'block';
+            img.src = selectedImageSrc;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+
+    document.getElementById('pImageUrl').addEventListener('input', function(e) {
+      const val = e.target.value.trim();
+      if (val) {
+        selectedImageSrc = val;
+        const img = document.getElementById('addImgPreview');
+        const vid = document.getElementById('addVidPreview');
+        if (val.endsWith('.mp4') || val.includes('video')) {
+          img.style.display = 'none';
+          vid.style.display = 'block';
+          vid.src = val;
+        } else {
+          vid.style.display = 'none';
+          img.style.display = 'block';
+          img.src = val;
+        }
+      }
+    });
+
+    // Tab Navigation
+    document.querySelectorAll('.adm-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.adm-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        const targetPanel = document.getElementById(tab.dataset.tab);
+        if (targetPanel) targetPanel.classList.add('active');
+
+        if (tab.dataset.tab === 'tab-messages') {
+          renderMessagesTable();
+        } else if (tab.dataset.tab === 'tab-orders') {
+          renderOrdersTable();
+        }
+      });
+    });
+
+    // Default Products (Reference - Synchronized with main store)
+    const baseProducts = [
+      // 1. সুগন্ধি
+      { id: 1, name: 'MIRAZ Royal Collection - Extrait De Parfum', cat: 'perfume', price: 4200, old: 5500, badge: 'sale', image: 'images/perfume-royal-1.jpg', rating: 5.0 },
+      { id: 2, name: 'MIRAZ The Edge - Extrait De Parfum', cat: 'perfume', price: 3800, old: 4800, badge: 'hot', image: 'images/perfume-the-edge.jpg', rating: 4.9 },
+      { id: 3, name: 'MIRAZ The Edge of Night', cat: 'perfume', price: 3900, old: 4900, badge: 'new', image: 'images/perfume-edge-night.jpg', rating: 5.0 },
+      { id: 4, name: 'MIRAZ Marble Reserve - Royal Oud', cat: 'perfume', price: 4500, old: 6000, badge: 'sale', image: 'images/perfume-royal-marble.jpg', rating: 5.0 },
+      { id: 5, name: 'MIRAZ Waterfall Bloom - Royal Extrait', cat: 'perfume', price: 4300, old: 5200, badge: 'new', image: 'images/perfume-royal-waterfall.jpg', rating: 4.9 },
+      // 2. আতর ও ফ্রেশনার (৬টি খাঁটি আতর ও ৩টি ফ্রেশনার)
+      { id: 11, name: 'MIRAZ অ্যারাবিয়ান রয়েল উদ আতর (১২মিলি)', cat: 'perfume', price: 1850, old: 2200, badge: 'royal', image: 'images/attar-1-royal-oud.jpg', rating: 5.0 },
+      { id: 12, name: 'MIRAZ জান্নাতুল ফিরদাউস প্রিমিয়াম আতর (১২মিলি)', cat: 'perfume', price: 1450, old: 1800, badge: 'hot', image: 'images/attar-4-jannat-firdaus.jpg', rating: 4.9 },
+      { id: 31, name: 'MIRAZ রয়েল হোয়াইট উদ ও আম্বার আতর', cat: 'perfume', price: 2100, old: 2600, badge: 'royal', image: 'images/attar-2-white-oud.jpg', rating: 5.0 },
+      { id: 32, name: 'MIRAZ তায়েফি খাঁটি গোলাপ আতর (১২মিলি)', cat: 'perfume', price: 1650, old: 2100, badge: 'new', image: 'images/attar-3-taif-rose.jpg', rating: 4.9 },
+      { id: 33, name: 'MIRAZ কাশ্মীরি কস্তূরী ব্ল্যাক মাস্ক আতর', cat: 'perfume', price: 1950, old: 2400, badge: 'hot', image: 'images/attar-5-kasturi.jpg', rating: 5.0 },
+      { id: 34, name: 'MIRAZ মুখাল্লাত আল-খলিজ লাক্সারি আতর', cat: 'perfume', price: 1750, old: 2250, badge: 'royal', image: 'images/attar-6-mukhallat.jpg', rating: 4.8 },
+      { id: 13, name: 'MIRAZ রোজ অ্যান্ড বেরি লাক্সারি রুম ফ্রেশনার স্প্রে', cat: 'perfume', price: 850, old: 1100, badge: 'new', image: 'images/freshener-1-mist.jpg', rating: 4.8 },
+      { id: 14, name: 'MIRAZ ওশান প্যারাডাইস ফ্রেশ এয়ার রুম স্প্রে', cat: 'perfume', price: 890, old: 1150, badge: 'hot', image: 'images/freshener-2-ocean.jpg', rating: 4.9 },
+      { id: 35, name: 'MIRAZ ভায়োলেট ও ল্যাভেন্ডার রিল্যাক্সিং রুম মিস্ট', cat: 'perfume', price: 920, old: 1200, badge: 'sale', image: 'images/freshener-3-lavender.jpg', rating: 4.9 },
+      // 3. লেডিস ফ্যাশন
+      { id: 6, name: 'MIRAZ এক্সক্লুসিভ জর্জেট এমব্রয়ডারি থ্রি-পিস', cat: 'ladies', price: 3600, old: 4500, badge: 'hot', image: 'images/clothing-threepiece-silk.jpg', rating: 4.9 },
+      { id: 7, name: 'MIRAZ প্রিমিয়াম বেনারসি কাতান শাড়ি', cat: 'ladies', price: 5800, old: 7500, badge: 'royal', image: 'images/clothing-saree-katan.jpg', rating: 5.0 },
+      { id: 8, name: 'MIRAZ ডিজাইনার ব্রাইডাল পার্টি লেহেঙ্গা', cat: 'ladies', price: 8500, old: 11000, badge: 'royal', image: 'images/clothing-lehenga-party.jpg', rating: 5.0 },
+      { id: 9, name: 'MIRAZ প্রিমিয়াম কটন কুর্তি ও পালাজো সেট', cat: 'ladies', price: 2400, old: 3000, badge: 'new', image: 'images/clothing-kurti-cotton.jpg', rating: 4.8 },
+      // 4. জেন্টস ও কিডস
+      { id: 15, name: 'MIRAZ রয়েল জেন্টস কাবলি পাঞ্জাবি সেট', cat: 'clothing', price: 3800, old: 4800, badge: 'hot', image: 'images/clothing-panjabi-royal.jpg', rating: 4.9 },
+      { id: 16, name: 'MIRAZ প্রিমিয়াম সেমি-লং সুতি পাঞ্জাবি', cat: 'clothing', price: 2600, old: 3200, badge: 'sale', image: 'images/clothing-panjabi-semilong.jpg', rating: 4.8 },
+      { id: 17, name: 'MIRAZ এক্সক্লুসিভ লাক্সারি ফরমাল শার্ট', cat: 'clothing', price: 1950, old: 2500, badge: 'new', image: 'images/clothing-gents-shirt.jpg', rating: 4.8 },
+      { id: 18, name: 'MIRAZ কিডস ফেস্টিভ্যাল পার্টি ফ্রক', cat: 'clothing', price: 1650, old: 2100, badge: 'new', image: 'images/clothing-kids-party.jpg', rating: 4.9 },
+      { id: 19, name: 'MIRAZ কিডস প্রিন্স পাঞ্জাবি ও পায়জামা সেট', cat: 'clothing', price: 1550, old: 1950, badge: 'hot', image: 'images/clothing-kids-kurta.jpg', rating: 4.9 },
+      // 5. কসমেটিক
+      { id: 20, name: 'ম্যাট ভেলভেট লিপস্টিক গিফট বক্স (১২ শেডস)', cat: 'cosmetics', price: 1450, old: 1850, badge: 'hot', image: 'images/cosmetics-lipstick-set.jpg', rating: 4.9 },
+      { id: 21, name: 'লাক্সারি গোল্ডেন আইশ্যাডো প্যালেট কালেকশন', cat: 'cosmetics', price: 1350, old: 1700, badge: 'new', image: 'images/cosmetics-eyeshadow.jpg', rating: 4.8 },
+      { id: 22, name: 'ভিটামিন সি গ্লো ফেস সিরাম ও ক্রিম সেট', cat: 'cosmetics', price: 1150, old: 1500, badge: 'hot', image: 'images/cosmetics-face-serum.jpg', rating: 4.9 },
+      { id: 23, name: 'অ্যালোভেরা ডিপ হাইড্রেটিং স্কিন টোনার', cat: 'cosmetics', price: 750, old: 950, badge: 'new', image: 'images/cosmetics-toner.jpg', rating: 4.8 },
+      { id: 24, name: 'হারবাল অ্যান্টি-হেয়ারফল গ্রোথ সিরাম ও অয়েল', cat: 'cosmetics', price: 1250, old: 1600, badge: 'sale', image: 'images/cosmetics-hair-serum.jpg', rating: 4.9 },
+      // 6. শোপিস, গিফট ও জুয়েলারি
+      { id: 25, name: 'ক্রিস্টাল গোল্ডেন ফুলদানি লাক্সারি শোপিস', cat: 'showpiece', price: 2200, old: 2800, badge: 'new', image: 'images/showpiece-crystal-vase.jpg', rating: 4.8 },
+      { id: 26, name: 'গোল্ডেন রয়েল পিকক আর্ট লাক্সারি শোপিস', cat: 'showpiece', price: 2850, old: 3600, badge: 'royal', image: 'images/showpiece-golden-peacock.jpg', rating: 5.0 },
+      { id: 27, name: 'MIRAZ সিগনেচার পারফিউম কম্বো গিফট বক্স', cat: 'showpiece', price: 5200, old: 6800, badge: 'hot', image: 'images/gift-perfume-box.jpg', rating: 5.0 },
+      { id: 28, name: 'প্রিমিয়াম গোল্ড-প্লেটেড কুন্দন নেকলেস সেট', cat: 'showpiece', price: 3600, old: 4800, badge: 'sale', image: 'images/jewelry-kundan-set.jpg', rating: 4.9 },
+      { id: 29, name: 'রয়েল সলিটায়ার ডায়মন্ড ক্রিস্টাল রিং', cat: 'showpiece', price: 1850, old: 2400, badge: 'new', image: 'images/jewelry-diamond-ring.jpg', rating: 4.9 },
+      { id: 30, name: 'ট্রেডিশনাল গোল্ড-প্লেটেড ঝুমকা ইয়াররিংস', cat: 'showpiece', price: 1450, old: 1900, badge: 'hot', image: 'images/jewelry-earrings-gold.jpg', rating: 4.8 }
+    ];
+
+    // ── Categories System ──
+    const baseCategories = [
+      { id: 'perfume', name: 'পারফিউম & আতর', icon: 'fas fa-spray-can-sparkles', desc: 'বিশ্বের সেরা আরবি আতর, উদ ও ফরাসি পারফিউম', isBase: true },
+      { id: 'ladies', name: 'লেডিস ফ্যাশন', icon: 'fas fa-person-dress', desc: 'কাতান শাড়ি, ডিজাইনার থ্রি-পিস ও পার্টি ওয়্যার', isBase: true },
+      { id: 'clothing', name: 'সকল পোশাক', icon: 'fas fa-user-tie', desc: 'রয়েল পাঞ্জাবি, শার্ট ও বাচ্চাদের পোশাক', isBase: true },
+      { id: 'cosmetics', name: 'কসমেটিক ও স্কিনকেয়ার', icon: 'fas fa-spa', desc: 'মেকআপ কিট, সিরাম ও গ্লো কেয়ার', isBase: true },
+      { id: 'showpiece', name: 'শোপিস & লাক্সারি গিফট', icon: 'fas fa-gem', desc: 'গোল্ডেন পিকক, ক্রিস্টাল ভাস ও জুয়েলারি', isBase: true }
+    ];
+
+    function getCustomCategories() {
+      return JSON.parse(localStorage.getItem('miraz_custom_categories') || '[]');
+    }
+
+    function getAllCategories() {
+      return [...baseCategories, ...getCustomCategories()];
+    }
+
+    function getCategoryNamesMap() {
+      const map = {};
+      getAllCategories().forEach(c => { map[c.id] = c.name; });
+      return map;
+    }
+
+    window.pickCatIcon = (iconClass) => {
+      const input = document.getElementById('catNewIcon');
+      if (input) input.value = iconClass;
+    };
+
+    function populateCategoryDropdowns() {
+      const select = document.getElementById('pCat');
+      if (!select) return;
+      const currentVal = select.value;
+      const cats = getAllCategories();
+      select.innerHTML = cats.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+      if (currentVal && cats.some(c => c.id === currentVal)) {
+        select.value = currentVal;
+      }
+    }
+
+    function renderCategoriesTable() {
+      const tbody = document.getElementById('adminCategoriesTableBody');
+      if (!tbody) return;
+      const allCats = getAllCategories();
+      const allProds = getAllProducts();
+      const badge = document.getElementById('tabCatBadge');
+      if (badge) badge.textContent = allCats.length;
+
+      tbody.innerHTML = allCats.map(c => {
+        const prodCount = allProds.filter(p => p.cat === c.id || p.subcat === c.id).length;
+        return `
+          <tr>
+            <td>
+              <div style="display:flex;align-items:center;gap:.75rem;">
+                <div style="width:38px;height:38px;border-radius:8px;background:rgba(212,168,71,0.15);border:1px solid rgba(212,168,71,0.3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.1rem;">
+                  <i class="${c.icon || 'fas fa-tag'}"></i>
+                </div>
+                <div>
+                  <strong style="color:#fff;font-size:.92rem;">${c.name}</strong>
+                  ${c.image ? `<span style="font-size:.72rem;color:var(--text-3);display:block;">(কভার ছবি যুক্ত)</span>` : ''}
+                </div>
+              </div>
+            </td>
+            <td><code style="color:var(--gold-light);background:#131326;padding:.2rem .5rem;border-radius:4px;">${c.id}</code></td>
+            <td style="color:var(--text-2);max-width:280px;font-size:.82rem;">${c.desc || '-'}</td>
+            <td>
+              <span class="cat-type-badge ${c.isBase ? 'ctb-base' : 'ctb-custom'}">
+                ${c.isBase ? 'ডিফল্ট সিস্টেম' : 'কাস্টম যোগকৃত'}
+              </span>
+            </td>
+            <td style="color:#fff;font-weight:700;"><i class="fas fa-box" style="color:var(--gold);margin-right:4px;"></i> ${prodCount}টি</td>
+            <td>
+              ${c.isBase ? 
+                `<span style="color:var(--text-3);font-size:.78rem;"><i class="fas fa-lock"></i> ডিফল্ট</span>` : 
+                `<button class="tbl-action-btn tbtn-del" onclick="deleteCategory('${c.id}')" title="মুছে ফেলুন">
+                   <i class="fas fa-trash"></i>
+                 </button>`
+              }
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Add Category Form Submission
+    document.getElementById('addCategoryForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('catNewName').value.trim();
+      let slug = document.getElementById('catNewSlug').value.trim().toLowerCase().replace(/[^a-z0-9_-]/g, '');
+      const icon = document.getElementById('catNewIcon').value.trim() || 'fas fa-layer-group';
+      const desc = document.getElementById('catNewDesc').value.trim();
+      let img = document.getElementById('catNewImgUrl').value.trim();
+
+      if (!name) {
+        showAdminToast('❌ ক্যাটাগরির নাম দিন!');
+        return;
+      }
+      if (!slug) slug = 'cat_' + Date.now();
+
+      const allCats = getAllCategories();
+      if (allCats.some(c => c.id === slug)) {
+        alert('❌ এই কোড/স্লাগ দিয়ে ইতিমধ্যে একটি ক্যাটাগরি রয়েছে! অন্য একটি কোড ব্যবহার করুন।');
+        return;
+      }
+
+      const fileInput = document.getElementById('catNewFile');
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          saveNewCategory(name, slug, icon, desc, evt.target.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        saveNewCategory(name, slug, icon, desc, img);
+      }
+    });
+
+    function saveNewCategory(name, slug, icon, desc, image) {
+      const newCat = {
+        id: slug,
+        name: name,
+        icon: icon,
+        desc: desc,
+        image: image || '',
+        isBase: false,
+        createdAt: Date.now()
+      };
+
+      const custom = getCustomCategories();
+      custom.push(newCat);
+      localStorage.setItem('miraz_custom_categories', JSON.stringify(custom));
+
+      document.getElementById('addCategoryForm').reset();
+      showAdminToast(`🎉 "${name}" নতুন ক্যাটাগরি সফলভাবে যোগ হয়েছে!`);
+      loadAllAdminData();
+    }
+
+    window.deleteCategory = (catId) => {
+      if (!confirm('আপনি কি এই ক্যাটাগরিটি মুছে ফেলতে চান?')) return;
+      let custom = getCustomCategories();
+      custom = custom.filter(c => c.id !== catId);
+      localStorage.setItem('miraz_custom_categories', JSON.stringify(custom));
+      showAdminToast('ক্যাটাগরি সফলভাবে মুছে ফেলা হয়েছে!');
+      loadAllAdminData();
+    };
+
+    // ── Promo Deals & Offer Banner Management ──
+    const defaultStoreDeals = [
+      {
+        id: 'deal-1',
+        tagIcon: '🔥',
+        tagText: 'সীমিত সময়ের বিশেষ অফার',
+        title: 'আরবি আতর কালেকশনে',
+        highlight: '৩০% ছাড়!',
+        desc: 'খাঁটি আরবি উদ ও কস্তুরীর মন জুড়ানো সুবাস। সারা দিন স্থায়ী সুগন্ধ থাকবে। পার্সেল দেখে নেওয়ার নিশ্চয়তা পাবেন।',
+        discount: '30%',
+        image: 'images/attar-1-royal-oud.jpg',
+        productId: 11,
+        productName: 'MIRAZ অ্যারাবিয়ান রয়েল উদ আতর (১২মিলি)',
+        price: 1850,
+        oldPrice: 2200
+      },
+      {
+        id: 'deal-2',
+        tagIcon: '👑',
+        tagText: 'রয়েল সিগনেচার পারফিউম',
+        title: 'MIRAZ দ্য এজ অফ নাইট',
+        highlight: '২৫% মেগা ডিসকাউন্ট!',
+        desc: 'ফ্রেঞ্চ ভ্যানিলা ও ব্ল্যাক মাস্কের মিষ্টি সুবাস। যেকোনো বিয়ে বা বিশেষ অনুষ্ঠানে ব্যবহারের জন্য উপযুক্ত।',
+        discount: '25%',
+        image: 'images/perfume-edge-night.jpg',
+        productId: 3,
+        productName: 'MIRAZ The Edge of Night',
+        price: 3900,
+        oldPrice: 4900
+      },
+      {
+        id: 'deal-3',
+        tagIcon: '✨',
+        tagText: 'ফ্যাশন ফেস্টিভ্যাল কালেকশন',
+        title: 'রয়েল জেন্টস কাবলি পাঞ্জাবিতে',
+        highlight: 'বিশেষ ধামাকা অফার!',
+        desc: 'উন্নত মানের সুতি কাপড় ও নিখুঁত সুতোর কারুকাজ। পরতে ভীষণ আরামদায়ক, ইদের নামাজ বা পার্টিতে খুব মানাবে।',
+        discount: '20%',
+        image: 'images/clothing-panjabi-royal.jpg',
+        productId: 15,
+        productName: 'MIRAZ রয়েল জেন্টস কাবলি পাঞ্জাবি সেট',
+        price: 3800,
+        oldPrice: 4800
+      },
+      {
+        id: 'deal-4',
+        tagIcon: '💃',
+        tagText: 'ব্রাইডাল & পার্টি স্পেশাল',
+        title: 'প্রিমিয়াম বেনারসি কাতান শাড়িতে',
+        highlight: '৩৫% লিমিটেড অফার!',
+        desc: 'খাঁটি সিল্ক কাপড়ে পাকা জরির কাজ। বিয়ে বা পারিবারিক অনুষ্ঠানে দারুণ দেখাবে। কাপড় অনেক মসৃণ ও টেকসই।',
+        discount: '35%',
+        image: 'images/clothing-saree-katan.jpg',
+        productId: 7,
+        productName: 'MIRAZ প্রিমিয়াম বেনারসি কাতান শাড়ি',
+        price: 5800,
+        oldPrice: 7500
+      },
+      {
+        id: 'deal-5',
+        tagIcon: '💎',
+        tagText: 'লাক্সারি হোম ডেকর & গিফট',
+        title: 'গোল্ডেন রয়েল পিকক শোপিসে',
+        highlight: '৪০% স্পেশাল ডিল!',
+        desc: 'ড্রয়িংরুমের টেবিলে সাজিয়ে রাখার মতো চমৎকার শো-পিস। মেহমানদের নজর কাড়বে আর উপহার হিসেবেও চমৎকার।',
+        discount: '40%',
+        image: 'images/showpiece-golden-peacock.jpg',
+        productId: 26,
+        productName: 'গোল্ডেন রয়েল পিকক আর্ট লাক্সারি শোপিস',
+        price: 2850,
+        oldPrice: 3600
+      }
+    ];
+
+    function getAdminActiveDeals() {
+      try {
+        const stored = JSON.parse(localStorage.getItem('miraz_active_deal_offers') || 'null');
+        if (stored && Array.isArray(stored) && stored.length > 0) return stored;
+      } catch(e) {}
+      return defaultStoreDeals;
+    }
+
+    function populateDealProductSelect() {
+      const select = document.getElementById('dealProductSelect');
+      if (!select) return;
+      const allProds = getAllProducts();
+      select.innerHTML = '<option value="">-- স্টোরের একটি প্রোডাক্ট নির্বাচন করুন (ঐচ্ছিক) --</option>' + 
+        allProds.map(p => `<option value="${p.id}">#${p.id} — ${p.name} (৳${p.price.toLocaleString('bn-BD')})</option>`).join('');
+    }
+
+    window.onDealProductSelected = (prodId) => {
+      if (!prodId) return;
+      const allProds = getAllProducts();
+      const p = allProds.find(item => String(item.id) === String(prodId));
+      if (!p) return;
+
+      document.getElementById('dealTitle').value = p.name;
+      document.getElementById('dealHighlight').value = '২৫% বিশেষ ছাড়!';
+      document.getElementById('dealDesc').value = `MIRAZ এক্সক্লুসিভ কালেকশন। সর্বোচ্চ কোয়ালিটি ও দীর্ঘস্থায়িত্ব। সীমিত সময়ের অফার মূল্য মাত্র ৳${p.price.toLocaleString('bn-BD')}!`;
+      document.getElementById('dealBadge').value = '25% OFF';
+      if (p.image) {
+        document.getElementById('dealImgUrl').value = p.image;
+        const prev = document.getElementById('dealImgPreview');
+        const wrap = document.getElementById('dealImgPreviewWrap');
+        if (prev && wrap) {
+          prev.src = p.image;
+          wrap.style.display = 'block';
+        }
+      }
+    };
+
+    // Deal image preview
+    document.getElementById('dealImgUrl')?.addEventListener('input', function(e) {
+      const val = e.target.value.trim();
+      const prev = document.getElementById('dealImgPreview');
+      const wrap = document.getElementById('dealImgPreviewWrap');
+      if (val && prev && wrap) {
+        prev.src = val;
+        wrap.style.display = 'block';
+      }
+    });
+
+    document.getElementById('dealFile')?.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const prev = document.getElementById('dealImgPreview');
+          const wrap = document.getElementById('dealImgPreviewWrap');
+          if (prev && wrap) {
+            prev.src = evt.target.result;
+            wrap.style.display = 'block';
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Add Deal Form Submit
+    document.getElementById('addDealForm')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const prodId = document.getElementById('dealProductSelect')?.value || '';
+      const title = document.getElementById('dealTitle').value.trim();
+      const highlight = document.getElementById('dealHighlight').value.trim();
+      const tagText = document.getElementById('dealTagText').value.trim() || 'বিশেষ অফার — সীমিত সময়';
+      const badge = document.getElementById('dealBadge').value.trim() || '30% OFF';
+      const desc = document.getElementById('dealDesc').value.trim();
+      let img = document.getElementById('dealImgUrl').value.trim();
+
+      const fileInput = document.getElementById('dealFile');
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          saveNewDealOffer(prodId, title, highlight, tagText, badge, desc, evt.target.result);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        if (!img) {
+          showAdminToast('❌ অফার প্রোডাক্টের ছবি নির্বাচন করুন বা লিংক দিন!');
+          return;
+        }
+        saveNewDealOffer(prodId, title, highlight, tagText, badge, desc, img);
+      }
+    });
+
+    function saveNewDealOffer(prodId, title, highlight, tagText, badge, desc, image) {
+      let price = 0;
+      let pName = title;
+      if (prodId) {
+        const p = getAllProducts().find(item => String(item.id) === String(prodId));
+        if (p) {
+          price = p.price;
+          pName = p.name;
+        }
+      }
+
+      const newDeal = {
+        id: 'deal-' + Date.now(),
+        tagIcon: '🔥',
+        tagText: tagText,
+        title: title,
+        highlight: highlight,
+        desc: desc,
+        discount: badge,
+        image: image,
+        productId: prodId ? parseInt(prodId, 10) : 1,
+        productName: pName,
+        price: price
+      };
+
+      const deals = getAdminActiveDeals();
+      deals.unshift(newDeal);
+      localStorage.setItem('miraz_active_deal_offers', JSON.stringify(deals));
+
+      document.getElementById('addDealForm').reset();
+      const wrap = document.getElementById('dealImgPreviewWrap');
+      if (wrap) wrap.style.display = 'none';
+      showAdminToast(`🎉 "${title}" অফার ব্যানার সফলভাবে স্টোরে লাইভ হয়েছে!`);
+      loadAllAdminData();
+    }
+
+    function renderDealsCardsAdmin() {
+      const container = document.getElementById('adminDealsCardsGrid');
+      const badge = document.getElementById('tabDealsBadge');
+      if (!container) return;
+
+      const deals = getAdminActiveDeals();
+      if (badge) badge.textContent = deals.length;
+
+      container.innerHTML = deals.map((d, idx) => `
+        <div style="background:#090910;border:1.5px solid rgba(212,168,71,0.3);border-radius:var(--r-md);padding:1.25rem;display:flex;flex-direction:column;gap:.75rem;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:12px;right:12px;background:var(--gold-gradient);color:#0d0d18;font-size:.72rem;font-weight:900;padding:.2rem .6rem;border-radius:var(--r-pill);">
+            ${d.discount || 'OFFER'}
+          </div>
+          <div style="display:flex;gap:1rem;align-items:center;">
+            <img src="${d.image}" alt="${d.title}" style="width:70px;height:70px;object-fit:cover;border-radius:8px;border:1px solid var(--gold);flex-shrink:0;"/>
+            <div>
+              <span style="font-size:.72rem;color:var(--gold);font-weight:700;"><i class="fas fa-fire"></i> স্লাইড #${idx+1}</span>
+              <h4 style="color:#fff;font-size:.95rem;margin:.2rem 0;line-height:1.3;">${d.title}</h4>
+              <p style="color:var(--gold-light);font-size:.82rem;font-weight:600;margin:0;">${d.highlight || ''}</p>
+            </div>
+          </div>
+          <p style="font-size:.78rem;color:var(--text-3);line-height:1.4;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">
+            ${d.desc || ''}
+          </p>
+          <div style="margin-top:auto;padding-top:.75rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:.78rem;color:var(--text-2);">
+              প্রোডাক্ট: <strong>৳${(d.price || 0).toLocaleString('bn-BD')}</strong>
+            </span>
+            <button class="tbl-action-btn tbtn-del" onclick="deleteDeal('${d.id}')" title="অফারটি মুছে ফেলুন">
+              <i class="fas fa-trash"></i> ডিলিট
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.deleteDeal = (dealId) => {
+      if (!confirm('আপনি কি এই অফার স্লাইডারটি মুছে ফেলতে চান?')) return;
+      let deals = getAdminActiveDeals();
+      deals = deals.filter(d => d.id !== dealId);
+      localStorage.setItem('miraz_active_deal_offers', JSON.stringify(deals));
+      showAdminToast('অফার স্লাইডার মুছে ফেলা হয়েছে!');
+      loadAllAdminData();
+    };
+
+    window.saveDealSliderSettings = () => {
+      const autoRotate = document.getElementById('dealAutoRotateToggle')?.checked;
+      const speed = document.getElementById('dealSpeedSelect')?.value;
+      localStorage.setItem('miraz_deal_auto_rotate', autoRotate ? 'true' : 'false');
+      localStorage.setItem('miraz_deal_speed', speed || '5000');
+      showAdminToast('✅ অফার স্লাইডার সেটিংস সফলভাবে সংরক্ষিত হয়েছে!');
+    };
+
+    window.saveDealCountdownTimer = () => {
+      const hours = parseInt(document.getElementById('dealTimerHoursInput')?.value || '12', 10);
+      const minutes = parseInt(document.getElementById('dealTimerMinutesInput')?.value || '0', 10);
+      const totalMs = (hours * 60 + minutes) * 60 * 1000;
+      if (totalMs <= 0) {
+        alert('দয়া করে কমপক্ষে ১ মিনিট বা ১ ঘণ্টা সময় দিন।');
+        return;
+      }
+      const newEndTime = Date.now() + totalMs;
+      localStorage.setItem('miraz_deal_timer_end', String(newEndTime));
+      localStorage.setItem('miraz_deal_timer_hours', String(hours));
+      localStorage.setItem('miraz_deal_timer_minutes', String(minutes));
+      showAdminToast(`⏳ অফার কাউন্টডাউন টাইমার সফলভাবে ${hours} ঘণ্টা ${minutes} মিনিটে সেট করা হয়েছে!`);
+      updateAdminLiveTimer();
+    };
+
+    window.setPresetTimer = (h, m) => {
+      if (document.getElementById('dealTimerHoursInput')) document.getElementById('dealTimerHoursInput').value = h;
+      if (document.getElementById('dealTimerMinutesInput')) document.getElementById('dealTimerMinutesInput').value = m;
+      saveDealCountdownTimer();
+    };
+
+    function updateAdminLiveTimer() {
+      const savedEnd = localStorage.getItem('miraz_deal_timer_end');
+      const liveEl = document.getElementById('adminLiveTimerText');
+      if (!liveEl) return;
+      if (!savedEnd) {
+        liveEl.textContent = '১২ ঘণ্টা ৪৫ মিনিট';
+        return;
+      }
+      const endTs = parseInt(savedEnd, 10);
+      const rem = Math.max(0, endTs - Date.now());
+      const h = Math.floor(rem / 3600000);
+      const m = Math.floor((rem % 3600000) / 60000);
+      const s = Math.floor((rem % 60000) / 1000);
+      const pad = n => String(n).padStart(2, '0');
+      liveEl.textContent = `${pad(h)} ঘণ্টা ${pad(m)} মিনিট ${pad(s)} সেকেন্ড`;
+    }
+    setInterval(updateAdminLiveTimer, 1000);
+
+
+    async function syncProductsFromServer() {
+      try {
+        const res = await fetch('/api/products');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.custom)) {
+            localStorage.setItem('miraz_custom_products', JSON.stringify(data.custom));
+            if (Array.isArray(data.deleted)) {
+              localStorage.setItem('miraz_deleted_product_ids', JSON.stringify(data.deleted));
+            }
+          }
+        }
+      } catch (e) {}
+    }
+
+    async function pushProductsToServer() {
+      try {
+        const custom = getCustomProducts();
+        const deleted = getDeletedIds();
+        await fetch('/api/products', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ custom, deleted })
+        });
+      } catch (e) {}
+    }
+
+    function getCustomProducts() {
+      return JSON.parse(localStorage.getItem('miraz_custom_products') || '[]');
+    }
+
+    function getDeletedIds() {
+      return JSON.parse(localStorage.getItem('miraz_deleted_product_ids') || '[]');
+    }
+
+    function getAllProducts() {
+      const custom = getCustomProducts();
+      const deleted = getDeletedIds();
+      const filteredBase = baseProducts.filter(p => !deleted.includes(p.id));
+      return [...custom, ...filteredBase];
+    }
+
+    function renderProductsTable(filterText = '') {
+      const all = getAllProducts();
+      const tbody = document.getElementById('adminProductsTableBody');
+      const filtered = filterText ? all.filter(p => p.name.toLowerCase().includes(filterText.toLowerCase())) : all;
+
+      document.getElementById('statProdCount').textContent = all.length;
+      document.getElementById('tabProdBadge').textContent = all.length;
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-3);">কোনো প্রোডাক্ট পাওয়া যায়নি।</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const isCustom = p.isCustom || p.id > 1000;
+        return `
+          <tr>
+            <td>
+              <div class="prod-cell">
+                ${p.image ? `<img src="${p.image}" alt=""/>` : `<div style="width:48px;height:48px;background:#202035;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">${p.emoji || '📦'}</div>`}
+                <div>
+                  <strong>${p.name}</strong>
+                  <span>ID: #${p.id} ${isCustom ? '• (অ্যাডমিন কর্তৃক যোগকৃত)' : ''}</span>
+                </div>
+              </div>
+            </td>
+            <td>${getCategoryNamesMap()[p.cat] || p.cat}</td>
+            <td style="color:var(--gold);font-weight:700;">৳${p.price.toLocaleString('bn-BD')}</td>
+            <td>${p.old ? `<s>৳${p.old.toLocaleString('bn-BD')}</s>` : '-'}</td>
+            <td>
+              ${p.badge ? `<span class="badge-tag-adm b-${p.badge}">${p.badge.toUpperCase()}</span>` : '-'}
+            </td>
+            <td>★ ${p.rating || 5.0}</td>
+            <td>
+              <button class="tbl-action-btn tbtn-del" onclick="deleteProduct(${p.id}, ${isCustom})" title="মুছে ফেলুন">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Add Product Submit
+    document.getElementById('addProductForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('pName').value.trim();
+      const cat = document.getElementById('pCat').value;
+      const badge = document.getElementById('pBadge').value;
+      const price = parseInt(document.getElementById('pPrice').value, 10);
+      const oldVal = document.getElementById('pOldPrice').value.trim();
+      const old = oldVal ? parseInt(oldVal, 10) : null;
+      const desc = document.getElementById('pDesc').value.trim();
+
+      const newProduct = {
+        id: Date.now(),
+        name,
+        cat,
+        price,
+        old,
+        badge,
+        image: selectedImageSrc,
+        desc,
+        rating: 5.0,
+        reviews: 1,
+        isCustom: true
+      };
+
+      const customList = getCustomProducts();
+      customList.unshift(newProduct);
+      localStorage.setItem('miraz_custom_products', JSON.stringify(customList));
+      pushProductsToServer();
+
+      showAdminToast(`🎉 "${name}" সফলভাবে স্টোরে যোগ হয়েছে!`);
+      e.target.reset();
+      choosePreset('images/perfume-royal-1.jpg');
+      loadAllAdminData();
+
+      // Switch to products table
+      document.querySelector('.adm-tab[data-tab="tab-products"]').click();
+    });
+
+    window.deleteProduct = (id, isCustom) => {
+      if (!confirm('আপনি কি নিশ্চিতভাবে এই প্রোডাক্টটি মুছে ফেলতে চান?')) return;
+      if (isCustom) {
+        let customList = getCustomProducts();
+        customList = customList.filter(p => p.id !== id);
+        localStorage.setItem('miraz_custom_products', JSON.stringify(customList));
+      } else {
+        const deleted = getDeletedIds();
+        if (!deleted.includes(id)) {
+          deleted.push(id);
+          localStorage.setItem('miraz_deleted_product_ids', JSON.stringify(deleted));
+        }
+      }
+      pushProductsToServer();
+      showAdminToast('🗑️ প্রোডাক্ট সফলভাবে ডিলিট করা হয়েছে!');
+      loadAllAdminData();
+    };
+
+    // Orders Management
+    function getOrders() {
+      try {
+        return JSON.parse(localStorage.getItem('miraz_orders') || '[]');
+      } catch(e) {
+        return [];
+      }
+    }
+
+    async function syncOrdersFromServer() {
+      try {
+        const res = await fetch('/api/orders');
+        if (res.ok) {
+          const serverOrders = await res.json();
+          if (Array.isArray(serverOrders)) {
+            const localOrders = getOrders();
+            const map = new Map();
+            serverOrders.forEach(o => map.set(o.id, o));
+            localOrders.forEach(o => {
+              if (!map.has(o.id)) map.set(o.id, o);
+            });
+            const merged = Array.from(map.values()).sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+            localStorage.setItem('miraz_orders', JSON.stringify(merged));
+            return merged;
+          }
+        }
+      } catch (e) {
+        console.warn('Orders sync error:', e);
+      }
+      return getOrders();
+    }
+
+    let cachedOrdersList = [];
+    let currentDayFilter = 'all';
+
+    function isOrderToday(o) {
+      if (!o) return false;
+      const todayStr = new Date().toDateString();
+      if (o.timestamp) {
+        return new Date(o.timestamp).toDateString() === todayStr;
+      }
+      if (o.date) {
+        const d = new Date();
+        const bnDay = d.getDate().toLocaleString('bn-BD');
+        return o.date.includes(bnDay) || o.date.includes('আজ');
+      }
+      return false;
+    }
+
+    function renderOrdersTableDom(orders) {
+      cachedOrdersList = orders || [];
+      const tbody = document.getElementById('adminOrdersTableBody');
+      const excelTbody = document.getElementById('excelSpreadsheetTbody');
+
+      // 1. Overall stats
+      const totalCount = orders.length;
+      document.getElementById('statOrderCount').textContent = totalCount;
+      document.getElementById('tabOrdersBadge').textContent = totalCount;
+      if (document.getElementById('statTotalOrdersCount')) {
+        document.getElementById('statTotalOrdersCount').textContent = `সর্বমোট ${totalCount}টি অর্ডার`;
+      }
+
+      const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+      document.getElementById('statRevenue').textContent = `৳${totalRevenue.toLocaleString('bn-BD')}`;
+
+      const pendingCount = orders.filter(o => !o.status || o.status === 'পেন্ডিং').length;
+      document.getElementById('statPendingOrders').textContent = pendingCount;
+      if (document.getElementById('statPendingDeliveryCount')) {
+        document.getElementById('statPendingDeliveryCount').textContent = `${pendingCount}টি`;
+      }
+
+      // 2. Unique customers count
+      const uniqueCusts = new Set(orders.map(o => (o.phone || o.name || '').trim()).filter(Boolean));
+      if (document.getElementById('statUniqueCustomers')) {
+        document.getElementById('statUniqueCustomers').textContent = `${uniqueCusts.size} জন`;
+      }
+
+      // 3. Today's orders count and revenue
+      const todayOrders = orders.filter(isOrderToday);
+      const todayCount = todayOrders.length;
+      const todayRev = todayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+      if (document.getElementById('statTodayOrders')) {
+        document.getElementById('statTodayOrders').textContent = `${todayCount}টি`;
+      }
+      if (document.getElementById('statTodayRevenue')) {
+        document.getElementById('statTodayRevenue').textContent = `আজকের বিক্রয়: ৳${todayRev.toLocaleString('bn-BD')}`;
+      }
+
+      // 4. Render Daily Breakdown Pills (প্রতিদিন কতজন কাস্টমার অর্ডার করেছে তার হিসাব)
+      renderDailyBreakdownPills(orders);
+
+      // 5. Filter list by day if selected
+      const displayOrders = (currentDayFilter === 'all') 
+        ? orders 
+        : orders.filter(o => getOrderDayKey(o) === currentDayFilter);
+
+      // 6. Render Regular Table
+      if (tbody) {
+        if (!displayOrders.length) {
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2.5rem;color:var(--text-3);"><i class="fas fa-inbox" style="font-size:2rem;display:block;margin-bottom:.6rem;opacity:.4;"></i>কোনো অর্ডার পাওয়া যায়নি।</td></tr>`;
+        } else {
+          tbody.innerHTML = displayOrders.map((o, idx) => {
+            const status = o.status || 'পেন্ডিং';
+            return `
+              <tr>
+                <td><strong>${o.id || ('#MRZ-' + (1000 + idx))}</strong></td>
+                <td style="font-size:.8rem;color:var(--text-3);">${o.date || 'আজ'}</td>
+                <td>
+                  <strong style="color:#fff;">${o.name}</strong><br/>
+                  <span style="color:var(--gold);">${o.phone}</span>
+                </td>
+                <td style="max-width:240px;line-height:1.4;">${o.address}</td>
+                <td>
+                  <strong style="color:var(--gold-light);">${o.product}</strong>
+                  <div>পরিমাণ: ${o.qty || 1}টি</div>
+                </td>
+                <td><strong style="color:#34d399;font-size:1.05rem;">৳${(o.total || 0).toLocaleString('bn-BD')}</strong></td>
+                <td>
+                  <select onchange="updateOrderStatus('${o.id}', this.value)" style="background:#090910;color:#fff;border:1px solid rgba(255,255,255,0.15);padding:.3rem .5rem;border-radius:6px;font-size:.78rem;">
+                    <option value="পেন্ডিং" ${status === 'পেন্ডিং' ? 'selected' : ''}>⏳ পেন্ডিং</option>
+                    <option value="কনফার্ম" ${status === 'কনফার্ম' ? 'selected' : ''}>✅ কনফার্ম</option>
+                    <option value="ডেলিভার্ড" ${status === 'ডেলিভার্ড' ? 'selected' : ''}>📦 ডেলিভার্ড</option>
+                    <option value="বাতিল" ${status === 'বাতিল' ? 'selected' : ''}>❌ বাতিল</option>
+                  </select>
+                </td>
+                <td>
+                  <a href="tel:${o.phone}" class="tbl-action-btn tbtn-call" title="কল দিন">
+                    <i class="fas fa-phone"></i>
+                  </a>
+                  <button class="tbl-action-btn tbtn-wa" onclick="sendWhatsAppConfirmation('${o.name}', '${o.phone}', '${o.product}', ${o.total}, '${o.id}')" title="WhatsApp কনফার্মেশন পাঠান">
+                    <i class="fab fa-whatsapp"></i>
+                  </button>
+                  <button class="tbl-action-btn tbtn-del" onclick="deleteOrder('${o.id}')" title="অর্ডার ডিলিট">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+      }
+
+      // 7. Render Excel Spreadsheet View
+      if (excelTbody) {
+        if (!displayOrders.length) {
+          excelTbody.innerHTML = `<tr><td colspan="14" style="text-align:center;padding:2rem;color:var(--text-3);">এক্সেল শিট খালি। কোনো অর্ডার নেই।</td></tr>`;
+        } else {
+          excelTbody.innerHTML = displayOrders.map((o, idx) => {
+            const status = o.status || 'পেন্ডিং';
+            const price = o.price || 0;
+            const qty = o.qty || 1;
+            const delivery = o.delivery !== undefined ? o.delivery : 60;
+            const total = o.total || (price * qty + delivery);
+            const statusBg = status === 'ডেলিভার্ড' ? 'rgba(16,185,129,0.2)' : (status === 'কনফার্ম' ? 'rgba(59,130,246,0.2)' : 'rgba(245,158,11,0.2)');
+            const statusColor = status === 'ডেলিভার্ড' ? '#34d399' : (status === 'কনফার্ম' ? '#60a5fa' : '#fbbf24');
+
+            return `
+              <tr class="excel-data-row" data-search="${(o.id+' '+o.name+' '+o.phone+' '+o.product+' '+o.address).toLowerCase()}">
+                <td class="excel-row-idx">${idx + 1}</td>
+                <td style="font-family:monospace;font-weight:700;color:var(--gold);">${o.id || ('#MRZ-' + (1000 + idx))}</td>
+                <td>${o.date || '—'}</td>
+                <td><strong style="color:#fff;">${o.name || '—'}</strong></td>
+                <td style="color:#38bdf8;font-family:monospace;">${o.phone || '—'}</td>
+                <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;" title="${o.address || ''}">${o.address || '—'}</td>
+                <td>${o.area || 'ঢাকার ভেতরে'}</td>
+                <td style="color:var(--gold-light);">${o.product || '—'}</td>
+                <td style="text-align:center;font-weight:700;">${qty}</td>
+                <td>৳${price.toLocaleString('bn-BD')}</td>
+                <td>৳${delivery.toLocaleString('bn-BD')}</td>
+                <td><strong style="color:#34d399;font-weight:700;">৳${total.toLocaleString('bn-BD')}</strong></td>
+                <td>${o.paymentMethod || 'ক্যাশ অন ডেলিভারি'}</td>
+                <td>
+                  <span style="background:${statusBg};color:${statusColor};padding:2px 8px;border-radius:12px;font-size:.75rem;font-weight:700;">
+                    ${status}
+                  </span>
+                </td>
+              </tr>
+            `;
+          }).join('');
+        }
+
+        // Update Excel bottom status bar
+        const excelCount = displayOrders.length;
+        const excelSum = displayOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+        const excelAvg = excelCount > 0 ? Math.round(excelSum / excelCount) : 0;
+        if (document.getElementById('excelTotalRowsText')) {
+          document.getElementById('excelTotalRowsText').textContent = `📊 মোট রো: ${excelCount}টি`;
+        }
+        if (document.getElementById('excelAvgOrderText')) {
+          document.getElementById('excelAvgOrderText').textContent = `গড় অর্ডার: ৳${excelAvg.toLocaleString('bn-BD')}`;
+        }
+        if (document.getElementById('excelSumRevenueText')) {
+          document.getElementById('excelSumRevenueText').textContent = `৳${excelSum.toLocaleString('bn-BD')}`;
+        }
+      }
+    }
+
+    function getOrderDayKey(o) {
+      if (o.timestamp) {
+        return new Date(o.timestamp).toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+      if (o.date) {
+        return o.date.split(',')[0].trim();
+      }
+      return 'অন্যান্য';
+    }
+
+    function renderDailyBreakdownPills(orders) {
+      const wrap = document.getElementById('dailyBreakdownPills');
+      if (!wrap) return;
+
+      const dayMap = {};
+      orders.forEach(o => {
+        const key = getOrderDayKey(o);
+        if (!dayMap[key]) {
+          dayMap[key] = { key, count: 0, total: 0, customers: new Set() };
+        }
+        dayMap[key].count++;
+        dayMap[key].total += (o.total || 0);
+        if (o.phone || o.name) dayMap[key].customers.add(o.phone || o.name);
+      });
+
+      const totalCount = orders.length;
+      const totalRev = orders.reduce((s, o) => s + (o.total || 0), 0);
+
+      let html = `
+        <div class="daily-pill ${currentDayFilter === 'all' ? 'active' : ''}" onclick="filterOrdersByDay('all', this)">
+          <div class="daily-pill-date">সকল দিন (সব অর্ডার)</div>
+          <div class="daily-pill-count">${totalCount}টি অর্ডার</div>
+          <div class="daily-pill-total">৳${totalRev.toLocaleString('bn-BD')}</div>
+        </div>
+      `;
+
+      Object.values(dayMap).forEach(day => {
+        const isActive = currentDayFilter === day.key ? 'active' : '';
+        html += `
+          <div class="daily-pill ${isActive}" onclick="filterOrdersByDay('${day.key}', this)" title="${day.customers.size} জন কাস্টমার অর্ডার করেছেন">
+            <div class="daily-pill-date"><i class="fas fa-calendar-day"></i> ${day.key}</div>
+            <div class="daily-pill-count">${day.count}টি (${day.customers.size} জন)</div>
+            <div class="daily-pill-total">৳${day.total.toLocaleString('bn-BD')}</div>
+          </div>
+        `;
+      });
+
+      wrap.innerHTML = html;
+    }
+
+    window.filterOrdersByDay = function(dayKey, pillEl) {
+      currentDayFilter = dayKey;
+      document.querySelectorAll('.daily-pill').forEach(p => p.classList.remove('active'));
+      if (pillEl) pillEl.classList.add('active');
+      renderOrdersTableDom(cachedOrdersList);
+    };
+
+    window.switchOrderView = function(viewType) {
+      const listView = document.getElementById('adminOrdersListView');
+      const excelView = document.getElementById('adminOrdersExcelView');
+      const btnList = document.getElementById('btnViewList');
+      const btnExcel = document.getElementById('btnViewExcel');
+
+      if (viewType === 'excel') {
+        if (listView) listView.style.display = 'none';
+        if (excelView) excelView.style.display = 'block';
+        btnList?.classList.remove('active');
+        btnExcel?.classList.add('active');
+      } else {
+        if (excelView) excelView.style.display = 'none';
+        if (listView) listView.style.display = 'block';
+        btnExcel?.classList.remove('active');
+        btnList?.classList.add('active');
+      }
+    };
+
+    window.filterExcelRows = function(query) {
+      const q = (query || '').trim().toLowerCase();
+      const rows = document.querySelectorAll('.excel-data-row');
+      let visibleCount = 0;
+      rows.forEach(r => {
+        const text = r.getAttribute('data-search') || '';
+        if (!q || text.includes(q)) {
+          r.style.display = '';
+          visibleCount++;
+        } else {
+          r.style.display = 'none';
+        }
+      });
+      if (document.getElementById('excelTotalRowsText')) {
+        document.getElementById('excelTotalRowsText').textContent = `📊 প্রদর্শিত: ${visibleCount}টি রো`;
+      }
+    };
+
+    // ── Google Sheets Modal & Webhook Setup ─────────────────────
+    window.openGoogleSheetModal = async function() {
+      const modal = document.getElementById('googleSheetModal');
+      if (modal) modal.classList.add('open');
+      try {
+        const res = await fetch('/api/settings');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.googleSheetWebhook) {
+            const input = document.getElementById('googleSheetWebhookInput');
+            if (input) input.value = data.googleSheetWebhook;
+          }
+        }
+      } catch(e) {}
+    };
+
+    window.closeGoogleSheetModal = function() {
+      document.getElementById('googleSheetModal')?.classList.remove('open');
+    };
+
+    window.saveGoogleSheetWebhook = async function() {
+      const webhookUrl = document.getElementById('googleSheetWebhookInput')?.value.trim();
+      try {
+        const res = await fetch('/api/settings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ googleSheetWebhook: webhookUrl })
+        });
+        if (res.ok) {
+          showAdminToast('✅ গুগল শিট সিঙ্ক লিংক সফলভাবে সেভ হয়েছে!');
+          closeGoogleSheetModal();
+        } else {
+          showAdminToast('❌ সেভ করতে সমস্যা হয়েছে!');
+        }
+      } catch(e) {
+        showAdminToast('❌ সার্ভার ত্রুটি!');
+      }
+    };
+
+    window.copyGoogleAppsScriptCode = function() {
+      const code = document.getElementById('gasCodeBlock')?.textContent || '';
+      if (!code) return;
+      navigator.clipboard.writeText(code).then(() => {
+        showAdminToast('📋 গুগল শিট স্ক্রিপ্ট কোড ক্লিপবোর্ডে কপি হয়েছে!');
+      }).catch(() => {
+        alert(code);
+      });
+    };
+
+    window.openDirectGoogleSheets = function() {
+      const orders = getOrders();
+      if (!orders || orders.length === 0) {
+        showAdminToast('⚠️ গুগল শিটে নেওয়ার মতো কোনো অর্ডার নেই!');
+        return;
+      }
+
+      // Prepare tab-separated values (TSV) for seamless copy-paste into Google Sheets
+      const headers = ['ক্রমিক', 'অর্ডার আইডি', 'তারিখ ও সময়', 'গ্রাহকের নাম', 'মোবাইল নম্বর', 'সম্পূর্ণ ঠিকানা', 'ডেলিভারি এরিয়া', 'পণ্যের নাম', 'পরিমাণ', 'একক মূল্য (৳)', 'সাবটোটাল (৳)', 'ডেলিভারি (৳)', 'সর্বমোট (৳)', 'পেমেন্ট পদ্ধতি', 'স্ট্যাটাস'];
+      
+      const rows = orders.map((o, idx) => [
+        idx + 1,
+        o.id || ('#MRZ-' + (1000 + idx)),
+        o.date || '',
+        o.name || '',
+        o.phone || '',
+        (o.address || '').replace(/[\r\n]+/g, ', '),
+        o.area || 'ঢাকার ভেতরে',
+        o.product || '',
+        o.qty || 1,
+        o.price || 0,
+        o.subtotal || (o.price * (o.qty || 1)),
+        o.delivery !== undefined ? o.delivery : 60,
+        o.total || 0,
+        o.paymentMethod || 'ক্যাশ অন ডেলিভারি',
+        o.status || 'পেন্ডিং'
+      ].join('\t'));
+
+      const tsvContent = headers.join('\t') + '\n' + rows.join('\n');
+      
+      // Copy to clipboard
+      const copyPromise = navigator.clipboard && navigator.clipboard.writeText
+        ? navigator.clipboard.writeText(tsvContent)
+        : Promise.reject('No clipboard API');
+
+      copyPromise.then(() => {
+        showAdminToast('📋 সকল অর্ডার ডাটা কপি হয়েছে!');
+        alert('📋 আপনার সব অর্ডারের ডাটা সফলভাবে কপি করা হয়েছে!\n\nএখন গুগল শিট ওপেন হবে:\n👉 কম্পিউটারে: শুধু কিবোর্ড থেকে Ctrl + V চাপুন\n👉 মোবাইলে: শিটের ১ম ঘরে চেপে ধরে (Tap & Hold) "Paste" করুন\n\nমুহূর্তেই সম্পূর্ণ সাজানো এক্সেল টেবিল চলে আসবে!');
+        window.open('https://sheets.new', '_blank');
+      }).catch(() => {
+        // Fallback for older browsers
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = tsvContent;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          alert('📋 আপনার সব অর্ডারের ডাটা সফলভাবে কপি করা হয়েছে!\n\nএখন গুগল শিট ওপেন হবে:\n👉 কিবোর্ড থেকে Ctrl + V চাপুন (অথবা রাইট ক্লিক করে Paste করুন)।');
+        } catch(e) {}
+        window.open('https://sheets.new', '_blank');
+      });
+    };
+
+    async function renderOrdersTable() {
+      renderOrdersTableDom(getOrders());
+      const freshOrders = await syncOrdersFromServer();
+      renderOrdersTableDom(freshOrders);
+    }
+
+    window.updateOrderStatus = async (orderId, newStatus) => {
+      const orders = getOrders();
+      const target = orders.find(o => o.id === orderId);
+      if (target) {
+        target.status = newStatus;
+        localStorage.setItem('miraz_orders', JSON.stringify(orders));
+        renderOrdersTableDom(orders);
+        try {
+          await fetch('/api/orders/update', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: orderId, status: newStatus })
+          });
+        } catch(e) {}
+        showAdminToast(`স্ট্যাটাস পরিবর্তন করা হয়েছে: ${newStatus}`);
+      }
+    };
+
+    window.deleteOrder = async (orderId) => {
+      if (!confirm('আপনি কি এই অর্ডারটি মুছে ফেলতে চান?')) return;
+      let orders = getOrders();
+      orders = orders.filter(o => o.id !== orderId);
+      localStorage.setItem('miraz_orders', JSON.stringify(orders));
+      renderOrdersTableDom(orders);
+      try {
+        await fetch('/api/orders/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: orderId })
+        });
+      } catch(e) {}
+      showAdminToast('অর্ডার মুছে ফেলা হয়েছে!');
+    };
+
+    window.sendWhatsAppConfirmation = (name, phone, product, total, orderId) => {
+      const cleanPhone = phone.replace(/[^0-9]/g, '');
+      const formattedPhone = cleanPhone.startsWith('88') ? cleanPhone : '88' + cleanPhone;
+      const text = 
+        `আসসালামু আলাইকুম ${name}! 🌸\n` +
+        `MIRAZ Luxury Store থেকে যোগাযোগ করা হচ্ছে।\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `আমরা আপনার অর্ডারটি পেয়েছি:\n` +
+        `📦 অর্ডার আইডি: ${orderId}\n` +
+        `🛍️ প্রোডাক্ট: ${product}\n` +
+        `💰 মোট মূল্য: ৳${(total || 0).toLocaleString('bn-BD')} (ক্যাশ অন ডেলিভারি)\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `অর্ডারটি কনফার্ম করতে অনুগ্রহ করে 'হ্যাঁ' লিখে রিপ্লাই দিন। ধন্যবাদ! ✨`;
+      window.open(`https://wa.me/${formattedPhone}?text=${encodeURIComponent(text)}`, '_blank');
+    };
+
+    document.getElementById('refreshOrdersBtn')?.addEventListener('click', async () => {
+      await renderOrdersTable();
+      showAdminToast('অর্ডার তালিকা রিফ্রেশ হয়েছে!');
+    });
+
+    // ── Customer Messages Management ──
+    function getMessages() {
+      try {
+        return JSON.parse(localStorage.getItem('miraz_messages') || '[]');
+      } catch(e) {
+        return [];
+      }
+    }
+
+    async function syncMessagesFromServer() {
+      try {
+        const res = await fetch('/api/messages');
+        if (res.ok) {
+          const serverMsgs = await res.json();
+          if (Array.isArray(serverMsgs)) {
+            const localMsgs = getMessages();
+            const map = new Map();
+            serverMsgs.forEach(m => map.set(m.id, m));
+            localMsgs.forEach(m => {
+              if (!map.has(m.id)) map.set(m.id, m);
+            });
+            const merged = Array.from(map.values()).sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+            localStorage.setItem('miraz_messages', JSON.stringify(merged));
+            return merged;
+          }
+        }
+      } catch (err) {
+        console.warn('API /api/messages offline or error:', err);
+      }
+      return getMessages();
+    }
+
+    function renderMessagesTableDom(msgs) {
+      const tbody = document.getElementById('adminMessagesTableBody');
+      const badge = document.getElementById('tabMessagesBadge');
+      const summary = document.getElementById('totalMessagesSummary');
+
+      if (badge) badge.textContent = msgs.length;
+      if (summary) summary.textContent = `${msgs.length}টি কাস্টমার বার্তা সংরক্ষিত আছে`;
+
+      if (!tbody) return;
+
+      if (msgs.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center;padding:3rem 1rem;color:var(--text-3);">
+              <i class="fas fa-envelope-open" style="font-size:2.5rem;display:block;margin-bottom:1rem;color:#3b82f6;opacity:0.5;"></i>
+              <strong style="color:#fff;font-size:1.1rem;display:block;margin-bottom:.4rem;">এখনও কোনো কাস্টমার মেসেজ জমা নেই</strong>
+              <span>কাস্টমাররা ওয়েবসাইটের কন্টাক্ট ফর্ম থেকে কোনো বার্তা পাঠালে তা সাথে সাথে এখানে দেখা যাবে।</span>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = msgs.map(m => `
+        <tr>
+          <td>
+            <strong style="color:var(--gold);font-size:.88rem;">${m.id || '#MSG'}</strong>
+            <div style="font-size:.75rem;color:var(--text-3);margin-top:2px;">${m.date || ''}</div>
+          </td>
+          <td>
+            <strong style="color:#fff;">${m.name || 'অজ্ঞাত'}</strong>
+          </td>
+          <td>
+            <a href="tel:${m.phone}" style="color:#38bdf8;font-weight:600;display:inline-flex;align-items:center;gap:4px;" title="কল করুন">
+              <i class="fas fa-phone-volume"></i> ${m.phone || 'নেই'}
+            </a>
+          </td>
+          <td>
+            <span style="font-size:.82rem;color:var(--text-2);">${m.email || '—'}</span>
+          </td>
+          <td>
+            <span style="background:rgba(212,168,71,0.15);color:var(--gold);padding:3px 8px;border-radius:12px;font-size:.78rem;font-weight:600;">
+              ${m.subject || 'সাধারণ'}
+            </span>
+          </td>
+          <td>
+            <div style="font-size:.85rem;color:#e2e8f0;line-height:1.5;max-width:320px;word-break:break-word;background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:6px;border-left:2px solid var(--gold);">
+              ${m.message || ''}
+            </div>
+          </td>
+          <td>
+            <div style="display:flex;align-items:center;gap:.4rem;">
+              <a href="https://wa.me/88${(m.phone || '').replace(/[^0-9]/g, '')}?text=${encodeURIComponent('আসসালামু আলাইকুম ' + (m.name || '') + ', MIRAZ থেকে যোগাযোগ করছি। আপনার বার্তার প্রেক্ষিতে:')}" target="_blank" class="adm-btn-secondary" style="padding:.35rem .65rem;font-size:.78rem;border-color:#22c55e;color:#22c55e;" title="WhatsApp-এ রিপ্লাই দিন">
+                <i class="fab fa-whatsapp"></i> রিপ্লাই
+              </a>
+              <button type="button" class="adm-btn-danger" onclick="deleteMessage('${m.id}')" style="padding:.35rem .6rem;font-size:.78rem;" title="মেসেজ মুছুন">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function renderMessagesTable() {
+      renderMessagesTableDom(getMessages());
+      const msgs = await syncMessagesFromServer();
+      renderMessagesTableDom(msgs);
+    }
+
+    window.deleteMessage = async function(id) {
+      if (!confirm('আপনি কি এই কাস্টমার মেসেজটি মুছে ফেলতে চান?')) return;
+      let msgs = getMessages();
+      msgs = msgs.filter(m => m.id !== id);
+      localStorage.setItem('miraz_messages', JSON.stringify(msgs));
+      renderMessagesTableDom(msgs);
+      try {
+        await fetch('/api/messages/delete', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id })
+        });
+      } catch(e) {}
+      showAdminToast('মেসেজটি মুছে ফেলা হয়েছে!');
+    };
+
+    window.clearAllMessages = async function() {
+      if (!confirm('আপনি কি নিশ্চিত যে সকল কাস্টমার মেসেজ মুছে ফেলতে চান?')) return;
+      localStorage.removeItem('miraz_messages');
+      renderMessagesTableDom([]);
+      try {
+        await fetch('/api/messages/clear', { method: 'POST' });
+      } catch(e) {}
+      showAdminToast('সকল মেসেজ পরিষ্কার করা হয়েছে!');
+    };
+
+    // Search filter
+    document.getElementById('adminSearchProd')?.addEventListener('input', (e) => {
+      renderProductsTable(e.target.value.trim());
+    });
+
+    // ── Excel & Google Sheets Export ────────────────────────────
+    window.exportOrdersToExcel = function() {
+      const orders = getOrders();
+      if (!orders || orders.length === 0) {
+        showAdminToast('⚠️ ডাউনলোড করার জন্য কোনো অর্ডার পাওয়া যায়নি!');
+        return;
+      }
+
+      // UTF-8 BOM so Microsoft Excel & Google Sheets display Bengali characters without question marks or corruption
+      const BOM = '\uFEFF';
+
+      const headers = [
+        'অর্ডার আইডি',
+        'তারিখ ও সময়',
+        'কাস্টমারের নাম',
+        'মোবাইল নম্বর',
+        'সম্পূর্ণ ঠিকানা',
+        'প্রোডাক্টের নাম',
+        'পরিমাণ',
+        'সর্বমোট টাকা (৳)',
+        'পেমেন্ট পদ্ধতি',
+        'অর্ডার স্ট্যাটাস'
+      ];
+
+      const escapeCsv = (val) => {
+        if (val === null || val === undefined) return '""';
+        const str = String(val).replace(/"/g, '""');
+        return `"${str}"`;
+      };
+
+      const rows = orders.map((o, idx) => {
+        const id = o.id || ('#MRZ-' + (1000 + idx));
+        const date = o.date || '';
+        const name = o.name || '';
+        // Prefix with tab or single quote to force phone number to be preserved as text with leading 0
+        const phone = o.phone ? `\t${o.phone}` : '';
+        const address = (o.address || '').replace(/[\r\n]+/g, ', ');
+        const product = o.product || '';
+        const qty = o.qty || 1;
+        const total = o.total || 0;
+        const payment = o.paymentMethod || 'ক্যাশ অন ডেলিভারি';
+        const status = o.status || 'পেন্ডিং';
+
+        return [
+          escapeCsv(id),
+          escapeCsv(date),
+          escapeCsv(name),
+          escapeCsv(phone),
+          escapeCsv(address),
+          escapeCsv(product),
+          escapeCsv(qty),
+          escapeCsv(total),
+          escapeCsv(payment),
+          escapeCsv(status)
+        ].join(',');
+      });
+
+      const csvContent = BOM + headers.map(escapeCsv).join(',') + '\r\n' + rows.join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      a.href = url;
+      a.download = `MIRAZ-Customer-Orders-${dateStr}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showAdminToast('📥 এক্সেল শিট (.CSV) সফলভাবে ডাউনলোড হয়েছে!');
+    };
+
+    window.copyOrdersForGoogleSheet = function() {
+      const orders = getOrders();
+      if (!orders || orders.length === 0) {
+        showAdminToast('⚠️ কপি করার জন্য কোনো অর্ডার পাওয়া যায়নি!');
+        return;
+      }
+
+      const headers = [
+        'অর্ডার আইডি',
+        'তারিখ ও সময়',
+        'কাস্টমারের নাম',
+        'মোবাইল নম্বর',
+        'সম্পূর্ণ ঠিকানা',
+        'প্রোডাক্ট',
+        'পরিমাণ',
+        'সর্বমোট (৳)',
+        'পেমেন্ট পদ্ধতি',
+        'স্ট্যাটাস'
+      ];
+
+      const lines = [
+        headers.join('\t'),
+        ...orders.map((o, idx) => [
+          o.id || ('#MRZ-' + (1000 + idx)),
+          o.date || '',
+          o.name || '',
+          o.phone || '',
+          (o.address || '').replace(/[\r\n\t]+/g, ' '),
+          o.product || '',
+          o.qty || 1,
+          o.total || 0,
+          o.paymentMethod || 'ক্যাশ অন ডেলিভারি',
+          o.status || 'পেন্ডিং'
+        ].join('\t'))
+      ];
+
+      const tsv = lines.join('\n');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(tsv).then(() => {
+          alert('✅ সকল কাস্টমার অর্ডার সফলভাবে কপি হয়েছে!\n\nএখন আপনার কম্পিউটার বা মোবাইলে Google Sheets (বা Excel) খুলে যেকোনো ঘরে (Cell) গিয়ে শুধু "Paste" (Ctrl + V) চাপুন — সকল তথ্য কলাম আকারে বসে যাবে।');
+        }).catch(() => fallbackCopy(tsv));
+      } else {
+        fallbackCopy(tsv);
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          document.execCommand('copy');
+          alert('✅ সকল কাস্টমার অর্ডার সফলভাবে কপি হয়েছে!\n\nএখন আপনার কম্পিউটার বা মোবাইলে Google Sheets (বা Excel) খুলে যেকোনো ঘরে Paste (Ctrl + V) করুন।');
+        } catch(e) {
+          alert('ক্লিপবোর্ডে কপি করতে সমস্যা হয়েছে, অনুগ্রহ করে "এক্সেল শিট ডাউনলোড" বাটন ব্যবহার করুন।');
+        }
+        document.body.removeChild(ta);
+      }
+    };
+
+    window.printOrdersInvoiceReport = function() {
+      const orders = getOrders();
+      if (!orders || orders.length === 0) {
+        showAdminToast('⚠️ প্রিন্ট করার মতো কোনো অর্ডার নেই!');
+        return;
+      }
+
+      const printWin = window.open('', '_blank');
+      const totalRev = orders.reduce((sum, o) => sum + (o.total || 0), 0);
+      const rows = orders.map((o, idx) => `
+        <tr>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;text-align:center;font-size:12px;">${idx + 1}</td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;font-weight:700;color:#1e293b;font-size:12px;">${o.id || ('#MRZ-' + (1000 + idx))}</td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:12px;color:#64748b;">${o.date || 'আজ'}</td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:12px;"><strong>${o.name || 'গ্রাহক'}</strong><br/><span style="color:#d97706;font-weight:600;">${o.phone || '-'}</span></td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:12px;max-width:200px;">${o.address || '-'}</td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:12px;"><strong>${o.product || '-'}</strong><br/><small style="color:#64748b;">পরিমাণ: ${o.qty || 1}টি</small></td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;font-size:13px;font-weight:700;color:#059669;text-align:right;">৳${(o.total || 0).toLocaleString('bn-BD')}</td>
+          <td style="padding:8px 10px;border:1px solid #e5e7eb;text-align:center;font-size:12px;"><span style="display:inline-block;padding:3px 8px;border-radius:4px;background:#f1f5f9;font-weight:600;">${o.status || 'পেন্ডিং'}</span></td>
+        </tr>
+      `).join('');
+
+      printWin.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>MIRAZ - কাস্টমার অর্ডার রিপোর্ট</title>
+          <meta charset="utf-8"/>
+          <style>
+            body { font-family: 'Segoe UI', Arial, sans-serif; padding: 25px; color: #1e293b; background: #fff; margin: 0; }
+            .header-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 2.5px solid #d97706; padding-bottom: 15px; margin-bottom: 20px; }
+            .brand h1 { margin: 0; font-size: 24px; color: #d97706; font-family: Georgia, serif; }
+            .brand p { margin: 4px 0 0; font-size: 13px; color: #64748b; }
+            .meta { text-align: right; font-size: 13px; line-height: 1.5; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            th { background: #f8fafc; color: #334155; font-size: 12px; font-weight: 700; padding: 10px; border: 1px solid #cbd5e1; text-align: left; }
+            .summary-card { margin-top: 25px; padding: 15px 20px; background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+            .no-print { margin-bottom: 20px; }
+            .btn-print { background: #d97706; color: #fff; border: none; padding: 10px 22px; font-size: 14px; font-weight: 700; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+            @media print {
+              .no-print { display: none !important; }
+              body { padding: 0; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="no-print">
+            <button class="btn-print" onclick="window.print()">🖨️ প্রিন্ট করুন বা PDF হিসেবে সেভ করুন</button>
+          </div>
+          <div class="header-bar">
+            <div class="brand">
+              <h1>👑 MIRAZ LUXURY STORE</h1>
+              <p>কাস্টমার ডেলিভারি চালান ও অর্ডার বিস্তারিত রিপোর্ট</p>
+            </div>
+            <div class="meta">
+              <div>তারিখ: <strong>${new Date().toLocaleDateString('bn-BD')}</strong></div>
+              <div>মোট অর্ডার: <strong style="color:#d97706;">${orders.length}টি</strong></div>
+            </div>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width:35px;text-align:center;">#</th>
+                <th>অর্ডার আইডি</th>
+                <th>তারিখ ও সময়</th>
+                <th>গ্রাহক ও মোবাইল</th>
+                <th>ডেলিভারি ঠিকানা</th>
+                <th>পণ্য ও পরিমাণ</th>
+                <th style="text-align:right;">মূল্য (টাকা)</th>
+                <th style="text-align:center;">স্ট্যাটাস</th>
+              </tr>
+            </thead>
+            <tbody>${rows}</tbody>
+          </table>
+          <div class="summary-card">
+            <div><strong>সর্বমোট সফল অর্ডারের সংখ্যা:</strong> ${orders.length}টি</div>
+            <div style="font-size:16px;"><strong>সর্বমোট বিক্রয় মূল্য:</strong> <span style="color:#b45309;font-weight:800;font-size:20px;">৳${totalRev.toLocaleString('bn-BD')}</span></div>
+          </div>
+        </body>
+        </html>
+      `);
+      printWin.document.close();
+    };
+
+    // Backup & Export (JSON)
+    window.exportOrdersJson = () => {
+      const orders = getOrders();
+      const blob = new Blob([JSON.stringify(orders, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `miraz-orders-${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+
+    window.clearAdminData = () => {
+      if (!confirm('⚠️ সতর্কতা: সকল কাস্টম প্রোডাক্ট ও অর্ডার তালিকা মুছে যাবে! আপনি কি এগিয়ে যেতে চান?')) return;
+      localStorage.removeItem('miraz_custom_products');
+      localStorage.removeItem('miraz_deleted_product_ids');
+      localStorage.removeItem('miraz_orders');
+      showAdminToast('সকল কাস্টম ডেটা রিসেট করা হয়েছে!');
+      loadAllAdminData();
+    };
+
+    function showAdminToast(msg) {
+      const toast = document.getElementById('adminToast');
+      document.getElementById('adminToastMsg').textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // ── Video Reels Management ──
+    window.toggleDeleteVideo = (id) => {
+      let deleted = JSON.parse(localStorage.getItem('miraz_deleted_video_ids') || '[]');
+      if (deleted.includes(id)) {
+        deleted = deleted.filter(item => item !== id);
+        localStorage.setItem('miraz_deleted_video_ids', JSON.stringify(deleted));
+        showAdminToast(`রিলস ${id} ওয়েবসাইটে পুনরায় সক্রিয় করা হয়েছে!`);
+      } else {
+        if (!confirm(`আপনি কি নিশ্চিত রিলস ${id} ওয়েবসাইট থেকে মুছে ফেলতে চান?`)) return;
+        deleted.push(id);
+        localStorage.setItem('miraz_deleted_video_ids', JSON.stringify(deleted));
+        showAdminToast(`রিলস ${id} ওয়েবসাইট থেকে মুছে ফেলা হয়েছে!`);
+      }
+      updateAdminVideoButtons();
+    };
+
+    function updateAdminVideoButtons() {
+      const deleted = JSON.parse(localStorage.getItem('miraz_deleted_video_ids') || '[]');
+      for (let i = 1; i <= 5; i++) {
+        const btn = document.getElementById(`btn-del-vid-${i}`);
+        const card = document.getElementById(`adm-vid-card-${i}`);
+        if (btn) {
+          if (deleted.includes(i)) {
+            btn.innerHTML = '<i class="fas fa-rotate-left"></i> <span>পুনরায় ফিরিয়ে আনুন (Restore)</span>';
+            btn.style.background = 'rgba(37,211,102,0.15)';
+            btn.style.color = '#25d366';
+            btn.style.borderColor = '#25d366';
+            if (card) card.style.opacity = '0.5';
+          } else {
+            btn.innerHTML = '<i class="fas fa-trash"></i> <span>ওয়েবসাইট থেকে ডিলিট করুন</span>';
+            btn.style.background = 'rgba(239,68,68,0.15)';
+            btn.style.color = '#ef4444';
+            btn.style.borderColor = '#ef4444';
+            if (card) card.style.opacity = '1';
+          }
+        }
+      }
+    }
+
+    // Live preview when file chosen in Reel Form
+    const newReelFileInput = document.getElementById('newReelFile');
+    if (newReelFileInput) {
+      newReelFileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          const previewWrap = document.getElementById('reelPreviewWrap');
+          const previewVid  = document.getElementById('newReelPreviewVid');
+          const url = URL.createObjectURL(file);
+          previewVid.src = url;
+          previewWrap.style.display = 'block';
+          previewVid.play().catch(() => {});
+          showAdminToast(`🎬 ভিডিও ফাইল লোড হয়েছে: ${file.name}`);
+        }
+      });
+    }
+
+    // Handle Direct Reel Upload Form
+    const addReelForm = document.getElementById('addReelForm');
+    if (addReelForm) {
+      addReelForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const file = document.getElementById('newReelFile').files[0];
+        const title = document.getElementById('newReelTitle').value.trim();
+        const price = parseFloat(document.getElementById('newReelPrice').value);
+        if (!file || !title) return;
+
+        // Use FileReader for persistent Base64 if small, fallback to objectURL
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          let vidSrc = evt.target.result;
+          const newReel = {
+            id: 'custom-' + Date.now(),
+            title: title,
+            price: price,
+            video: vidSrc,
+            filename: file.name
+          };
+
+          try {
+            const customReels = JSON.parse(localStorage.getItem('miraz_custom_reels') || '[]');
+            customReels.unshift(newReel);
+            localStorage.setItem('miraz_custom_reels', JSON.stringify(customReels));
+          } catch(err) {
+            // LocalStorage quota fallback
+            newReel.video = URL.createObjectURL(file);
+            const memReels = JSON.parse(sessionStorage.getItem('miraz_custom_reels') || '[]');
+            memReels.unshift(newReel);
+            sessionStorage.setItem('miraz_custom_reels', JSON.stringify(memReels));
+          }
+
+          showAdminToast(`🎬 "${title}" ভিডিও রিলস সফলভাবে পাবলিশ হয়েছে!`);
+          e.target.reset();
+          document.getElementById('reelPreviewWrap').style.display = 'none';
+          renderCustomReelsAdmin();
+        };
+
+        // If file > 5MB, directly use URL.createObjectURL to prevent quota errors
+        if (file.size > 5 * 1024 * 1024) {
+          const vidSrc = URL.createObjectURL(file);
+          const newReel = {
+            id: 'custom-' + Date.now(),
+            title: title,
+            price: price,
+            video: vidSrc,
+            filename: file.name
+          };
+          const memReels = JSON.parse(sessionStorage.getItem('miraz_custom_reels') || '[]');
+          memReels.unshift(newReel);
+          sessionStorage.setItem('miraz_custom_reels', JSON.stringify(memReels));
+          showAdminToast(`🎬 "${title}" ভিডিও রিলস সফলভাবে পাবলিশ হয়েছে!`);
+          e.target.reset();
+          document.getElementById('reelPreviewWrap').style.display = 'none';
+          renderCustomReelsAdmin();
+        } else {
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+
+    function renderCustomReelsAdmin() {
+      const container = document.getElementById('customReelsContainer');
+      if (!container) return;
+      let customReels = JSON.parse(localStorage.getItem('miraz_custom_reels') || '[]');
+      const sessionReels = JSON.parse(sessionStorage.getItem('miraz_custom_reels') || '[]');
+      customReels = [...sessionReels, ...customReels];
+
+      if (customReels.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      container.innerHTML = customReels.map(r => `
+        <div id="adm-vid-card-${r.id}" style="background:#090910;border:1.5px solid var(--gold);border-radius:var(--r-md);padding:1rem;display:flex;flex-direction:column;gap:.75rem;">
+          <video src="${r.video}" controls playsinline style="width:100%;aspect-ratio:9/16;max-height:260px;object-fit:cover;border-radius:var(--r-sm);background:#000;"></video>
+          <div>
+            <span style="font-size:.72rem;color:var(--gold);font-weight:700;"><i class="fas fa-sparkles"></i> নতুন রিলস (Custom)</span>
+            <h4 style="font-size:.9rem;color:#fff;margin:.2rem 0;">${r.title}</h4>
+            <p style="font-size:.78rem;color:#f0c96e;font-weight:600;">৳${r.price}</p>
+          </div>
+          <button onclick="deleteCustomReel('${r.id}')" style="margin-top:auto;padding:.6rem;border-radius:var(--r-sm);font-size:.82rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;border:1px solid #ef4444;background:rgba(239,68,68,0.15);color:#ef4444;">
+            <i class="fas fa-trash"></i> <span>মুছে ফেলুন</span>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    window.deleteCustomReel = (id) => {
+      if (!confirm('আপনি কি এই ভিডিও রিলসটি মুছে ফেলতে চান?')) return;
+      let customReels = JSON.parse(localStorage.getItem('miraz_custom_reels') || '[]');
+      customReels = customReels.filter(r => r.id !== id);
+      localStorage.setItem('miraz_custom_reels', JSON.stringify(customReels));
+      let sessionReels = JSON.parse(sessionStorage.getItem('miraz_custom_reels') || '[]');
+      sessionReels = sessionReels.filter(r => r.id !== id);
+      sessionStorage.setItem('miraz_custom_reels', JSON.stringify(sessionReels));
+      showAdminToast('ভিডিও রিলস সফলভাবে মুছে ফেলা হয়েছে!');
+      renderCustomReelsAdmin();
+    };
+
+    // ── Signature Showcase Banner Control ───────────────────────
+    function populateSignatureShowcaseAdmin() {
+      const prods = getAllProducts();
+      const optionsHtml = prods.map(p => `<option value="${p.id}">#${p.id} — ${p.name} (৳${p.price.toLocaleString('bn-BD')})</option>`).join('');
+      ['scfProd1', 'scfProd2', 'scfProd3', 'scfProd4'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = optionsHtml;
+      });
+
+      const stored = JSON.parse(localStorage.getItem('miraz_signature_showcase') || 'null');
+      if (stored) {
+        if (document.getElementById('scfTag')) document.getElementById('scfTag').value = stored.tag || '👑 প্রধান কালেকশন';
+        if (document.getElementById('scfTitle')) document.getElementById('scfTitle').value = stored.title || 'আতর ও পারফিউম';
+        if (document.getElementById('scfDesc')) document.getElementById('scfDesc').value = stored.desc || '';
+        if (document.getElementById('scfFeatures')) document.getElementById('scfFeatures').value = (stored.features || []).join(', ');
+        if (document.getElementById('scfBtnText')) document.getElementById('scfBtnText').value = stored.btnText || 'পারফিউম কালেকশন দেখুন';
+        if (stored.productIds && Array.isArray(stored.productIds)) {
+          if (stored.productIds[0] && document.getElementById('scfProd1')) document.getElementById('scfProd1').value = stored.productIds[0];
+          if (stored.productIds[1] && document.getElementById('scfProd2')) document.getElementById('scfProd2').value = stored.productIds[1];
+          if (stored.productIds[2] && document.getElementById('scfProd3')) document.getElementById('scfProd3').value = stored.productIds[2];
+          if (stored.productIds[3] && document.getElementById('scfProd4')) document.getElementById('scfProd4').value = stored.productIds[3];
+        }
+      } else {
+        if (document.getElementById('scfProd1')) document.getElementById('scfProd1').value = 1;
+        if (document.getElementById('scfProd2')) document.getElementById('scfProd2').value = 2;
+        if (document.getElementById('scfProd3')) document.getElementById('scfProd3').value = 3;
+        if (document.getElementById('scfProd4')) document.getElementById('scfProd4').value = 4;
+      }
+    }
+
+    window.saveSignatureShowcase = function(e) {
+      if (e) e.preventDefault();
+      const tag = document.getElementById('scfTag')?.value.trim() || '👑 প্রধান কালেকশন';
+      const title = document.getElementById('scfTitle')?.value.trim() || 'আতর ও পারফিউম';
+      const desc = document.getElementById('scfDesc')?.value.trim() || '';
+      const feats = (document.getElementById('scfFeatures')?.value || '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      const btnText = document.getElementById('scfBtnText')?.value.trim() || 'পারফিউম কালেকশন দেখুন';
+      const p1 = parseInt(document.getElementById('scfProd1')?.value || 1, 10);
+      const p2 = parseInt(document.getElementById('scfProd2')?.value || 2, 10);
+      const p3 = parseInt(document.getElementById('scfProd3')?.value || 3, 10);
+      const p4 = parseInt(document.getElementById('scfProd4')?.value || 4, 10);
+
+      const data = {
+        tag,
+        title,
+        desc,
+        features: feats.length ? feats : ['১০০% অরিজিনাল', 'দীর্ঘস্থায়ী', 'হালাল সার্টিফাইড'],
+        btnText,
+        productIds: [p1, p2, p3, p4]
+      };
+
+      localStorage.setItem('miraz_signature_showcase', JSON.stringify(data));
+      showAdminToast('👑 সিগনেচার শোকেস ব্যানার সফলভাবে সংরক্ষিত হয়েছে!');
+    };
+
+    window.resetSignatureShowcase = function() {
+      if (!confirm('আপনি কি সিগনেচার ব্যানারটি ডিফল্ট অবস্থায় ফিরিয়ে নিতে চান?')) return;
+      localStorage.removeItem('miraz_signature_showcase');
+      populateSignatureShowcaseAdmin();
+      showAdminToast('সিগনেচার ব্যানার ডিফল্ট রিসেট করা হয়েছে!');
+    };
+
+    // ── Delivery Charges Settings ──────────────────────────────
+    function populateDeliverySettingsAdmin() {
+      const stored = JSON.parse(localStorage.getItem('miraz_delivery_charges') || 'null');
+      if (stored) {
+        if (document.getElementById('delChargeInside') && stored.inside !== undefined) {
+          document.getElementById('delChargeInside').value = stored.inside;
+        }
+        if (document.getElementById('delChargeOutside') && stored.outside !== undefined) {
+          document.getElementById('delChargeOutside').value = stored.outside;
+        }
+        if (document.getElementById('delFreeAbove')) {
+          document.getElementById('delFreeAbove').value = stored.freeAbove > 0 ? stored.freeAbove : '';
+        }
+      } else {
+        if (document.getElementById('delChargeInside')) document.getElementById('delChargeInside').value = 60;
+        if (document.getElementById('delChargeOutside')) document.getElementById('delChargeOutside').value = 120;
+        if (document.getElementById('delFreeAbove')) document.getElementById('delFreeAbove').value = '';
+      }
+      const insideVal = stored && stored.inside !== undefined ? stored.inside : 60;
+      const outsideVal = stored && stored.outside !== undefined ? stored.outside : 120;
+      const qSummary = document.getElementById('quickDelSummary');
+      if (qSummary) {
+        qSummary.innerHTML = `ঢাকার ভেতরে: ৳${insideVal.toLocaleString('bn-BD')} &nbsp;|&nbsp; ঢাকার বাইরে: ৳${outsideVal.toLocaleString('bn-BD')}`;
+      }
+    }
+
+    window.saveDeliveryCharges = function(e) {
+      if (e) e.preventDefault();
+      const inside = parseInt(document.getElementById('delChargeInside')?.value || '60', 10);
+      const outside = parseInt(document.getElementById('delChargeOutside')?.value || '120', 10);
+      const freeAbove = parseInt(document.getElementById('delFreeAbove')?.value || '0', 10);
+
+      const data = {
+        inside: isNaN(inside) ? 60 : inside,
+        outside: isNaN(outside) ? 120 : outside,
+        freeAbove: isNaN(freeAbove) ? 0 : freeAbove
+      };
+
+      localStorage.setItem('miraz_delivery_charges', JSON.stringify(data));
+      const qSummary = document.getElementById('quickDelSummary');
+      if (qSummary) {
+        qSummary.innerHTML = `ঢাকার ভেতরে: ৳${data.inside.toLocaleString('bn-BD')} &nbsp;|&nbsp; ঢাকার বাইরে: ৳${data.outside.toLocaleString('bn-BD')}`;
+      }
+      showAdminToast('🚚 ডেলিভারি চার্জ সফলভাবে আপডেট করা হয়েছে!');
+    };
+
+    window.resetDeliveryCharges = function() {
+      if (!confirm('আপনি কি ডেলিভারি চার্জ ডিফল্ট (৬০/১২০ টাকা) করতে চান?')) return;
+      localStorage.removeItem('miraz_delivery_charges');
+      populateDeliverySettingsAdmin();
+      showAdminToast('ডেলিভারি চার্জ ডিফল্ট রিসেট করা হয়েছে!');
+    };
+
+    async function loadAllAdminData() {
+      await syncProductsFromServer();
+      populateCategoryDropdowns();
+      renderCategoriesTable();
+      populateDealProductSelect();
+      renderDealsCardsAdmin();
+      populateSignatureShowcaseAdmin();
+      populateDeliverySettingsAdmin();
+      renderProductsTable();
+      renderOrdersTable();
+      renderMessagesTable();
+      updateAdminVideoButtons();
+      renderCustomReelsAdmin();
+      const savedH = localStorage.getItem('miraz_deal_timer_hours');
+      const savedM = localStorage.getItem('miraz_deal_timer_minutes');
+      if (savedH && document.getElementById('dealTimerHoursInput')) {
+        document.getElementById('dealTimerHoursInput').value = savedH;
+      }
+      if (savedM && document.getElementById('dealTimerMinutesInput')) {
+        document.getElementById('dealTimerMinutesInput').value = savedM;
+      }
+      updateAdminLiveTimer();
+    }
+
+    loadAllAdminData();
+  </script>
+</body>
+</html>
